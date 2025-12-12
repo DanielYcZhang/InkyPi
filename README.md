@@ -1,4 +1,4 @@
-# InkyPi 
+# InkyPi - Daniel's Fork
 
 <img src="./docs/images/inky_clock.jpg" />
 
