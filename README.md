@@ -1,4 +1,4 @@
-# InkyPi - Daniel's Fork - Branch change test
+# InkyPi - Daniel's Fork
 
 <img src="./docs/images/inky_clock.jpg" />
 
@@ -105,8 +105,8 @@ To update your InkyPi with the latest code changes, follow these steps:
    ```
 3. Run the update script with sudo:
    `bash
-    sudo bash install/update.sh
-    `
+ sudo bash install/update.sh
+ `
    This process ensures that any new updates, including code changes and additional dependencies, are properly applied without requiring a full reinstallation.
 
 ## Uninstall
