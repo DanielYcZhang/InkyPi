@@ -1,0 +1,23 @@
+[Unit]
+Description=The Haunted House Service
+After=network.target
+
+[Service]
+# REPLACE [YOUR_PATH] with the output of 'pwd' command!
+# Example: /home/pi/InkyPi/academy/missions/m05_ghost/haunted_house.py
+ExecStart=/usr/bin/python3 [YOUR_PATH]/haunted_house.py
+
+# Run as the 'pi' user (or whatever your user is)
+User=pi
+
+# If it crashes, restart it automatically
+Restart=always
+RestartSec=10
+
+# Direct output to the Journal
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+# Start this when the multi-user system is ready
+WantedBy=multi-user.target
