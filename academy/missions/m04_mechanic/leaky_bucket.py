@@ -17,7 +17,7 @@ def process_sensor_data():
     # We are mistakenly saving EVERY piece of data forever.
     # We only need to process it, not keep it!
     
-    history.append(data)  # <--- THIS IS THE LEAK! 
+# history.append(data)  # <--- THIS IS THE LEAK! 
     
     # --- BUG ZONE ENDS HERE ---
 

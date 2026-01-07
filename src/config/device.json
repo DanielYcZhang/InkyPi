@@ -1,0 +1,40 @@
+{
+    "name": "InkyPi",
+    "orientation": "horizontal",
+    "inverted_image": null,
+    "scheduler_sleep_time": 60,
+    "startup": false,
+    "display_type": "epd7in5_V2",
+    "resolution": [
+        800,
+        480
+    ],
+    "playlist_config": {
+        "playlists": [
+            {
+                "name": "Default",
+                "start_time": "00:00",
+                "end_time": "24:00",
+                "plugins": [],
+                "current_plugin_index": null
+            }
+        ],
+        "active_playlist": "Default"
+    },
+    "refresh_info": {
+        "refresh_time": "2026-01-07T13:53:57.905406+13:00",
+        "image_hash": "c3960d4ed01a52f43e7e20c9b2e7bdde1a43929e39512122657e61f53618e266",
+        "refresh_type": "Manual Update",
+        "plugin_id": "m06_awakening"
+    },
+    "log_system_stats": null,
+    "timezone": "Pacific/Auckland",
+    "time_format": "12h",
+    "plugin_cycle_interval_seconds": 3600,
+    "image_settings": {
+        "saturation": 1.0,
+        "brightness": 1.0,
+        "sharpness": 1.0,
+        "contrast": 1.0
+    }
+}
