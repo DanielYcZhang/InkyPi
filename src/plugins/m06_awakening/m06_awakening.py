@@ -57,5 +57,3 @@ class Awakening(BasePlugin):
 
         # 7. Hand the finished picture back to InkyPi
         return image
-
-#try
