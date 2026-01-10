@@ -19,8 +19,10 @@ class Timekeeper(BasePlugin):
         now = datetime.now()
         time_text = now.strftime("%H:%M")
         time_label = f"Time: {time_text}"
-
-        large_font = ImageFont.load_default()
+        
+        font_path = self.base_dir / "fonts" / "Paintingwithchocolate-K5mo.ttf"
+        large_font = ImageFont.truetype(str(font_path), size=40)
+        
         text_box = draw.textbbox((0, 0), time_label, font=large_font)
         text_width = text_box[2] - text_box[0]
         text_height = text_box[3] - text_box[1]
