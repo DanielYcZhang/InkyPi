@@ -20,8 +20,8 @@ class Timekeeper(BasePlugin):
         time_text = now.strftime("%H:%M")
         time_label = f"Time: {time_text}"
 
-        large_font = ImageFont.large_default()
-        text_box = draw.textbox((0, 0), time_label, font=font)
+        large_font = ImageFont.load_default()
+        text_box = draw.textbox((0, 0), time_label, font=large_font)
         text_width = text_box[2] - text_box[0]
         text_height = text_box[3] - text_box[1]
         x = (width - text_width) // 2
