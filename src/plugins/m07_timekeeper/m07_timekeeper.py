@@ -1,7 +1,8 @@
 # Import the tools we need to draw images
+from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 # Import the "Parent" class that all plugins must copy
-from plugins.base_plugin.base_plugin import BasePlugin
+from plugins.base_plugin.base_plugin import BasePlugin, STATIC_DIR
 
 from datetime import datetime
 
@@ -20,7 +21,7 @@ class Timekeeper(BasePlugin):
         time_text = now.strftime("%H:%M")
         time_label = f"Time: {time_text}"
         
-        font_path = self.base_dir / "fonts" / "Paintingwithchocolate-K5mo.ttf"
+        font_path = Path(STATIC_DIR) / "fonts" / "Paintingwithchocolate-K5mo.ttf"
         large_font = ImageFont.truetype(str(font_path), size=40)
         
         text_box = draw.textbbox((0, 0), time_label, font=large_font)
