@@ -8,6 +8,8 @@ Instead of writing throwaway scripts, the student will build **Real InkyPi Plugi
     - **Briefing:** The "Player's Manual" explaining concepts via RPG analogies.
     - **Lab:** The "Quest" to build a specific plugin folder (e.g., `src/plugins/m01_awakening`).
     - **Check:** The "System Diagnostic" to verify their code works.
+    - **Template-First Labs:** Missions start from a prefilled `.py` template with comments and micro-tasks, so the learner edits and moves pieces instead of building from scratch.
+    - **Black-Box Framework:** Treat `BasePlugin` as a contract, not a codebase to understand. Only explain the parts the learner touches.
 
 ## 2. The Pedagogy: "Coding is Minecraft"
 We use **Minecraft/RPG analogies** to demystify "Boilerplate".
@@ -16,6 +18,9 @@ We use **Minecraft/RPG analogies** to demystify "Boilerplate".
 - **`Inheritance`** = **DNA**. "A Zombie *is a* Mob, but it groans."
 - **`def` (Methods)** = **Abilities**. Special moves the entity can perform (e.g., `attack()`, `generate_image()`).
 - **`self`** = **Me**. The entity pointing to its own chest. (e.g., "My health", "My texture").
+- **Good vs Bad Examples:** Every key concept includes a tiny "do this / avoid this" example and why.
+- **Use vs Avoid:** Every concept comes with a quick "when to use this" and "when not to use this".
+- **Surprise Factor:** Every mission ships one small, delightful surprise (font, visual effect, animation, or data reveal).
 
 ## 2.1 How We Teach Python (So It Sticks)
 The goal is “useful outcome from day 1” without skipping fundamentals. The trick is to teach *only the next tool needed* to complete the mission, then reuse it across later missions until it becomes automatic.
@@ -25,12 +30,16 @@ The goal is “useful outcome from day 1” without skipping fundamentals. The t
 ### Mission Format (so an AI agent can generate materials)
 Each Python mission should be written with these sections (in this order):
 1. **Outcome (Visible Result)**: what changes on the screen / in the web UI.
-2. **Build (Steps)**: exact files to create/edit and the smallest slice that works.
-3. **Teach (Concepts)**: *micro-lessons* using **Syntax Cards** (see below).
-4. **Practice (Tiny Exercises)**: 2–4 “change one thing and observe” tasks.
-5. **Check (Acceptance Criteria)**: what “done” means; ideally a checklist and a quick command.
-6. **Stretch (Optional)**: harder upgrades if motivation is high.
-7. **Reflection (1–3 Questions)**: “What did you learn? What was tricky? What would you change?”
+2. **Glossary (Mission Terms)**: 5–10 terms with one-sentence definitions and the analogy.
+3. **Build (Steps)**: exact files to create/edit and the smallest slice that works.
+4. **Teach (Concepts)**: *micro-lessons* using **Syntax Cards** (see below).
+5. **Use vs Avoid**: a short "when to use / when not to use" for each new concept.
+6. **Concept Checkpoints**: 2–4 one-sentence "explain it back" prompts.
+7. **Practice (Tiny Exercises)**: 2–4 “change one thing and observe” tasks.
+8. **Check (Acceptance Criteria)**: what “done” means; ideally a checklist and a quick command.
+9. **Surprise (The Wow Moment)**: one small, intentional delight (font, effect, visual, or data).
+10. **Stretch (Optional)**: harder upgrades if motivation is high.
+11. **Reflection (1–3 Questions)**: “What did you learn? What was tricky? What would you change?”
 
 ### Teach Section Rule: Use Syntax Cards
 Keep the RPG/Minecraft one-liner (memory hook), then immediately add a compact Syntax Card so the learner (and an AI agent) gets the missing “how does this syntax work?” details without turning the mission into a textbook.
@@ -40,7 +49,8 @@ Each **Syntax Card** must include:
 2. **Definition** (1–2 sentences): what it really is in Python terms.
 3. **Syntax card** (1 small snippet): show the pattern and label the parts.
 4. **Common mistakes** (1–3 bullets): include what the error looks like.
-5. **Where used in this mission**: point to the exact file/function.
+5. **When to use / when to avoid**: one-line guidance for both.
+6. **Where used in this mission**: point to the exact file/function.
 
 ### Core Syntax Cards Library (Project Standard)
 These should be taught across missions (not all at once). Reuse the same wording/snippets to build muscle memory.
@@ -99,6 +109,9 @@ These are the “must learn” topics we’ll cover, but always through missions
 | :--- | :--- | :--- | :--- |
 | **M-06** | **The Awakening**<br>*"Wake up the machine."* | To make the hardware speak, we need to create a driver (Plugin) that controls the pixels. | **The Shell**: `mkdir`, code structure.<br>**The Blueprint**: `class` (Defining a new Entity).<br>**The DNA**: `inheritance` (Using templates).<br>**The Ability**: `def` (The specific task). |
 | **M-07** | **The Timekeeper**<br>*"Fix the broken clock."* | The screen is static. We need variables that change value over time to show the present moment. | **Imports**: `datetime` module.<br>**Variables**: Capturing state.<br>**f-strings**: Injecting variables into text.<br>**Types**: `str` vs `int`. |
+| **C-01** | **The Display Gallery**<br>*"Mini art wall."* | Build confidence by arranging simple shapes and labels on the screen. | **Variables**: Naming values.<br>**Coordinates**: Consistent layout.<br>**Types**: `int` vs `str` usage. |
+| **C-02** | **The Creature Card**<br>*"Your pet on a card."* | Introduce class, object, and properties with a friendly, visible output. | **Class/Object**: Blueprint vs instance.<br>**Properties**: Stored facts.<br>**Methods**: Actions that draw. |
+| **C-03** | **The Inheritance Practice**<br>*"Specialize a base card."* | Practice `super()` and extending a base class without touching framework internals. | **Base class**: Common behavior.<br>**Constructor**: Setup time.<br>**super()**: Ask the parent for help. |
 | **M-08** | **The Artist**<br>*"Draw your gamer tag."* | Text is boring. We want graphics. We need to understand the X,Y grid to place pixels. | **Objects**: Creating a `Draw` object.<br>**Methods with Args**: Passing parameters.<br>**Tuples**: Grouping data like Colors (R,G,B).<br>**Coordinates**: Top-Left (0,0). |
 | **B-02** | **BOSS BATTLE: The ID Card**<br>*"Digital Badge"* | **Challenge**: distinct layers (Photo, Name, Rank) combined into one image.<br>*No Guide. Pure creation.* | *Consolidating Class structure, Imports, Variables, and Drawing methods.* |
 
@@ -106,9 +119,10 @@ These are the “must learn” topics we’ll cover, but always through missions
 **Outcome (Visible Result)**: A new plugin appears in the web UI and can render a simple “Hello, \<Name\>” card to the display.
 
 **Build (Smallest Slice that Works)**
+- Start from a prefilled `m06_awakening.py` template (commented step-by-step).
 - Create plugin folder: `src/plugins/m06_awakening/`
 - Create: `src/plugins/m06_awakening/plugin-info.json` (id + display name + class)
-- Create: `src/plugins/m06_awakening/m06_awakening.py`
+- Move the prefilled `m06_awakening.py` into `src/plugins/m06_awakening/`
   - `class Awakening(BasePlugin):`
   - implement `generate_image(self, settings, device_config)` using Pillow:
     - `Image.new(...)`, `ImageDraw.Draw(img)`, `draw.text(...)`
@@ -118,6 +132,7 @@ These are the “must learn” topics we’ll cover, but always through missions
 **Teach (Concepts: micro-lessons)**
 - `import`: “bring tools into this file” (show `from PIL import Image, ImageDraw`).
 - `class` + inheritance: “your plugin *is a* `BasePlugin`”.
+- Pillow: a library that creates and draws images for the e-ink display.
 - Method signature: parameters, `self`, and return value.
 - Strings: simple f-string: `f"Hello, {name}!"`.
 - “Fail loudly”: when a required setting is missing, `raise RuntimeError("...")`.
