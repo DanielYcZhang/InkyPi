@@ -22,7 +22,7 @@ class Timekeeper(BasePlugin):
         time_label = f"Time: {time_text}"
         
         font_path = Path(STATIC_DIR) / "fonts" / "Paintingwithchocolate-K5mo.ttf"
-        large_font = ImageFont.truetype(str(font_path), size=40)
+        large_font = ImageFont.truetype(str(font_path), size=60)
         
         text_box = draw.textbbox((0, 0), time_label, font=large_font)
         text_width = text_box[2] - text_box[0]
