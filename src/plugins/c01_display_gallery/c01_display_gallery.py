@@ -23,8 +23,8 @@ class DisplayGallery(BasePlugin):
         box_width = (w - padding * 2 - gap * (box_count - 1)) // box_count
 
         # Box style
-        outline_color = (0, 0, 0)
-        label_color = (0, 0, 0)
+        outline_color = 0  # 0 = black for 1-bit mode
+        label_color = 0    # 0 = black for 1-bit mode
 
         # Draw three boxes in a row.
         # Loop repeats the box drawing for each index 0..box_count-1.
