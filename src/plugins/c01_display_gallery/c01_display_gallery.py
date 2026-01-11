@@ -10,7 +10,7 @@ class DisplayGallery(BasePlugin):
         # - mode: "RGB" means red/green/blue pixels
         # - size: (width, height) in pixels
         # - color: (r, g, b) background color
-        img = Image.new("1", (w, h), (255, 255, 255))
+        img = Image.new('1', (w, h), 255)
         # ImageDraw.Draw(img) returns a drawing tool for this image.
         # ImageDraw is the library, Draw() is the function, draw is our variable name.
         draw = ImageDraw.Draw(img)
