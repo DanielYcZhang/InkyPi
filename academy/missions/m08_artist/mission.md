@@ -9,20 +9,29 @@ A custom “tag art” image appears on the e-ink display: your name plus a simp
 
 ---
 
-## Glossary (Mission Terms)
-- **Pillow**: A Python library for creating and drawing on images.
-- **Image**: A canvas you can draw on.
-- **Draw**: A helper object that draws shapes and text onto an image.
-- **Coordinate**: A position like `(x, y)` on the screen.
-- **Tuple**: A small grouped value like `(x, y)` or `(r, g, b)`.
-- **Loop**: A way to repeat an action, like drawing 3 dots in a row.
-- **Method**: A function that belongs to a class.
+## Concepts You Will Learn (List Only)
+- Pillow Image + Draw
+- Coordinates
+- Tuples
+- Loops
+
+---
+
+## Glossary (with Examples)
+- **Pillow**: Python image library. Example: `Image.new(...)`.
+- **Image**: A canvas you draw on. Example: `img = Image.new(...)`.
+- **Draw**: A helper that draws shapes/text. Example: `draw = ImageDraw.Draw(img)`.
+- **Coordinate**: A position like `(x, y)`. Example: `text_pos = (20, 20)`.
+- **Tuple**: A grouped value like `(x, y)` or `(r, g, b)`.
+- **Loop**: Repeat actions. Example: `for i in range(3):`.
 
 ---
 
 ## Step 0: Read the Briefing
 Open and read:
 - `briefing.md`
+
+This is where the concept explanations and analogies live.
 
 ---
 
@@ -64,51 +73,7 @@ cp academy/missions/m08_artist/m08_artist.py src/plugins/m08_artist/m08_artist.p
 
 Then open `src/plugins/m08_artist/m08_artist.py` in VS Code to edit.
 
-Your plugin must:
-- Inherit from `BasePlugin`
-- Implement `generate_image(self, settings, device_config)`
-- Use `w, h = device_config.get_resolution()` (or equivalent)
-- Create a Pillow image and a Draw object
-- Draw text (your name) somewhere
-- Draw at least **two** shapes (rectangle/line/ellipse)
-- Use at least one tuple for a coordinate or color
-- Use at least one `for` loop to draw a repeated pattern (3 dots, stripes, etc.)
-
-Hint ideas:
-- Draw a border rectangle around the canvas.
-- Draw 3 dots evenly spaced along the bottom using a loop.
-- Draw a diagonal line or a small “badge” box behind the name.
-
----
-
-## Teach (Concepts)
-- **Pillow**: creates images and gives you drawing tools.
-- **Coordinates**: `(0, 0)` is the top-left. X goes right, Y goes down.
-- **Tuples**: use `(x, y)` for positions and `(r, g, b)` for colors.
-- **Loops**: use a `for` loop to repeat simple drawing steps.
-
----
-
-## Use vs Avoid
-- **Coordinates**: use `(x, y)` pairs; avoid “magic numbers” with no labels.
-- **Tuples**: use for grouped data (position or color); avoid mixing up order.
-- **Loops**: use for repeated shapes; avoid copy-pasting the same line 3 times.
-
----
-
-## Concept Checkpoints
-- Explain what `(0, 0)` means on the screen.
-- Explain why we use a loop to draw repeated dots.
-- Explain what a tuple is in this mission.
-
----
-
-## Practice (Tiny Exercises)
-- Move your name by changing the text `(x, y)` coordinates.
-- Change the border thickness or add a second border.
-- Make your dot pattern wider by increasing spacing.
-
----
+Follow the TODOs in the template for practice tasks and the surprise.
 
 ## Self-Learning Module (Required)
 Fill these files in this mission folder:
@@ -148,21 +113,17 @@ python3 bad_code.py
 ---
 
 ## Surprise (The Wow Moment)
-Add a small “stamp” in a corner: a tiny box with two letters (like `XP` or your initials).
+Complete the **Surprise** TODO inside `m08_artist.py`.
 
 ---
 
 ## Stretch (Optional)
-- Compute positions based on `w` and `h` so the layout scales.
-- Add a second line of text (nickname or rank).
+Complete any **Stretch** TODOs inside `m08_artist.py`.
 
 ---
 
 ## Reflection
-- What was the hardest part about placing shapes?
-- What did the loop save you from doing by hand?
-
----
+Answer the Reflection prompt inside `explain.md`.
 
 ## Step 4: Add an Icon
 Add:

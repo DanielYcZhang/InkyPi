@@ -46,10 +46,16 @@ class Artist(BasePlugin):
                 fill=(0, 0, 0),
             )
 
-        # TODO:
-        # - Move the name to a new position.
-        # - Replace the line with a rectangle or ellipse.
-        # - Make the dots span the full width.
+        # Practice TODOs:
+        # 1) Move the name to a new position.
+        # 2) Replace the line with a rectangle or ellipse.
+        # 3) Make the dots span the full width.
+
+        # Surprise TODO:
         # - Add a tiny "stamp" box in a corner with your initials.
+
+        # Stretch TODO (optional):
+        # - Add a second line of text (nickname or rank).
+        # - Make positions scale using w and h.
 
         return img

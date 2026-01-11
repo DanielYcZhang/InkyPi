@@ -16,14 +16,14 @@ Create these in the mission folder:
 
 ---
 
-## explain.md (Explain-Back Prompts)
+## explain.md (Explain-Back + Concept Checkpoints)
 Learner writes 2–4 sentences per prompt.
 
 Prompts:
 1) In one sentence, explain what this file does overall.
-2) Explain what `Image.new(...)` does and what each parameter means.
-3) Explain why we use a loop here instead of repeating code.
-4) Explain one line that confused you, in your own words.
+2) Pick one line and explain it in your own words.
+3) Answer the mission’s **Concept Checkpoints** (copied from the mission).
+4) Explain one mistake that could happen here and how to spot it.
 
 ---
 
@@ -38,6 +38,7 @@ Provide a short “bad code” snippet inside the mission and ask the learner to
 - `bad_code_explain.md` (reflection answers)
 
 This can be auto-validated by checking that the files exist and have a minimum length.
+This is where “use vs avoid” is learned in practice.
 
 ---
 
@@ -80,6 +81,12 @@ Here is my explanation:
 - “Ask me to explain this code using a kitchen analogy.”
 - “Show a bad example and ask me to refactor it.”
 - “Ask me when I should and should not use this concept.”
+
+---
+
+## Practice Tasks Live in the .py Template
+All “Practice” and “Do-It” tasks should be written as TODOs inside the mission’s `.py` template.
+This keeps learning in the same place as the code.
 
 ---
 

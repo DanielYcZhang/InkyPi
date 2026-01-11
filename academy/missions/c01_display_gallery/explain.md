@@ -2,8 +2,13 @@
 
 1) In one sentence, explain what this file does overall.
 
-2) Explain what `Image.new(...)` does and what each parameter means.
+2) Pick one line from `c01_display_gallery.py` and explain it in your own words.
 
-3) Explain why we use a loop here instead of repeating code.
+3) Concept checkpoints:
+   - Explain why `padding` is a variable instead of a one-off number.
+   - Explain what `(x, y)` means on the screen.
+   - Explain what parameters `Image.new(...)` expects and why.
+   - Explain why we use `w` and `h` instead of hard-coding numbers.
+   - Explain why a loop is used to draw multiple boxes.
 
-4) Explain one line that confused you, in your own words.
+4) Reflection: What would you refactor if you had 10 more minutes?

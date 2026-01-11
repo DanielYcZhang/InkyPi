@@ -2,8 +2,11 @@
 
 1) In one sentence, explain what this file does overall.
 
-2) Explain what a base class is and what the subclass adds.
+2) Pick one line from `c03_inheritance_practice.py` and explain it in your own words.
 
-3) Explain what `super()` does in this mission.
+3) Concept checkpoints:
+   - Explain why `PetCard` is a subclass of `BaseCard`.
+   - Explain what `super()` does in this mission.
+   - Explain what extra part the subclass adds.
 
-4) Explain what the badge box is and how its position is chosen.
+4) Reflection: When would inheritance be a bad idea?

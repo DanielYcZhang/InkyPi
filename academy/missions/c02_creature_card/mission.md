@@ -9,17 +9,27 @@ A creature card appears with a name, species, and level on the display.
 
 ---
 
-## Glossary (Mission Terms)
-- **Class**: A blueprint for making objects.
-- **Object**: A specific thing built from a class.
-- **Property**: A value stored on an object (like `self.name`).
-- **Method**: A function inside a class.
+## Concepts You Will Learn (List Only)
+- Class
+- Object
+- Property
+- Method
+
+---
+
+## Glossary (with Examples)
+- **Class**: A blueprint for making objects. Example: `class Creature` in `c02_creature_card.py`.
+- **Object**: A specific thing built from a class. Example: `creature = Creature(...)`.
+- **Property**: A value stored on an object. Example: `self.name`.
+- **Method**: A function inside a class. Example: `def draw(self, ...)`.
 
 ---
 
 ## Step 0: Read the Briefing
 Open and read:
 - `briefing.md`
+
+This is where the concept explanations and analogies live.
 
 ---
 
@@ -62,35 +72,7 @@ cp academy/missions/c02_creature_card/c02_creature_card.py src/plugins/c02_creat
 Then open it:
 Open `src/plugins/c02_creature_card/c02_creature_card.py` in VS Code.
 
-Follow the TODOs in the file.
-
----
-
-## Teach (Concepts)
-- **Class vs Object**: the blueprint vs the real thing.
-- **Properties**: store creature facts in `self`.
-- **Methods**: draw the card using the creature’s data.
-
----
-
-## Use vs Avoid
-- **Classes**: use when you need a reusable “thing.”
-- **Objects**: use to bundle related values together.
-- **Properties**: use `self.*` to store data on the object.
-
----
-
-## Concept Checkpoints
-- Explain the difference between a class and an object.
-- Explain why `self.name` is a property.
-- Explain why `draw` belongs inside the class.
-
----
-
-## Practice (Tiny Exercises)
-- Change the creature’s name and species.
-- Add a new property (like `favorite_food`) and draw it.
-- Change where the text appears by adjusting coordinates.
+Follow the TODOs in the file. All practice and surprise tasks live there.
 
 ---
 
@@ -132,19 +114,17 @@ python3 bad_code.py
 ---
 
 ## Surprise (The Wow Moment)
-Add a tiny badge next to the name: a small box with the creature’s level.
+Complete the **Surprise** TODO inside `c02_creature_card.py`.
 
 ---
 
 ## Stretch (Optional)
-- Add a second creature card below the first.
-- Add a border or divider line.
+Complete any **Stretch** TODOs inside `c02_creature_card.py`.
 
 ---
 
 ## Reflection
-- What makes a property different from a normal variable?
-- If you had 10 creatures, how would classes help?
+Answer the Reflection prompt inside `explain.md`.
 
 ---
 

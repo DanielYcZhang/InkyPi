@@ -37,10 +37,17 @@ class PetCard(BaseCard):
         # draw.text((x, y), text, ...) writes text at that position.
         draw.text((badge_x + 6, badge_y + 4), self.badge_text, fill=(0, 0, 0))
 
-        # TODO:
-        # - Move the badge to a new spot.
-        # - Change the badge text.
-        # - Add a second badge or icon.
+        # Practice TODOs:
+        # 1) Move the badge to a new spot.
+        # 2) Change the badge text.
+        # 3) Change the base card title to something fun.
+
+        # Surprise TODO:
+        # - Add a tiny icon next to the badge text (a small box or dot).
+
+        # Stretch TODO (optional):
+        # - Add a second subclass with a different badge style.
+        # - Add a footer bar shared by all cards.
 
 
 class InheritancePractice(BasePlugin):

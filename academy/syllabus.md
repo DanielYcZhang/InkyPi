@@ -18,8 +18,8 @@ We use **Minecraft/RPG analogies** to demystify "Boilerplate".
 - **`Inheritance`** = **DNA**. "A Zombie *is a* Mob, but it groans."
 - **`def` (Methods)** = **Abilities**. Special moves the entity can perform (e.g., `attack()`, `generate_image()`).
 - **`self`** = **Me**. The entity pointing to its own chest. (e.g., "My health", "My texture").
-- **Good vs Bad Examples:** Every key concept includes a tiny "do this / avoid this" example and why.
-- **Use vs Avoid:** Every concept comes with a quick "when to use this" and "when not to use this".
+- **Good vs Bad Examples:** Every key concept includes a tiny "bad vs good" exercise.
+- **Use vs Avoid:** Learned through the `bad_code.py` fix + explanation, not a lecture section.
 - **Surprise Factor:** Every mission ships one small, delightful surprise (font, visual effect, animation, or data reveal).
 
 ## 2.1 How We Teach Python (So It Sticks)
@@ -30,18 +30,19 @@ The goal is “useful outcome from day 1” without skipping fundamentals. The t
 ### Mission Format (so an AI agent can generate materials)
 Each Python mission should be written with these sections (in this order):
 1. **Outcome (Visible Result)**: what changes on the screen / in the web UI.
-2. **Glossary (Mission Terms)**: 5–10 terms with one-sentence definitions and the analogy.
-3. **Build (Steps)**: exact files to create/edit and the smallest slice that works.
-4. **Teach (Concepts)**: *micro-lessons* using **Syntax Cards** (see below).
-5. **Use vs Avoid**: a short "when to use / when not to use" for each new concept.
-6. **Concept Checkpoints**: 2–4 one-sentence "explain it back" prompts.
-7. **Practice (Tiny Exercises)**: 2–4 “change one thing and observe” tasks.
-8. **Check (Acceptance Criteria)**: what “done” means; ideally a checklist and a quick command.
-9. **Surprise (The Wow Moment)**: one small, intentional delight (font, effect, visual, or data).
+2. **Concepts You Will Learn (List Only)**: list concepts without explanations.
+3. **Glossary (with Examples)**: 5–10 terms with one-line definitions and a short example pointing to mission code.
+4. **Briefing (Concept Explanations)**: analogies + definitions + tiny snippets + where used.
+5. **Build (Steps)**: exact files to create/edit and the smallest slice that works.
+6. **Practice (Inside the .py Template)**: TODOs in the mission `.py` file.
+7. **Self-Learning Module**: `explain.md`, `predict.md`, `trace.md`, `bad_code.py`, `bad_code_explain.md`.
+   - Concept checkpoints belong in `explain.md`, not in `mission.md`.
+8. **Check (Acceptance Criteria)**: what “done” means; checklist + quick command.
+9. **Surprise (The Wow Moment)**: listed in mission.md but implemented as a TODO in the `.py` template.
 10. **Stretch (Optional)**: harder upgrades if motivation is high.
 11. **Reflection (1–3 Questions)**: “What did you learn? What was tricky? What would you change?”
 
-### Teach Section Rule: Use Syntax Cards
+### Briefing Rule: Use Syntax Cards
 Keep the RPG/Minecraft one-liner (memory hook), then immediately add a compact Syntax Card so the learner (and an AI agent) gets the missing “how does this syntax work?” details without turning the mission into a textbook.
 
 Each **Syntax Card** must include:
@@ -49,8 +50,9 @@ Each **Syntax Card** must include:
 2. **Definition** (1–2 sentences): what it really is in Python terms.
 3. **Syntax card** (1 small snippet): show the pattern and label the parts.
 4. **Common mistakes** (1–3 bullets): include what the error looks like.
-5. **When to use / when to avoid**: one-line guidance for both.
-6. **Where used in this mission**: point to the exact file/function.
+5. **Where used in this mission**: point to the exact file/function.
+
+**Use vs Avoid** should be taught via the `bad_code.py` exercise, not a standalone section.
 
 ### Core Syntax Cards Library (Project Standard)
 These should be taught across missions (not all at once). Reuse the same wording/snippets to build muscle memory.
