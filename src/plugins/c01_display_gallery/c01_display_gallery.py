@@ -16,11 +16,12 @@ class DisplayGallery(BasePlugin):
         draw = ImageDraw.Draw(img)
 
         # Layout variables (change these to see different results)
-        padding = 12
-        gap = 50
-        box_count = 3
+        padding = 24
+        gap = 24
+        box_count = 4
         box_height = int(h * 0.45)
         box_width = (w - padding * 2 - gap * (box_count - 1)) // box_count
+        #box_width = (w<width of canvas> - padding<around the edge of screen/canvas> * 2<left and rights sides of screen> - gap<gap between boxes> * (box_count -1)<box count -1 since 3 boxes = 2 gaps between>)
 
         # Box style
         outline_color = 0  # 0 = black for 1-bit mode
@@ -37,7 +38,7 @@ class DisplayGallery(BasePlugin):
             # draw.rectangle(box, ...) expects (x1, y1, x2, y2).
             draw.rectangle((x1, y1, x2, y2), outline=outline_color, width=2)
             # draw.text((x, y), text, ...) writes text at that position.
-            draw.text((x1 + 6, y2 + 6), f"Box {i + 1}", fill=label_color)
+            draw.text((x1 + 6, y2 + 6), f"Gallery Box {i + 1}", fill=label_color)
 
         # TODO:
         # - Change padding or gap and observe the layout shift.
