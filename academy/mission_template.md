@@ -60,6 +60,12 @@ Example concept list:
 - Keep them safe (no breaking the whole service).
 - Make results visible (layout, text, colors, data values).
 
+Add one **Bad vs Good** exercise:
+- Show a small “bad” snippet.
+- Ask the learner to fix it and explain why the fix is better.
+- Ask when the bad version might still be acceptable.
+- Prefer `bad_code.py` (runnable) plus `bad_code_explain.md`.
+
 ---
 
 ## 5) Check (Acceptance Criteria)
@@ -69,6 +75,16 @@ Write objective “done” checks:
 - The output matches expected behavior
 
 If you add a mission `check.py`, list exactly what it validates.
+
+---
+
+## 5.1) Self-Learning Module (Required)
+Include the self-learning module in each mission:
+- Add `explain.md`, `predict.md`, `trace.md`, `bad_code.py`, and `bad_code_explain.md`
+- Generate `copilot_input.txt` in `check.py` for AI grading
+- Extend `check.py` to validate that the files exist and are filled
+
+Template: `academy/self_learning_module.md`
 
 ---
 
@@ -86,4 +102,3 @@ Examples:
 - What part was confusing at first, and what made it click?
 - What does this function return, and why?
 - What would you refactor if you had 30 more minutes?
-

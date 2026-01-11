@@ -110,10 +110,40 @@ Hint ideas:
 
 ---
 
+## Self-Learning Module (Required)
+Fill these files in this mission folder:
+- `explain.md`
+- `predict.md`
+- `trace.md`
+- `bad_code.py`
+- `bad_code_explain.md`
+
+Then run:
+```bash
+python3 check.py
+```
+This generates `copilot_input.txt` for you.
+
+**Copilot workflow**
+1) Start a new Copilot Chat titled `M-08 Explain-Back`.
+2) Open `copilot_input.txt`, copy all, and paste into Copilot Chat.
+3) If Copilot says you missed something, keep chatting until you fix it.
+4) Update `explain.md` and re-run `python3 check.py`.
+
+**Bad code practice**
+- Open `bad_code.py`, fix it, then run:
+```bash
+python3 bad_code.py
+```
+- You should see text output that describes what would be drawn.
+
+---
+
 ## Check (Acceptance Criteria)
 - The plugin appears in the web UI.
 - The display shows your name and at least two shapes.
 - There is a repeated pattern drawn by a loop.
+- `bad_code.py` runs and prints drawing steps.
 
 ---
 

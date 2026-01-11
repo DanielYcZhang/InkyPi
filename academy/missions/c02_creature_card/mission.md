@@ -94,10 +94,40 @@ Follow the TODOs in the file.
 
 ---
 
+## Self-Learning Module (Required)
+Fill these files in this mission folder:
+- `explain.md`
+- `predict.md`
+- `trace.md`
+- `bad_code.py`
+- `bad_code_explain.md`
+
+Then run:
+```bash
+python3 check.py
+```
+This generates `copilot_input.txt` for you.
+
+**Copilot workflow**
+1) Start a new Copilot Chat titled `C-02 Explain-Back`.
+2) Open `copilot_input.txt`, copy all, and paste into Copilot Chat.
+3) If Copilot says you missed something, keep chatting until you fix it.
+4) Update `explain.md` and re-run `python3 check.py`.
+
+**Bad code practice**
+- Open `bad_code.py`, fix it, then run:
+```bash
+python3 bad_code.py
+```
+- You should see text output that describes what would be drawn.
+
+---
+
 ## Check (Acceptance Criteria)
 - A creature card displays at least three lines of text.
 - The class has properties stored in `self`.
 - The plugin uses the creature object to draw.
+- `bad_code.py` runs and prints drawing steps.
 
 ---
 
@@ -136,6 +166,19 @@ sudo systemctl restart inkypi.service
 ```
 
 Open the web UI, select your plugin, and generate the image.
+
+---
+
+## Step 6: Verification
+Go back to this mission folder:
+```bash
+cd ~/InkyPi/academy/missions/c02_creature_card
+```
+
+Run:
+```bash
+python3 check.py
+```
 
 ---
 
