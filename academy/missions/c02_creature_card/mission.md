@@ -9,17 +9,27 @@ A creature card appears with a name, species, and level on the display.
 
 ---
 
-## Glossary (Mission Terms)
-- **Class**: A blueprint for making objects.
-- **Object**: A specific thing built from a class.
-- **Property**: A value stored on an object (like `self.name`).
-- **Method**: A function inside a class.
+## Concepts You Will Learn (List Only)
+- Class
+- Object
+- Property
+- Method
+
+---
+
+## Glossary (with Examples)
+- **Class**: A blueprint for making objects. Example: `class Creature` in `c02_creature_card.py`.
+- **Object**: A specific thing built from a class. Example: `creature = Creature(...)`.
+- **Property**: A value stored on an object. Example: `self.name`.
+- **Method**: A function inside a class. Example: `def draw(self, ...)`.
 
 ---
 
 ## Step 0: Read the Briefing
 Open and read:
 - `briefing.md`
+
+This is where the concept explanations and analogies live.
 
 ---
 
@@ -62,35 +72,36 @@ cp academy/missions/c02_creature_card/c02_creature_card.py src/plugins/c02_creat
 Then open it:
 Open `src/plugins/c02_creature_card/c02_creature_card.py` in VS Code.
 
-Follow the TODOs in the file.
+Follow the TODOs in the file. All practice and surprise tasks live there.
 
 ---
 
-## Teach (Concepts)
-- **Class vs Object**: the blueprint vs the real thing.
-- **Properties**: store creature facts in `self`.
-- **Methods**: draw the card using the creature’s data.
+## Self-Learning Module (Required)
+Fill these files in this mission folder:
+- `explain.md`
+- `predict.md`
+- `trace.md`
+- `bad_code.py`
+- `bad_code_explain.md`
 
----
+Then run:
+```bash
+python3 check.py
+```
+This generates `copilot_input.txt` for you.
 
-## Use vs Avoid
-- **Classes**: use when you need a reusable “thing.”
-- **Objects**: use to bundle related values together.
-- **Properties**: use `self.*` to store data on the object.
+**Copilot workflow**
+1) Start a new Copilot Chat titled `C-02 Explain-Back`.
+2) Open `copilot_input.txt`, copy all, and paste into Copilot Chat.
+3) If Copilot says you missed something, keep chatting until you fix it.
+4) Update `explain.md` and re-run `python3 check.py`.
 
----
-
-## Concept Checkpoints
-- Explain the difference between a class and an object.
-- Explain why `self.name` is a property.
-- Explain why `draw` belongs inside the class.
-
----
-
-## Practice (Tiny Exercises)
-- Change the creature’s name and species.
-- Add a new property (like `favorite_food`) and draw it.
-- Change where the text appears by adjusting coordinates.
+**Bad code practice**
+- Open `bad_code.py`, fix it, then run:
+```bash
+python3 bad_code.py
+```
+- You should see text output that describes what would be drawn.
 
 ---
 
@@ -98,23 +109,22 @@ Follow the TODOs in the file.
 - A creature card displays at least three lines of text.
 - The class has properties stored in `self`.
 - The plugin uses the creature object to draw.
+- `bad_code.py` runs and prints drawing steps.
 
 ---
 
 ## Surprise (The Wow Moment)
-Add a tiny badge next to the name: a small box with the creature’s level.
+Complete the **Surprise** TODO inside `c02_creature_card.py`.
 
 ---
 
 ## Stretch (Optional)
-- Add a second creature card below the first.
-- Add a border or divider line.
+Complete any **Stretch** TODOs inside `c02_creature_card.py`.
 
 ---
 
 ## Reflection
-- What makes a property different from a normal variable?
-- If you had 10 creatures, how would classes help?
+Answer the Reflection prompt inside `explain.md`.
 
 ---
 
@@ -136,6 +146,19 @@ sudo systemctl restart inkypi.service
 ```
 
 Open the web UI, select your plugin, and generate the image.
+
+---
+
+## Step 6: Verification
+Go back to this mission folder:
+```bash
+cd ~/InkyPi/academy/missions/c02_creature_card
+```
+
+Run:
+```bash
+python3 check.py
+```
 
 ---
 

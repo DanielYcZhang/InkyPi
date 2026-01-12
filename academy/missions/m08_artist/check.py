@@ -218,6 +218,82 @@ def check_mission():
         print("  -> Hint: copy one: cp src/plugins/clock/icon.png src/plugins/m08_artist/icon.png")
         all_passed = False
 
+    mission_dir = Path(__file__).parent
+    explain_path = mission_dir / "explain.md"
+    predict_path = mission_dir / "predict.md"
+    trace_path = mission_dir / "trace.md"
+
+    def _check_text_file(path: Path, min_chars: int, keywords=None) -> bool:
+        if not path.is_file():
+            return False
+        text = path.read_text(encoding="utf-8")
+        if len(text.strip()) < min_chars:
+            return False
+        if keywords:
+            lowered = text.lower()
+            return all(k.lower() in lowered for k in keywords)
+        return True
+
+    if _check_text_file(explain_path, 200, keywords=["image.new", "loop", "draw"]):
+        print_result("explain.md completed", True)
+    else:
+        print_result("explain.md missing or incomplete", False)
+        all_passed = False
+
+    if _check_text_file(predict_path, 80):
+        print_result("predict.md completed", True)
+    else:
+        print_result("predict.md missing or incomplete", False)
+        all_passed = False
+
+    if _check_text_file(trace_path, 80):
+        print_result("trace.md completed", True)
+    else:
+        print_result("trace.md missing or incomplete", False)
+        all_passed = False
+
+    bad_code_py = mission_dir / "bad_code.py"
+    if _check_text_file(bad_code_py, 120, keywords=["def draw_dots"]):
+        print_result("bad_code.py present", True)
+    else:
+        print_result("bad_code.py missing or incomplete", False)
+        all_passed = False
+
+    bad_code_explain = mission_dir / "bad_code_explain.md"
+    if _check_text_file(bad_code_explain, 80, keywords=["why"]):
+        print_result("bad_code_explain.md completed", True)
+    else:
+        print_result("bad_code_explain.md missing or incomplete", False)
+        all_passed = False
+
+    def _write_copilot_input(path: Path, explain_text: str) -> None:
+        rubric = [
+            "- Mentions function name and purpose",
+            "- Mentions parameters and their meaning",
+            "- Describes what changes on the screen",
+            "- Uses plain language suitable for a 12-year-old",
+        ]
+        prompt = [
+            "You are a strict grader. Do not give the correct answer.",
+            "Evaluate my explanation using this rubric:",
+            *rubric,
+            "",
+            "Score each item 0-2 and explain what is missing.",
+            "",
+            "Here is my explanation:",
+            explain_text.strip(),
+            "",
+        ]
+        path.write_text("\n".join(prompt), encoding="utf-8")
+
+    copilot_path = mission_dir / "copilot_input.txt"
+    if explain_path.is_file():
+        _write_copilot_input(copilot_path, explain_path.read_text(encoding="utf-8"))
+        print_result("copilot_input.txt generated", True)
+    else:
+        print_result("copilot_input.txt not generated (missing explain.md)", False)
+        all_passed = False
+
     print("\n-----------------------------")
     if all_passed:
         print(f"{GREEN}MISSION COMPLETE. Your art is on the wall.{RESET}")
@@ -227,4 +303,3 @@ def check_mission():
 
 if __name__ == "__main__":
     check_mission()
-

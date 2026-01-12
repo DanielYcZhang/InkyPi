@@ -24,10 +24,17 @@ class Creature:
         draw.text((text_x, text_y + line_gap), f"Species: {self.species}", fill=(0, 0, 0))
         draw.text((text_x, text_y + line_gap * 2), f"Level: {self.level}", fill=(0, 0, 0))
 
-        # TODO:
-        # - Add a new property (favorite_food, power, or skill).
-        # - Draw that property on the card.
-        # - Add a small badge box near the name.
+        # Practice TODOs:
+        # 1) Add a new property (favorite_food, power, or skill).
+        # 2) Draw that property on the card.
+        # 3) Move the text block by changing text_x/text_y.
+
+        # Surprise TODO:
+        # - Add a small badge box near the name (a tiny rectangle + text).
+
+        # Stretch TODO (optional):
+        # - Add a second creature card below the first.
+        # - Add a divider line between cards.
 
 
 class CreatureCard(BasePlugin):

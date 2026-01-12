@@ -9,17 +9,27 @@ A card appears with a base layout plus a special badge added by the subclass.
 
 ---
 
-## Glossary (Mission Terms)
-- **Base class**: The shared foundation.
-- **Subclass**: A specialized version of the base class.
-- **Inheritance**: The “is-a” relationship.
-- **super()**: Call the parent’s method.
+## Concepts You Will Learn (List Only)
+- Base class
+- Subclass
+- Inheritance
+- super()
+
+---
+
+## Glossary (with Examples)
+- **Base class**: The shared foundation. Example: `class BaseCard`.
+- **Subclass**: A specialized version. Example: `class PetCard(BaseCard)`.
+- **Inheritance**: The “is-a” relationship. Example: `PetCard` is a `BaseCard`.
+- **super()**: Call the parent’s method. Example: `super().draw(...)`.
 
 ---
 
 ## Step 0: Read the Briefing
 Open and read:
 - `briefing.md`
+
+This is where the concept explanations and analogies live.
 
 ---
 
@@ -62,34 +72,36 @@ cp academy/missions/c03_inheritance_practice/c03_inheritance_practice.py src/plu
 Then open it:
 Open `src/plugins/c03_inheritance_practice/c03_inheritance_practice.py` in VS Code.
 
-Follow the TODOs in the file.
+Follow the TODOs in the file. All practice and surprise tasks live there.
 
 ---
 
-## Teach (Concepts)
-- **Base class**: shared drawing and layout.
-- **Inheritance**: a specialized card that reuses the base.
-- **super()**: call the parent’s setup or drawing.
+## Self-Learning Module (Required)
+Fill these files in this mission folder:
+- `explain.md`
+- `predict.md`
+- `trace.md`
+- `bad_code.py`
+- `bad_code_explain.md`
 
----
+Then run:
+```bash
+python3 check.py
+```
+This generates `copilot_input.txt` for you.
 
-## Use vs Avoid
-- **Inheritance**: use when the subclass is a true “is-a.”
-- **super()**: use to reuse parent logic instead of copying it.
+**Copilot workflow**
+1) Start a new Copilot Chat titled `C-03 Explain-Back`.
+2) Open `copilot_input.txt`, copy all, and paste into Copilot Chat.
+3) If Copilot says you missed something, keep chatting until you fix it.
+4) Update `explain.md` and re-run `python3 check.py`.
 
----
-
-## Concept Checkpoints
-- Explain why `PetCard` is a subclass of `BaseCard`.
-- Explain what `super()` does in the constructor.
-- Explain what extra part the subclass adds.
-
----
-
-## Practice (Tiny Exercises)
-- Change the badge text and location.
-- Add a second badge or icon.
-- Change the base card title.
+**Bad code practice**
+- Open `bad_code.py`, fix it, then run:
+```bash
+python3 bad_code.py
+```
+- You should see text output that describes what would be drawn.
 
 ---
 
@@ -97,23 +109,22 @@ Follow the TODOs in the file.
 - The base card appears.
 - The subclass adds something extra.
 - `super()` is called at least once.
+- `bad_code.py` runs and prints drawing steps.
 
 ---
 
 ## Surprise (The Wow Moment)
-Add a “rank badge” in the corner with a tiny icon or symbol.
+Complete the **Surprise** TODO inside `c03_inheritance_practice.py`.
 
 ---
 
 ## Stretch (Optional)
-- Add a second subclass with a different badge style.
-- Add a footer bar shared by all cards.
+Complete any **Stretch** TODOs inside `c03_inheritance_practice.py`.
 
 ---
 
 ## Reflection
-- What did `super()` save you from repeating?
-- When would inheritance be a bad idea?
+Answer the Reflection prompt inside `explain.md`.
 
 ---
 
@@ -135,6 +146,19 @@ sudo systemctl restart inkypi.service
 ```
 
 Open the web UI, select your plugin, and generate the image.
+
+---
+
+## Step 6: Verification
+Go back to this mission folder:
+```bash
+cd ~/InkyPi/academy/missions/c03_inheritance_practice
+```
+
+Run:
+```bash
+python3 check.py
+```
 
 ---
 
