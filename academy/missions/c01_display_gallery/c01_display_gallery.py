@@ -18,7 +18,7 @@ class DisplayGallery(BasePlugin):
         # Layout variables (change these to see different results)
         padding = 12
         gap = 10
-        box_count = 2
+        box_count = 3
         box_height = int(h * 0.45)
         box_width = (w - padding * 2 - gap * (box_count - 1)) // box_count
 
@@ -43,19 +43,5 @@ class DisplayGallery(BasePlugin):
         # - Change padding or gap and observe the layout shift.
         # - Make one box taller or wider.
         # - Add a small "stamp" box in the bottom-right corner.
-
-        #add stamp in corner
-        stamp_x = w - 30 #goes left by 30 pixels from right edge
-        stamp_y = h - 20 #goes up by 20 pixels from bottom edge
-        draw.text((stamp_x, stamp_y), "DZ", fill=label_color) #stamp_x and stamp_y are coords, dz is initials/text, colour is black
-
-        #center the boxes on screen
-        center_offset = (w - (box_count * box_width + (box_count - 1) * gap)) // 2 #find empty space, box_count*box_width = width of the boxes + gap space. //2 half empty space on each side
-        x1 = center_offset + i * (box_width + gap) #redraw x1 with the center offset 
-        
-        #divider between lines
-        if i < box_count - 1:
-            divider_x = x2 + gap // 2 #finds the middle of the gap
-            draw.line((divider_x, y1, divider_x, y2), fill=outline_color, width=1)
 
         return img
