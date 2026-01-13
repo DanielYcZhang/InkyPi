@@ -40,9 +40,19 @@ class DisplayGallery(BasePlugin):
             # draw.text((x, y), text, ...) writes text at that position.
             draw.text((x1 + 6, y2 + 6), f"Gallery Box {i + 1}", fill=label_color)
 
-        # TODO:
-        # - Change padding or gap and observe the layout shift.
-        # - Make one box taller or wider.
-        # - Add a small "stamp" box in the bottom-right corner.
+        # Surprise: Add initials stamp in the corner
+        stamp_x = w - 30
+        stamp_y = h - 20
+        draw.text((stamp_x, stamp_y), "DZ", fill=label_color)  # DZ = Daniel Zhang initials
+
+        # TODO for Stretch:
+        # - Uncomment below to center the boxes on screen (divide by 2)
+        # center_offset = (w - (box_count * box_width + (box_count - 1) * gap)) // 2
+        # x1 = center_offset + i * (box_width + gap)
+        #
+        # - Uncomment to add divider lines between boxes
+        # if i < box_count - 1:
+        #     divider_x = x2 + gap // 2
+        #     draw.line((divider_x, y1, divider_x, y2), fill=outline_color, width=1)
 
         return img

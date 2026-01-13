@@ -44,4 +44,8 @@ class DisplayGallery(BasePlugin):
         # - Make one box taller or wider.
         # - Add a small "stamp" box in the bottom-right corner.
 
+        stamp_x = w - 30
+        stamp_y = h - 20
+        draw.text((stamp_x, stamp_y), "DZ", fill=label_color)
+
         return img
