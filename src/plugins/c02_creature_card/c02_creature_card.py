@@ -1,28 +1,31 @@
 from plugins.base_plugin.base_plugin import BasePlugin
 from PIL import Image, ImageDraw
+from pathlib import Path
 
 
 class Creature:
-    def __init__(self, name, species, level):
+    def __init__(self, name, species, age, weight):
         # Properties (facts about the creature)
         self.name = name
         self.species = species
-        self.level = level
+        self.age = age
+        self.weight = weight
 
-    def draw(self, draw, w, h):
+    def draw(self, img, draw, w, h, icon=None):
         # Draw the creature card using its properties
         padding = 12
         # draw.rectangle(box, ...) expects (x1, y1, x2, y2).
         draw.rectangle((padding, padding, w - padding, h - padding), outline=0, width=2)
 
-        text_x = padding + 8
-        text_y = padding + 8
+        text_x = padding + 20  # Moved text block right
+        text_y = padding + 20  # Moved text block down
         line_gap = 18
 
         # draw.text((x, y), text, ...) writes text at that position.
         draw.text((text_x, text_y), f"Name: {self.name}", fill=0)
         draw.text((text_x, text_y + line_gap), f"Species: {self.species}", fill=0)
-        draw.text((text_x, text_y + line_gap * 2), f"Level: {self.level}", fill=0)
+        draw.text((text_x, text_y + line_gap * 2), f"Age: {self.age}", fill=0)
+        draw.text((text_x, text_y + line_gap * 3), f"Weight: {self.weight}", fill=0)
 
         # Practice TODOs:
         # 1) Add a new property (favorite_food, power, or skill).
@@ -31,6 +34,17 @@ class Creature:
 
         # Surprise TODO:
         # - Add a small badge box near the name (a tiny rectangle + text).
+        
+        # Surprise: Add a small badge box near the name
+        # Calculate the width of the name text to position the badge dynamically
+        name_text = f"Name: {self.name}"
+        bbox = draw.textbbox((0, 0), name_text)  # Get bounding box of the text, 0,0 is just a reference point
+        text_width = bbox[2] - bbox[0]  # Width of the name text
+        badge_x = text_x + text_width + 10  # Position badge 10 pixels after the name text
+        badge_y = text_y - 5  # 5 pixels above the name line
+        # Instead of text, paste a small resized version of icon.png as the badge
+        if icon:
+            img.paste(icon, (badge_x, badge_y))  # Paste the icon at the badge position
 
         # Stretch TODO (optional):
         # - Add a second creature card below the first.
@@ -48,10 +62,14 @@ class CreatureCard(BasePlugin):
         # ImageDraw.Draw(img) returns a drawing tool for this image.
         draw = ImageDraw.Draw(img)
 
-        # Create an object from the class
-        creature = Creature("Pip", "Cat", 5)
+        # Load and resize the icon for the badge
+        icon_path = Path(__file__).parent / "icon.png"
+        icon = Image.open(icon_path).convert('1').resize((15, 15))  # Resize to 15x15 for small badge
 
-        # Ask the object to draw itself
-        creature.draw(draw, w, h)
+        # Create an object from the class
+        creature = Creature("Pip", "Cat", 5, 10)
+
+        # Ask the object to draw itself, passing the icon for the badge
+        creature.draw(img, draw, w, h, icon)
 
         return img
