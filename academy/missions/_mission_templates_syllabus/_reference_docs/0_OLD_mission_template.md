@@ -41,11 +41,34 @@ Each term should point to a real line in the mission code.
 
 ## 4) Briefing (Concept Explanations)
 The detailed teaching happens in `briefing.md`, not in `mission.md`.
-For each concept in the list:
-1) Analogy
-2) Definition
-3) Tiny code snippet
-4) Where it appears in this mission
+
+**New Structure (Problem → Solution → Deep Dive):**
+
+### Part 1: The Problem Story
+Paint a picture of messy code WITHOUT the concept:
+- Show actual bad code example
+- Point out the pain: "What if you need 10 creatures? 50? Copy-paste 50 times?"
+- Highlight maintenance nightmare: "If you change one creature property, you need to update 50 places"
+
+### Part 2: The Solution (Big Idea)
+Introduce the concept as the hero that solves this mess:
+- Use powerful analogies (Car/Toyota for classes, Factory for constructors)
+- Show the same task WITH the concept
+- Highlight the dramatic improvement
+
+### Part 3: Breaking It Down (Detailed Concepts)
+For each concept:
+1) **Analogy**: Concrete, relatable metaphor
+2) **Definition**: Technical but clear explanation
+3) **Before/After Code Example** ← CRITICAL
+   - Left: The painful way without it
+   - Right: The elegant way with it
+   - Caption: Why the right is better
+4) **Common Mistakes**: Real errors learners make
+5) **Where Used**: Point to exact lines in this mission
+6) **Scalability Context**: "When multiple people work on this...", "When you have 100 items..."
+
+**Key Principle**: Every concept needs a side-by-side comparison showing the pain of NOT using it.
 
 ---
 
@@ -85,10 +108,16 @@ If you add a mission `check.py`, list exactly what it validates.
 
 ## 7.1) Self-Learning Module (Required)
 Include the self-learning module in each mission:
-- Add `explain.md`, `predict.md`, `trace.md`, `bad_code.py`, and `bad_code_explain.md`
+- Add `explain.md` with NEW example code and line-specific questions
+- Add `debug_detective.md` with broken code to fix (replaces `predict.md` and `trace.md`)
+- Add `bad_code.py` and `bad_code_explain.md` for refactoring practice
 - Generate `copilot_input.txt` in `check.py` for AI grading
 - Extend `check.py` to validate that the files exist and are filled
- - Put concept checkpoints in `explain.md`
+
+**Key Changes:**
+- `explain.md`: Uses a DIFFERENT example with same patterns, tests pattern recognition
+- `debug_detective.md`: Debugging challenge that teaches error-reading skills
+- Removed `trace.md`: Disconnected from core concepts, replaced by debugging
 
 Template: `academy/self_learning_module.md`
 

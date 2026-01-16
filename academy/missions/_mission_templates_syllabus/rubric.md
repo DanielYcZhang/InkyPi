@@ -13,9 +13,9 @@ This is a lightweight rubric for a parent/coach (or AI agent) to evaluate “don
 - **2**: Can explain what happens + why, and what would break it.
 
 ## C) Explain-Back Artifacts (0–2)
-- **0**: `explain.md`/`predict.md`/`trace.md` missing or empty.
+- **0**: `explain.md`/`debug_detective.md` missing or empty.
 - **1**: Files filled, but shallow or vague.
-- **2**: Clear, specific explanations and predictions tied to the code.
+- **2**: Clear, specific explanations with line-specific reasoning; debugging shows error analysis.
 
 ## D) Code Quality (0–2)
 - **0**: Random copy/paste; hard to modify.

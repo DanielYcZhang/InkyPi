@@ -32,11 +32,12 @@ Each Python mission should be written with these sections (in this order):
 1. **Outcome (Visible Result)**: what changes on the screen / in the web UI.
 2. **Concepts You Will Learn (List Only)**: list concepts without explanations.
 3. **Glossary (with Examples)**: 5–10 terms with one-line definitions and a short example pointing to mission code.
-4. **Briefing (Concept Explanations)**: analogies + definitions + tiny snippets + where used.
+4. **Briefing (Concept Explanations)**: Problem story → Solution → Before/after examples → Scalability context.
 5. **Build (Steps)**: exact files to create/edit and the smallest slice that works.
 6. **Practice (Inside the .py Template)**: TODOs in the mission `.py` file.
-7. **Self-Learning Module**: `explain.md`, `predict.md`, `trace.md`, `bad_code.py`, `bad_code_explain.md`.
-   - Concept checkpoints belong in `explain.md`, not in `mission.md`.
+7. **Self-Learning Module**: `explain.md` (new example + line-specific questions), `debug_detective.md` (debugging challenge), `bad_code.py`, `bad_code_explain.md`.
+   - Line-specific questions test pattern recognition, not memorization.
+   - Removed `trace.md` (replaced by debugging challenges).
 8. **Check (Acceptance Criteria)**: what “done” means; checklist + quick command.
 9. **Surprise (The Wow Moment)**: listed in mission.md but implemented as a TODO in the `.py` template.
 10. **Stretch (Optional)**: harder upgrades if motivation is high.
@@ -349,3 +350,9 @@ This is not a replacement for that course; it’s a coverage map so we don’t m
 - Timebox “stuck time”: if blocked for 5–10 minutes, switch to a hint.
 - Always end with a **visible win** (even a small one): a new icon, a new panel, a new setting.
 - Keep a “victory log”: screenshot the display after each mission.
+
+
+#Geneate mission using AI, Prompt:
+I want to create mission C-04 (List Practice).
+Follow the QUICK_START.md guide in _mission_templates_syllabus.
+Use templates 1-4 in order to generate all mission files.
