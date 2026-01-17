@@ -64,7 +64,25 @@ class CreatureCard(BasePlugin):
 
         # Load and resize the icon for the badge
         icon_path = Path(__file__).parent / "icon.png"
-        icon = Image.open(icon_path).convert('1').resize((15, 15))  # Resize to 15x15 for small badge
+        # Load the icon
+        icon_path = Path(__file__).parent / "icon.png"
+        raw_icon = Image.open(icon_path)
+        
+        # 1. Resize while still in color (better quality)
+        raw_icon = raw_icon.resize((15, 15))
+        
+        # 2. Create a white background
+        icon = Image.new("RGBA", raw_icon.size, "white") #RGBA = red green blue alpha(transparency), without it it would be making transparent black
+        
+        # 3. Paste the icon onto the white background using its own alpha as a mask
+        # (This turns the transparent parts white instead of black)
+        if raw_icon.mode == 'RGBA':
+            icon.paste(raw_icon, (0, 0), raw_icon)
+        else:
+            icon.paste(raw_icon, (0, 0))
+            
+        # 4. Finally, convert to 1-bit
+        icon = icon.convert('1')
 
         # Create an object from the class
         creature = Creature("Pip", "Cat", 5, 10)
