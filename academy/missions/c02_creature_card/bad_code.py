@@ -20,8 +20,18 @@ You can run this file to see a text-only preview:
 
 # Your fix (write below)
 class Creature:
-    # TODO: add __init__ and draw()
-    pass
+    def __init__(self, name, species, level):
+        # putting self makes it remember it forever
+        # def starts a new command
+        # __init__ tells the code to run the stuff automatically
+        self.name = name
+        self.species = species
+        self.level = level
+
+    def draw(self, draw_tool, x, y):
+        draw_tool.text((x, y), f"Name: {self.name}", fill=(0))
+        draw_tool.text((x, y + 20), f"Species: {self.species}", fill=(0))
+        draw_tool.text((x, y + 40), f"Level: {self.level}", fill=(0))
 
 
 class FakeDraw:

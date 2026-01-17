@@ -1,3 +1,13 @@
+You are a strict grader. Do not give the correct answer.
+Evaluate my explanation using this rubric:
+- Mentions class vs object correctly
+- Mentions properties stored with self
+- Describes what changes on the screen
+- Uses plain language suitable for a 12-year-old
+
+Score each item 0-2 and explain what is missing.
+
+Here is my explanation:
 # Explain-Back (C-02)
 
 1. In one sentence, explain what this file does overall.
