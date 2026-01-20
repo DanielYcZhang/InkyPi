@@ -69,6 +69,8 @@ class BaseCard:
 class PetCard(BaseCard):
     """Pet card with a level badge - inherits border/title from BaseCard"""
     
+
+
     def __init__(self, title, badge_text):
         """
         Constructor for pet card.
@@ -101,7 +103,7 @@ class PetCard(BaseCard):
         # Uncomment it and generate again. What comes back?
         # This proves super() calls the parent's method to reuse its code!
         
-        # super().draw(draw, w, h)  # Reuse base card drawing
+        super().draw(draw, w, h)  # Reuse base card drawing
         #super(), get parent class method
         #.draw, find the function name draw and call it
         #(draw, w, h), pass in the parameters draw is pen, w is width, h is height
@@ -156,23 +158,24 @@ class PetCard(BaseCard):
 # 4. Add ONLY item-specific rarity stars
 
 # Uncomment and complete this:
-# class ItemCard(BaseCard):
-#     """Item card with rarity stars - inherits border/title from BaseCard"""
-#     
-#     def __init__(self, title, rarity):
-#         # TODO: Call super().__init__(title) to let BaseCard handle title
-#         
-#         # TODO: Store rarity in self.rarity
-#         pass
-#     
-#     def draw(self, draw, w, h):
-#         # TODO: Call super().draw(draw, w, h) to get border/title
-#         
-#         # TODO: Add rarity stars in top-right
-#         # star_x = w - 70
-#         # star_y = 20
-#         # draw.text((star_x, star_y), f"★ {self.rarity}", fill=(255, 165, 0))
-#         pass
+class ItemCard(BaseCard):
+    """Item card with rarity stars - inherits border/title from BaseCard"""
+    
+    def __init__(self, title, rarity):
+        # Call super().__init__(title) to let BaseCard handle title
+        super().__init__(title)
+        
+        # Store rarity in self.rarity
+        self.rarity = rarity
+    
+    def draw(self, draw, w, h):
+        # Call super().draw(draw, w, h) to get border/title
+        super().draw(draw, w, h)
+        
+        # Add rarity stars in top-right
+        star_x = w - 70
+        star_y = 20
+        draw.text((star_x, star_y), f"★ {self.rarity}", fill=(255, 165, 0))
 
 
 # ============================================================
@@ -211,8 +214,11 @@ class InheritancePractice(BasePlugin):
         # ============================================================
         # CHECKPOINT 2-3: Single PetCard
         # ============================================================
-        card = PetCard("Pet Profile", "LV 5")
-        card.draw(draw, w, h)
+        pet_card = PetCard("Fluffy", "LV 5")
+        pet_card.draw(draw, 10, 10)
+
+        item_card = ItemCard("Magic Sword", "Rare")
+        item_card.draw(draw, 10, h // 2)
         
         # ============================================================
         # CHECKPOINT 4: Multiple Cards (Uncomment after creating ItemCard)
