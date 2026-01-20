@@ -135,7 +135,7 @@ super().draw(draw, w, h)
 *What does this line do? Why don't we re-write the border/title code in PetCard?*
 
 **Answer space**:
-
+super().draw() calls the parents code to draw the shared stuff, (border and title). We do this because it makes our code look more clean because we don't need to copy and paste it.
 
 ---
 
@@ -155,7 +155,7 @@ super().draw(draw, w, h)
 
 3. **Observe**: What's missing?
 
-4. Uncomment line 24, generate again
+4. Uncomment line 24, generate again (it was on line 104 btw lmao)
 
 5. **Compare**: What came back?
 
