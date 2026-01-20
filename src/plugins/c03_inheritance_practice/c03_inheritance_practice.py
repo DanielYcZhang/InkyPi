@@ -102,6 +102,9 @@ class PetCard(BaseCard):
         # This proves super() calls the parent's method to reuse its code!
         
         super().draw(draw, w, h)  # Reuse base card drawing
+        #super(), get parent class method
+        #.draw, find the function name draw and call it
+        #(draw, w, h), pass in the parameters draw is pen, w is width, h is height
         
         # Now add ONLY pet-specific badge
         badge_w = 60
