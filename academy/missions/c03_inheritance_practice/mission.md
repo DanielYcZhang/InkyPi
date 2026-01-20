@@ -42,17 +42,19 @@ From the briefing, you saw that without inheritance, 3 card types means:
 2. **Mental Model Check** - After reading the briefing, write your answers:
    
    **Q: In one sentence, what problem does inheritance solve?**
-   
-   
+   Inheritence solves the problem of code duplication and copy and pasting everything. It lets you write shared code once in a base class instead of duplicating it across multiple classes. 
    
    **Q: Without inheritance, if you have 5 card types and need to change the border thickness, how many places do you update?**
-   
-   
+   Without inheritance, you would need to update your code in 5 different places
+
 
 3. **Key Analogy Check**: Can you explain the Toyota/Camry/RAV4 analogy?
    - Toyota platform (base class) = shared features
+   this represents the shared base that all cars share, in code this is `BaseCard` with the border and title.
    - Camry/RAV4 (subclasses) = inherit platform + add unique body
+   this represents the unique features that each car has, in code this is `PetCard` with the pet badge.
    - If Toyota improves safety, all models get it automatically
+   this represents the shared features that all cars share, in code this is `BaseCard` with the border and title.
 
 If you can explain this, you're ready!
 
