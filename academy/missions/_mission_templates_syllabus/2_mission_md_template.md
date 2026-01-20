@@ -8,6 +8,46 @@ Use this template to create mission.md files that align with our problem-driven 
 
 **Objective**: [One sentence describing WHAT you'll build]
 
+**Estimated Time**: [X hours]
+
+---
+
+## Before You Start
+
+> **Knowledge Check**: Make sure you're ready for this mission!
+
+### You Should Already Know (from previous missions):
+
+- ✅ [Prerequisite concept 1] (learned in [Mission ID])
+  - Example: "What a class is (C-02)"
+- ✅ [Prerequisite concept 2] (learned in [Mission ID])
+  - Example: "What inheritance means (C-03)"
+- ✅ [Prerequisite concept 3]
+  - Example: "How to create a BasePlugin subclass (C-02, C-03)"
+
+**Quick self-check**: Can you explain [key prerequisite] in one sentence? If yes, you're ready! If no, review [specific mission].
+
+### New Concepts This Mission:
+
+- 🆕 [New concept 1] - [One-sentence description]
+  - Example: "HTTP requests - How browsers talk to servers"
+- 🆕 [New concept 2] - [One-sentence description]
+  - Example: "Code reading - Tracing execution flow through files"
+- 🆕 [New concept 3] - [One-sentence description]
+
+**Where to learn**: All new concepts are explained in `briefing.md`. For quick definitions, see [GLOSSARY.md](../../../_mission_templates_syllabus/GLOSSARY.md).
+
+### Don't Worry If You Don't Know:
+
+- ❌ [Advanced topic not required]
+  - Example: "Flask/FastAPI frameworks (we'll explain what you need)"
+- ❌ [Related but out-of-scope concept]
+  - Example: "Networking details (not needed for this mission)"
+- ❌ [Future topic]
+  - Example: "Advanced web development (we only cover basics)"
+
+**The rule**: If it's not in "You Should Already Know" or "New Concepts", you don't need it for this mission!
+
 ---
 
 ## Why This Mission Matters

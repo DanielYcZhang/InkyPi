@@ -108,15 +108,329 @@ These are the “must learn” topics we’ll cover, but always through missions
 ### Phase 2: The Operator (Basics & Output)
 *Focus: Understanding the environment, Objects, and the "Canvas".*
 
-| ID | Title & Hook | The "Why" (Motivation) | Key Concepts Deconstructed |
-| :--- | :--- | :--- | :--- |
-| **M-06** | **The Awakening**<br>*"Wake up the machine."* | To make the hardware speak, we need to create a driver (Plugin) that controls the pixels. | **The Shell**: `mkdir`, code structure.<br>**The Blueprint**: `class` (Defining a new Entity).<br>**The DNA**: `inheritance` (Using templates).<br>**The Ability**: `def` (The specific task). |
-| **M-07** | **The Timekeeper**<br>*"Fix the broken clock."* | The screen is static. We need variables that change value over time to show the present moment. | **Imports**: `datetime` module.<br>**Variables**: Capturing state.<br>**f-strings**: Injecting variables into text.<br>**Types**: `str` vs `int`. |
-| **C-01** | **The Display Gallery**<br>*"Mini art wall."* | Build confidence by arranging simple shapes and labels on the screen. | **Variables**: Naming values.<br>**Coordinates**: Consistent layout.<br>**Types**: `int` vs `str` usage. |
-| **C-02** | **The Creature Card**<br>*"Your pet on a card."* | Introduce class, object, and properties with a friendly, visible output. | **Class/Object**: Blueprint vs instance.<br>**Properties**: Stored facts.<br>**Methods**: Actions that draw. |
-| **C-03** | **The Inheritance Practice**<br>*"Specialize a base card."* | Practice `super()` and extending a base class without touching framework internals. | **Base class**: Common behavior.<br>**Constructor**: Setup time.<br>**super()**: Ask the parent for help. |
-| **M-08** | **The Artist**<br>*"Draw your gamer tag."* | Text is boring. We want graphics. We need to understand the X,Y grid to place pixels. | **Objects**: Creating a `Draw` object.<br>**Methods with Args**: Passing parameters.<br>**Tuples**: Grouping data like Colors (R,G,B).<br>**Coordinates**: Top-Left (0,0). |
-| **B-02** | **BOSS BATTLE: The ID Card**<br>*"Digital Badge"* | **Challenge**: distinct layers (Photo, Name, Rank) combined into one image.<br>*No Guide. Pure creation.* | *Consolidating Class structure, Imports, Variables, and Drawing methods.* |
+| ID | Title & Hook | Est. Time | The "Why" (Motivation) | Key Concepts Deconstructed |
+| :--- | :--- | :---: | :--- | :--- |
+| **M-06** | **The Awakening**<br>*"Wake up the machine."* | 1.5h | To make the hardware speak, we need to create a driver (Plugin) that controls the pixels. | **The Shell**: `mkdir`, code structure.<br>**The Blueprint**: `class` (Defining a new Entity).<br>**The DNA**: `inheritance` (Using templates).<br>**The Ability**: `def` (The specific task). |
+| **M-07** | **The Timekeeper**<br>*"Fix the broken clock."* | 1.5h | The screen is static. We need variables that change value over time to show the present moment. | **Imports**: `datetime` module.<br>**Variables**: Capturing state.<br>**f-strings**: Injecting variables into text.<br>**Types**: `str` vs `int`. |
+| **C-01** | **The Display Gallery**<br>*"Mini art wall."* | 2h | Build confidence by arranging simple shapes and labels on the screen. Master layout fundamentals. | **Variables**: Naming values for reuse.<br>**Coordinates**: X,Y positioning.<br>**Loops**: Repeat without copy-paste.<br>**DRY Principle**: One change updates all. |
+| **C-02** | **The Creature Card**<br>*"Your pet on a card."* | 2h | Introduce class, object, and properties with a friendly, visible output. | **Class/Object**: Blueprint vs instance.<br>**Properties**: Stored facts (`self.name`).<br>**Methods**: Actions that draw.<br>**Encapsulation**: Data + behavior together. |
+| **C-03** | **The Inheritance Practice**<br>*"Specialize a base card."* | 2h | Practice `super()` and extending a base class. Master code reuse through inheritance. | **Base class**: Common behavior.<br>**Inheritance**: IS-A relationship.<br>**super()**: Reusing parent's code.<br>**Polymorphism**: Different types, same interface. |
+| **C-04** | **The Code Detective**<br>*"How does InkyPi work?"* | 2h | You've built 5 plugins. But how does the system actually CALL your code? Time to read production code. | **Code Reading**: Tracing imports & calls.<br>**Architecture**: Request → Plugin → Display flow.<br>**Contracts**: Why BasePlugin is an interface.<br>**System Thinking**: Understanding the bigger picture. |
+| **M-08** | **The Anime Gallery**<br>*"Display your favorite character."* | 2h | Text is cool, but images are better! Load and display anime character art on your wall. | **File I/O**: Reading image files.<br>**PIL Image Loading**: `Image.open()`.<br>**Image Operations**: Resize, paste, composite.<br>**File Paths**: Relative vs absolute paths. |
+| **B-02** | **BOSS BATTLE: The Character Showcase**<br>*"Rotating anime art display"* | 3h | **Challenge**: Build a plugin that cycles through multiple character images with names and info cards.<br>*Managing collections, file organization, and layout.* | *Consolidating File I/O, Lists, Layout, and Image Composition.* |
+
+---
+
+### Phase 2.5: Building Real Features (Student-Driven Projects)
+*Focus: Integrating with real services, solving personal problems, product thinking.*
+
+| ID | Title & Hook | Est. Time | The "Why" (Motivation) | Key Concepts Deconstructed |
+| :--- | :--- | :---: | :--- | :--- |
+| **M-09** | **The Spotify Connector**<br>*"What's playing right now?"* | 2h | You listen to music on your Mac. Let's show the current track and album cover on your wall! | **APIs**: HTTP requests to external services.<br>**OAuth**: Authentication tokens (simplified).<br>**JSON**: Parsing API responses.<br>**Error Handling**: What if Spotify is offline? |
+| **M-10** | **The Album Artist**<br>*"Beautiful cover art."* | 2h | Make your Spotify display look AMAZING. Download album covers, cache them, handle missing artwork gracefully. | **Image Download**: Fetching from URLs.<br>**Caching**: Save images locally to avoid re-downloading.<br>**Fallbacks**: Default image when album art missing.<br>**Product Thinking**: User experience matters. |
+| **M-11** | **The Anime Quote**<br>*"Daily wisdom from Demon Slayer."* | 1.5h | Display rotating quotes from your favorite anime characters. Learn list operations and text wrapping. | **Lists**: Collections of quotes.<br>**Random Selection**: `random.choice()`.<br>**Text Wrapping**: Multi-line formatting.<br>**Data Organization**: Quote + character + source. |
+| **C-05** | **Lists & Loops Practice**<br>*"Master the collection."* | 2h | Practice lists, loops, and iteration through focused exercises. Build a todo list display. | **List Operations**: append, remove, index.<br>**For Loops**: Iterating collections.<br>**Enumerate**: Getting index + item.<br>**List Comprehensions**: Filtering & transforming. |
+| **M-12** | **The Stats Dashboard**<br>*"System health at a glance."* | 2h | Display CPU, RAM, disk usage with visual bars. Learn dictionaries and data visualization. | **Dictionaries**: Key-value pairs.<br>**External Libraries**: `psutil` for system stats.<br>**Data Formatting**: Bytes to GB, percentages.<br>**Visual Encoding**: Numbers to bar lengths. |
+| **B-03** | **BOSS BATTLE: The Personal Dashboard**<br>*"Everything in one view"* | 3h | **Challenge**: Combine Spotify + System Stats + Anime Quote in one smart display.<br>*Layout planning, data integration, error resilience.* | *Consolidating APIs, Layouts, Error Handling, Product Design.* |
+
+---
+
+### Phase 3: The Engineer (Logic, Control & Debugging)
+*Focus: Making systems intelligent, resilient, and maintainable.*
+
+| ID | Title & Hook | Est. Time | The "Why" (Motivation) | Key Concepts Deconstructed |
+| :--- | :--- | :---: | :--- | :--- |
+| **M-13** | **The Smart Switcher**<br>*"Auto-change based on time."* | 2h | At night, show anime scenes. In the morning, show your schedule. Teach the display to DECIDE. | **Conditionals**: `if/elif/else` decision trees.<br>**Time Logic**: Hour-based decisions.<br>**Booleans**: True/False logic.<br>**State Machines**: Different modes. |
+| **M-14** | **The Music Historian**<br>*"Track your listening stats."* | 2h | Keep a history of what you played on Spotify. Display your top artists/songs this week. | **Data Persistence**: Writing to JSON files.<br>**File Append**: Adding to history.<br>**Aggregation**: Counting occurrences.<br>**Sorting**: Top 5 most played. |
+| **M-15** | **The Guardian**<br>*"Never crash again."* | 2h | APIs fail. Images disappear. The internet drops. Make your plugins BULLETPROOF. | **Exception Handling**: `try/except` blocks.<br>**Logging**: Recording what happened.<br>**Graceful Degradation**: Show something even when things fail.<br>**Debugging**: Reading stack traces. |
+| **C-06** | **Functions & Modularity Practice**<br>*"Clean code structure."* | 2h | Your code is getting messy. Learn to organize with functions and modules. | **Functions**: Reusable code blocks.<br>**Parameters & Returns**: Input/output contracts.<br>**Module Organization**: Splitting code into files.<br>**DRY at Scale**: Eliminating all duplication. |
+| **M-16** | **The Scene Selector**<br>*"Anime moments on demand."* | 2h | Build a plugin that lets you CHOOSE which anime scene to display through web UI settings. | **Settings UI**: HTML forms for configuration.<br>**User Input**: Dropdowns, text fields.<br>**Dynamic Behavior**: Code adapts to user choices.<br>**Product Thinking**: Building for users, not just yourself. |
+| **B-04** | **BOSS BATTLE: The Smart Display**<br>*"Context-aware system"* | 3h | **Challenge**: Display changes based on context:<br>- Playing music → Spotify<br>- Not playing → Anime quote<br>- Low battery (if detectable) → System stats warning<br>*Complex conditional logic, multi-source data, fallback strategies.* | *Consolidating Logic, State Management, Error Handling, System Integration.* |
+
+---
+
+### Phase 4: The Architect (Advanced Integration & Polish)
+*Focus: Building production-quality features, advanced integrations, collaboration.*
+
+| ID | Title & Hook | Est. Time | The "Why" (Motivation) | Key Concepts Deconstructed |
+| :--- | :--- | :---: | :--- | :--- |
+| **M-17** | **The Collaborator**<br>*"Code review practice."* | 2h | Read a teammate's plugin code (simulated). Add a feature to someone else's code. Learn collaboration. | **Code Reading**: Understanding others' logic.<br>**Documentation**: Writing clear comments.<br>**Git Basics**: Branches, commits (introduction).<br>**Code Style**: Consistency matters. |
+| **M-18** | **The Anime Recommender**<br>*"Discover new shows."* | 2.5h | Integrate with an anime API (MyAnimeList, AniList). Display top-rated shows, search for similar anime. | **Advanced APIs**: Authentication, pagination.<br>**Data Filtering**: Finding relevant results.<br>**Rate Limiting**: Respecting API quotas.<br>**Async Thinking**: API calls take time. |
+| **M-19** | **The Music Mood**<br>*"Visualize your vibe."* | 2.5h | Analyze Spotify track features (energy, tempo, mood). Display a visual representation of your current music vibe. | **Data Analysis**: Working with numerical data.<br>**Normalization**: Scaling values to visual ranges.<br>**Color Mapping**: Numbers to colors.<br>**Algorithm Design**: Mood calculation logic. |
+| **C-07** | **Testing & Debugging Practice**<br>*"Professional reliability."* | 2h | Learn to write tests, debug systematically, and handle edge cases like a professional engineer. | **Unit Tests**: Testing individual functions.<br>**Test-Driven Development**: Write tests first.<br>**Debugging Workflow**: Hypothesis → Test → Fix.<br>**Edge Cases**: Null, empty, extreme values. |
+| **M-20** | **The Portfolio Showcase**<br>*"Your best work on display."* | 2h | Build a plugin that cycles through your best creations. Screenshot-worthy display of your journey. | **Reflection**: Review what you've built.<br>**Composition**: Combining multiple features.<br>**Polish**: Making it screenshot-worthy.<br>**Pride**: Celebrating your growth. |
+| **B-05** | **FINAL BOSS: The Ultimate Display**<br>*"Your masterpiece"* | 4h | **Challenge**: Design and build YOUR ultimate InkyPi plugin. Could be:<br>- Spotify + Anime hybrid<br>- Interactive game<br>- Multi-panel dashboard<br>- Your own idea!<br>*Complete creative freedom. Show everything you've learned.* | *Demonstrating Mastery: Architecture, APIs, UI, Error Handling, Product Thinking, Clean Code.* |
+
+---
+
+#### Detailed Mission Specs (Updated)
+
+##### C-04 Mission Spec: The Code Detective
+**Outcome (Visible Result)**: A system architecture diagram (drawn or described in markdown) showing how a web request becomes a displayed image.
+
+**Build (Guided Code Tour)**
+1. **Start from the Web UI**:
+   - Find the "Generate Image" button in the web interface
+   - Trace which Python file handles this HTTP endpoint
+   - Follow: `web route → plugin_manager → your plugin`
+
+2. **Understand Plugin Discovery**:
+   - Open `plugin_manager.py` (or equivalent)
+   - Find code that loads `plugin-info.json` files
+   - Question: "How does InkyPi know your plugin exists?"
+
+3. **Read BasePlugin Contract**:
+   - Open `BasePlugin` source code
+   - Identify the "contract" (which methods MUST be implemented)
+   - Compare to your C-02 CreatureCard - where do they match?
+
+4. **Tr device_config Flow**:
+   - Find where `device_config` comes from
+   - Trace: Where does screen resolution get determined?
+   - Why does your plugin receive this object?
+
+5. **Follow Image Rendering**:
+   - After `generate_image()` returns, what happens to the PIL Image?
+   - How does Python image → e-ink display?
+   - Find the code that writes to hardware
+
+**Teach (Code Reading Skills)**
+- **Finding Definitions**: Use IDE "Go to Definition" or `grep`
+- **Tracing Calls**: Work backwards from your code to the system
+- **Understanding Imports**: What does `from ...base_plugin import BasePlugin` mean?
+- **Interfaces vs Implementations**: BasePlugin defines contract, you implement
+- **Reading Without Running**: Understanding code by reading (like reading a blueprint)
+
+**Practice (Detective Work)**
+- Find: "Where is `plugin-info.json` loaded?"
+- Find: "What calls the `generate_image()` method?"
+- Find: "How does the system handle plugin errors?"
+- Trace: Complete flow from web UI click to display update
+
+**Deliverable**
+Create `c04_architecture.md` with:
+1. Diagram (ASCII art or description) of the complete flow
+2. Answers to 5 detective questions
+3. "Aha!" moments: 3 things you learned about the system
+
+**Check (Acceptance Criteria)**
+- Diagram shows: Web UI → Routes → PluginManager → YourPlugin → Image → Display
+- Can explain: "What is BasePlugin's purpose?"
+- Can trace: From button click to screen update
+- Understand: You're part of a larger system!
+
+**Reflection**
+- What surprised you about InkyPi's design?
+- How would you explain BasePlugin to someone new?
+- What part of the code was hardest to understand? Why?
+
+**Time Estimate**: 2 hours
+- 30 min: Setup + understand the goals
+- 60 min: Guided code tour with questions
+- 30 min: Create diagram + write up findings
+
+---
+
+##### M-08 Mission Spec: The Anime Gallery
+**Outcome (Visible Result)**: Display your favorite anime character (e.g., Tanjiro from Demon Slayer) with name and series info.
+
+**Build**
+1. Create `src/plugins/m08_anime_gallery/`
+2. Download or find a character image (Tanjiro, Nezuko, etc.)
+3. Learn to load image files with PIL:
+   ```python
+   from PIL import Image
+   character_img = Image.open("path/to/tanjiro.png")
+   ```
+4. Resize image to fit screen
+5. Composite character image onto background
+6. Add text overlay: character name + series
+
+**Teach (Image Fundamentals)**
+- **File Paths**: Where to store images (project structure)
+- **Image.open()**: Loading external images
+- **Resize**: `img.resize((width, height))`
+- **Paste/Composite**: Layering images
+- **Image Modes**: RGB vs RGBA (transparency)
+
+**Practice**
+- Change which character displays
+- Add a border around the character
+- Position character left, center, or right
+- Add quote below character
+
+**Surprise**
+Hidden feature: Add transparency support so character cutouts look clean!
+
+**Stretch**
+- Create a folder of multiple characters
+- Randomly select one each refresh
+- Add character stats (rank, breathing style, etc.)
+
+**Check**
+- Character image displays clearly
+- Name and series text visible
+- Image properly sized for screen
+- No crashes when image file missing (graceful error)
+
+**Reflection**
+- What's the difference between `Image.new()` and `Image.open()`?
+- Why do we resize images before displaying?
+- How would you add a second character?
+
+**Time Estimate**: 2 hours
+
+---
+
+##### M-09 Mission Spec: The Spotify Connector
+**Outcome (Visible Result)**: Display current playing track name and artist from your Mac's Spotify.
+
+**Build**
+1. Set up Spotify API credentials (simplified, use existing token if possible)
+2. Make first API request: `GET current-playing`
+3. Parse JSON response:
+   ```python
+   track_name = data["item"]["name"]
+   artist = data["item"]["artists"][0]["name"]
+   ```
+4. Display on e-ink: "Now Playing: {track_name} by {artist}"
+5. Handle case: Nothing playing → show "No music playing"
+
+**Teach (API Fundamentals)**
+- **APIs as Phone Numbers**: You call Spotify, it answers with data
+- **HTTP GET**: Asking for information
+- **JSON Structure**: Nested dictionaries and lists
+- **Authentication**: API tokens (use environment variables)
+- **Error Handling**: What if Spotify says "no"?
+
+**The "Aha!" Moment**
+When you **play a song on your Mac** and it shows up on the display - that's when it clicks that systems can talk to each other!
+
+**Practice**
+- Display track duration
+- Show if it's playing or paused
+- Add album name
+- Handle long text (truncate or wrap)
+
+**Check**
+- Playing a song → plugin shows correct track
+- Stopping playback → plugin shows fallback message
+- Wrong credentials → clear error message (not crash)
+
+**Stretch**
+- Set up automatic refresh (every 30 seconds)
+- Add progress bar showing play position
+
+**Reflection**
+- What does the JSON response look like?
+- What happens if the internet is down?
+- How often should we check "what's playing"?
+
+**Time Estimate**: 2 hours
+- 30 min: API setup + credentials
+- 60 min: Making requests, parsing JSON
+- 30 min: Error handling + polish
+
+---
+
+##### M-10 Mission Spec: The Album Artist
+**Outcome (Visible Result)**: Display beautiful album cover art alongside track info.
+
+**Build**
+1. Get album artwork URL from Spotify API response
+2. Download image from URL:
+   ```python
+   import requests
+   response = requests.get(artwork_url)
+   img = Image.open(BytesIO(response.content))
+   ```
+3. Cache downloaded images (save to disk)
+4. Composite: Album art (left) + Track info (right)
+5. Fallback: Default "no artwork" image
+
+**Teach (Advanced Image Handling)**
+- **Downloading Images**: `requests.get()` for binary data
+- **BytesIO**: In-memory file handling
+- **Caching Strategy**: Save to avoid re-downloading
+- **File Naming**: Hash or album_id for filenames
+- **Composition**: Layouts with multiple elements
+
+**The "Aha!" Moment**
+Seeing YOUR CURRENT SONG's album cover on your wall - that's magical! The display becomes a **living music companion**.
+
+**Practice**
+- Make album art larger or smaller
+- Blur background, sharp foreground
+- Add colored border matching album's dominant color
+- Round corners on artwork
+
+**Check**
+- Album art displays for current track
+- Missing artwork → shows default image
+- Downloaded images cached (don't re-download)
+- Layout looks good (not stretched/distorted)
+
+**Stretch**
+-Clean old cache (keep only 50 most recent albums)
+- Add dominant color extraction for themed background
+
+**Reflection**
+- Why cache images? What's the benefit?
+- What happens if artwork URL is broken?
+- How much disk space could cached images use?
+
+**Time Estimate**: 2 hours
+
+---
+
+##### M-11 Mission Spec: The Anime Quote
+**Outcome (Visible Result)**: Display rotating quotes from Demon Slayer characters.
+
+**Build**
+1. Create list of quotes:
+   ```python
+   quotes = [
+       {"text": "Never give up!", "character": "Tanjiro", "series": "Demon Slayer"},
+       {"text": "Mmmph mmmph!", "character": "Nezuko", "series": "Demon Slayer"},
+       # ... more quotes
+   ]
+   ```
+2. Random selection: `import random; quote = random.choice(quotes)`
+3. Text wrapping for long quotes
+4. Display: Quote text (large) + Character name (small) + Series
+
+**Teach (Lists & Data Structures)**
+- **Lists**: Ordered collections `[]`
+- **Dictionaries**: Structured data `{}`
+- **Random Module**: `random.choice()`
+- **Text Wrapping**: `textwrap` module for multi-line text
+- **Data Organization**: Structuring related information
+
+**Practice**
+- Add 10 more quotes
+- Filter quotes by character
+- Display only quotes under certain length
+- Add Japanese text (if display supports)
+
+**Check**
+- Each refresh shows a different quote
+- Long quotes wrap properly (don't overflow)
+- Character attribution clear
+- At least 15 quotes in collection
+
+**Stretch**
+- Load quotes from external JSON file
+- Theme quote by time of day (motivational morning, calm evening)
+- Add character image next to quote
+
+**Reflection**
+- How do lists and random selection work together?
+- How would you add user's favorite quotes?
+- What's better: quotes in code or external file? Why?
+
+**Time Estimate**: 1.5 hours
+
+---
 
 #### M-06 Mission Spec: The Awakening
 **Outcome (Visible Result)**: A new plugin appears in the web UI and can render a simple “Hello, \<Name\>” card to the display.
@@ -209,150 +523,234 @@ These are the “must learn” topics we’ll cover, but always through missions
 **Stretch**
 - Add settings for name/rank/photo; persist choices via plugin settings.
 
-### Phase 3: The Data Harvester (Data & APIs)
-*Focus: Fetching the world's information and showing it.*
+---
 
-| ID | Title & Hook | The "Why" (Motivation) | Key Concepts Deconstructed |
-| :--- | :--- | :--- | :--- |
-| **M-09** | **The Inspector**<br>*"Show RAM/CPU usage."* | The machine has a heartbeat. We can read it using system dictionaries. | **Dictionaries**: Key/Value pairs.<br>**Accessing Data**: `stats['cpu']`.<br>**Libraries**: Using 3rd party tools (`psutil`). |
-| **M-10** | **The Forecaster**<br>*"Build a weather station."* | The world is full of data. APIs let us ask "What is the weather?" and get a JSON answer. | **APIs**: `requests.get()` (Calling a phone number).<br>**JSON**: Understanding nested data structures.<br>**Keys**: Keeping secrets (API Keys) safe. |
-| **M-11** | **The Tracker**<br>*"Watch Crypto/Stocks."* | We have too much data. We need to filter lists to find just the one item we care about. | **Lists**: Ordered collections.<br>**Indexing**: `prices[0]`.<br>**Float Math**: Decimal math. |
-| **B-03** | **BOSS BATTLE: The Dashboard**<br>*"3-Panel Info Cycle"* | **Challenge**: Fetch Weather AND Hardware stats, display side-by-side.<br>*Managing multiple data sources and complex layout.* | *Consolidating Dictionaries, APIs, Lists, and Layout logic.* |
+## Appendix A: Mapping "30 Days of Python" Topics to Missions
+This is not a replacement for that course; it's a coverage map so we don't miss fundamentals.
 
-#### M-09 Mission Spec: The Inspector
-**Outcome**: A plugin shows CPU/RAM/disk usage with simple bars or numbers.
-
-**Build**
-- Read data (preferred): `psutil` (already used in many Pi projects).
-- Convert raw numbers to human-friendly strings (percentages, MB/GB).
-- Render: text + a simple bar chart rectangle.
-
-**Teach**
-- Dictionaries: `stats = {"cpu": 23, "ram": 41}` and `stats["cpu"]`.
-- Functions: `get_stats()` returns a dict; `format_bytes(n)` returns a string.
-- “Defensive coding”: missing keys; fallback values.
-
-**Practice**
-- Add temperature reading from `/sys/class/thermal/...` as a stretch sensor.
-- Color the bar red when usage > 80% (introduce `if` early).
-
-#### M-10 Mission Spec: The Forecaster
-**Outcome**: Weather plugin-lite: shows current temperature + condition icon/text for your location.
-
-**Build**
-- Use `requests.get(...)` to call a weather API.
-- Parse JSON response into a small internal dict: `{"temp": ..., "condition": ...}`
-- Handle errors: no network, bad API key, unexpected JSON shape.
-
-**Teach**
-- HTTP requests: “call a URL, get a response”.
-- JSON as nested dict/list structures.
-- Secrets: API keys belong in env/config, not hard-coded in code.
-- Exceptions: `try/except` around network and parsing; raise `RuntimeError` with user-friendly message.
-
-**Practice**
-- Add a “last updated” timestamp.
-- Cache data in `settings` (simple persistence) so the plugin can display the last known value if the network fails.
-
-#### M-11 Mission Spec: The Tracker
-**Outcome**: Shows a tracked item (stock/crypto) and change (up/down) with a tiny arrow.
-
-**Build**
-- Fetch a list of prices/quotes from an API.
-- Find the item by symbol using:
-  - a loop, then later a list comprehension.
-- Display formatted numbers and a change indicator.
-
-**Teach**
-- Lists: order, indexing, iterating.
-- Filtering: `for item in items:` and `if item["symbol"] == target:`
-- Float formatting: rounding, and why money formatting matters.
-
-**Practice**
-- Track 2 symbols and render the one with the biggest move.
-- Sort a list by a field (`sorted(items, key=...)`).
-
-#### B-03 Boss Battle: The Dashboard
-**Outcome**: One plugin combines 2–3 panels (e.g., time + weather + system stats).
-
-**Teach**
-- Decomposition: split into functions like `draw_header(...)`, `draw_weather(...)`.
-- Layout: define rectangles for each panel; draw inside boundaries.
-- “Data pipeline”: fetch → parse → render (keep these separate).
-
-### Phase 4: The Architect (Logic & Control)
-*Focus: Making the system smart and autonomous.*
-
-| ID | Title & Hook | The "Why" (Motivation) | Key Concepts Deconstructed |
-| :--- | :--- | :--- | :--- |
-| **M-12** | **The Night Watch**<br>*"Auto Dark Mode."* | The screen is too bright at night. The code must *decide* which colors to use based on time. | **Conditionals**: `if/else` (Making decisions).<br>**Booleans**: `True` / `False`.<br>**Comparison**: `>`, `<`, `==`. |
-| **M-13** | **The Looper**<br>*"Countdown Timer."* | We need to count down from 10. Writing a print statement 10 times is stupid. Loops let us repeat. | **Loops**: `for i in range(10):`.<br>**While Loops**: `while active:`.<br>**Sleep**: `time.sleep()`. |
-| **M-14** | **The Guardian**<br>*"Crash Protection."* | Sometimes the internet fails. The program should not die; it should handle the error. | **Exceptions**: `try:` / `except:` (Safety nets).<br>**Scope**: Local vs Global variables.<br>**Logging**: Proper error tracking. |
-| **B-04** | **BOSS BATTLE: The Smart Frame**<br>*"Context Aware Display"* | **Challenge**: If Wifi is down -> Show Clock. If Wifi is up -> Show Weather.<br>*Complex logic trees.* | *Consolidating Control Flow, Error Handling, and State.* |
-
-#### M-12 Mission Spec: The Night Watch
-**Outcome**: The plugin switches theme (light/dark) automatically based on time.
-
-**Teach**
-- Booleans and comparisons.
-- `if/elif/else` decision trees.
-- Keep “policy” separate from “rendering”: compute `theme` first, then draw.
-
-#### M-13 Mission Spec: The Looper
-**Outcome**: A countdown or progress animation (within a single render) OR a “step” counter that changes each refresh.
-
-**Teach**
-- `for` loops and `range`.
-- `while` loops only if needed (avoid infinite loop mistakes early).
-- Time: `sleep` conceptually (but don’t freeze the whole service in production).
-
-**Coach Note**: In InkyPi, plugins are expected to render and return an image quickly. Use loops for drawing repeated shapes, not long-running timers.
-
-#### M-14 Mission Spec: The Guardian
-**Outcome**: The plugin never “hard crashes” on common failures; it shows a friendly error screen instead.
-
-**Teach**
-- Tracebacks: how to read the last line first.
-- `try/except` around the smallest risky block.
-- Raising `RuntimeError` for clean UI errors.
-- Logging: `logger.info(...)`, `logger.warning(...)`, `logger.exception(...)`.
-
-#### B-04 Boss Battle: The Smart Frame
-**Outcome**: Context-aware display:
-- If internet OK → Weather
-- If internet down → Clock
-- If disk almost full → Warning screen
-
-**Teach**
-- Priorities: order conditions; don’t let multiple branches fight.
-- “Fallback strategy”: always have a safe default output.
+**Updated Mapping (Redesigned Curriculum)**:
+- Intro / Setup / Running code → Phase 1 + M-06 scaffolding
+- Variables, Types, Casting → M-07 (Timekeeper), C-01 (Display Gallery)
+- Strings + formatting → M-06, M-07 (f-strings)
+- Classes + Objects → C-02 (Creature Card), C-03 (Inheritance Practice)
+- Lists / loops → C-05 (Lists Practice), M-11 (Anime Quote)
+- Tuples → C-01 (coordinates), M-10 (Album Artist - colors)
+- Dictionaries → M-09 (Spotify JSON), M-12 (Stats Dashboard)
+- Conditionals → M-13 (Smart Switcher)
+- Functions → C-06 (Functions Practice), throughout all missions
+- Modules → M-06 onward (imports + project structure), C-04 (Code Detective)
+- Exceptions → M-09/M-10 (API failures), M-15 (The Guardian)
+- File handling → M-08 (Anime Gallery - images), M-14 (Music Historian - JSON)
+- APIs / JSON → M-09 (Spotify), M-10 (Album Art), M-18 (Anime Recommender)
 
 ---
 
-## Appendix A: Mapping “30 Days of Python” Topics to Missions
-This is not a replacement for that course; it’s a coverage map so we don’t miss fundamentals.
+## Appendix B: Software Engineering Concepts Covered
 
-- Intro / Setup / Running code → Phase 1 + M-06 scaffolding
-- Variables, Types, Casting → M-07, M-09
-- Strings + formatting → M-06, M-07
-- Lists / loops → M-11, M-13
-- Tuples → M-08 (coords/colors)
-- Dictionaries → M-09, M-10
-- Conditionals → M-12
-- Functions → M-08, B-03
-- Modules → M-06 onward (imports + project structure)
-- Exceptions → M-10, M-14
-- File handling → B-02 (assets), optional caching in M-10
-- APIs / JSON → M-10, M-11
+The redesigned curriculum explicitly teaches software engineering thinking:
 
-## Appendix B: Coach Checklist (Keep Motivation High)
-- Start each session with a **demo of the goal** (30 seconds).
-- Timebox “stuck time”: if blocked for 5–10 minutes, switch to a hint.
-- Always end with a **visible win** (even a small one): a new icon, a new panel, a new setting.
-- Keep a “victory log”: screenshot the display after each mission.
+### Code Reading & Architecture (C-04)
+- Tracing code execution
+- Understanding system architecture
+- Reading production code
+- Interface vs implementation
 
+### Product Thinking (Throughout)
+- M-09: User-driven feature (Spotify integration)
+- M-10: User experience (beautiful album art, caching)
+- M-16: Configuration UI (user choices)
+- B-05: Complete creative freedom (own ideas)
 
-#Geneate mission using AI, Prompt:
-I want to create mission C-04 (List Practice).
-Follow the QUICK_START.md guide in _mission_templates_syllabus.
-Use templates 1-4 in order to generate all mission files.
+### Error Handling & Resilience (M-15, throughout)
+- Try/except blocks
+- Graceful degradation
+- Logging for debugging
+- Fallback strategies
+
+### Collaboration (M-17)
+- Code review practice
+- Reading others' code
+- Documentation
+- Code style consistency
+
+### Debugging Workflow (C-07, M-15)
+- Reading stack traces
+- Hypothesis → Test → Fix
+- Logging strategies
+- Systematic debugging
+
+### Design Patterns (Throughout)
+- DRY principle (C-01, C-03)
+- Separation of concerns (all missions)
+- Caching (M-10)
+- State management (M-13, M-14)
+
+---
+
+## Appendix C: Motivation Arc & Student Engagement
+
+**Evidence of Engagement**:
+- Student suggested Spotify integration (owns the project!)
+- Interest in anime/cartoons (natural motivation)
+- Completed C01-C03 successfully
+
+**Designed Motivation Triggers**:
+
+1. **Personal Relevance** (Every Mission):
+   - M-08: Display YOUR favorite character
+   - M-09: Show what YOU'RE listening to
+   - M-11: Quotes from anime YOU watch
+   - M-19: Visualize YOUR music mood
+
+2. **Immediate Gratification**:
+   - Each mission = visible output on wall
+   - 2-hour completion = same-day victory
+   - Album cover appears when song plays = magical moment
+
+3. **Creative Freedom Progression**:
+   - Early: Guided missions with templates
+   - Middle: Personal choices (which character, which quotes)
+   - Late: Complete freedom (B-05: Your masterpiece)
+
+4. **Social Proof**:
+   - M-20: Portfolio showcase (show friends)
+   - Screenshots of display throughout journey
+   - B-05: Final project to share
+
+---
+
+## Appendix D: Coach Checklist (Keep Motivation High)
+
+### Session Structure (Per Mission)
+1. **Start with a demo** (30 seconds):
+   - Show the end result first
+   - Example: Play a song, show it appearing on display instantly
+   - "This is what you'll build today"
+
+2. **Set the timer** (2 hours):
+   - "We're aiming to finish this in 2 hours"
+   - Builds focus and urgency
+
+3. **First checkpoint quick win** (15-30 min):
+   - Hit CHECKPOINT 1 fast
+   - "Plugin appears! Great start!"
+
+4. **Mid-mission check-in** (60 min mark):
+   - "How are you feeling? Stuck on anything?"
+   - Provide hints if needed
+
+5. **Celebrate completion**:
+   - Screenshot the display
+   - Add to victory log
+   - "What's your favorite part?"
+
+### Motivation Maintenance
+- **Victory Log**: Screenshot display after each mission
+- **Stuck Time Limit**: 5-10 minutes blocked → give hint
+- **Visible Progress**: Can see all completed plugins on wall
+- **Surprise Factor**: Hidden features in stretch goals
+- **Next Mission Teaser**: "Next time, we'll make it BETTER..."
+
+### When Motivation Dips
+- **Pivot to interest**: If stuck on API, switch to anime images
+- **Skip stretch goals**: Core mission = success
+- **Show real-world**: "Spotify does this exact thing!"
+- **Celebrate partial wins**: "The connection works! That's huge!"
+
+---
+
+## Appendix E: Time Estimates by Mission Type
+
+| Mission Type | Est. Time | Complexity | Example |
+|--------------|-----------|------------|---------|
+| **Foundational (M-series)** | 1.5-2h | Low-Medium | M-06, M-07 |
+| **Core Practice (C-series)** | 2h | Medium | C-01, C-02, C-03 |
+| **Code Reading (C-04)** | 2h | Medium | C-04 only |
+| **Integration** | 2h | Medium-High | M-09, M-10 |
+| **Advanced** | 2-2.5h | High | M-18, M-19 |
+| **Boss Battles** | 3-4h | High | B-02 to B-05 |
+
+**Total Curriculum Time** (excluding Phase 1, already completed):
+- Phase 2: ~14 hours (7 missions × 2h)
+- Phase 2.5: ~12 hours (6 missions)
+- Phase 3: ~12 hours (6 missions)
+- Phase 4: ~13 hours (6 missions)
+- Boss Battles: ~13 hours (5 battles)
+
+**Total: ~64 hours** of focused learning with 30+ visible projects on the wall!
+
+---
+
+## Appendix F: AI Mission Generation Prompt Template
+
+When using AI to generate a new mission from this syllabus:
+
+```
+I want to create mission [ID] ([Mission Name]).
+Reference: /academy/missions/_mission_templates_syllabus/
+
+Follow this process:
+1. Read QUICK_START.md for the step-by-step workflow
+2. Use templates 1-4 in order:
+   - 1_briefing_template.md → Create briefing.md
+   - 2_mission_md_template.md → Create mission.md
+   - 3_self_learning_template.md → Create all self-learning files
+   - 4_check_py_template.md → Create check.py
+
+Mission Details from syllabus.md:
+- ID: [e.g., M-09]
+- Title: [e.g., "The Spotify Connector"]
+- Estimated Time: [e.g., 2h]
+- Core Concepts: [e.g., APIs, JSON, Error Handling]
+- Student Motivation: [e.g., Show what's playing on Spotify]
+- Visible Outcome: [e.g., Track name + artist on display]
+
+Ensure:
+- Problem-driven briefing (show pain without concept)
+- 4 incremental checkpoints in mission.md
+- Metrics-driven bad_code exercise (improvement ratios)
+- Real-world examples (apps student uses)
+- 2-hour time scope
+```
+
+---
+
+## Summary: Why This Curriculum Works
+
+**Aligns with All 3 Goals**:
+
+1. **Motivation-driven learning** ✅
+   - Student-suggested projects (Spotify)
+   - Personal interests (anime)
+   - Immediate gratification (visible on wall)
+   - Progressive difficulty (GTA5-like flow)
+
+2. **Outcome-driven** ✅
+   - Every mission → new plugin
+   - Physical display (not abstract)
+   - 30+ tangible projects
+
+3. **Python + Hardware mastery** ✅
+   - Real Raspberry Pi integration
+   - E-ink display constraints
+   - System architecture (C-04)
+   - Production-quality code
+
+**Software Engineering Thinking**:
+- Code reading (C-04)
+- Architecture understanding (BasePlugin)
+- Error handling (M-15)
+- Product design (M-16)
+- Collaboration (M-17)
+- Testing/debugging (C-07)
+
+**The Advantage**: Not just "learn Python" but "think like an engineer who builds real things."
+
+Your son will finish with:
+- 30+ working plugins
+- Deep Python knowledge
+- Hardware integration experience
+- Portfolio to show friends
+- **Most importantly**: The ability to BUILD HIS OWN IDEAS (Spotify display was his idea!)
+
+That's when you know the curriculum succeeded - when he starts creating, not just completing.
