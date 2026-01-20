@@ -52,8 +52,8 @@ class BaseCard:
         # CHALLENGE 1 TODO: Add a footer bar here
         # ============================================================
         # After you complete CHECKPOINT 4, come back here and add:
-        # footer_y = h - 20
-        # draw.line((padding, footer_y, w - padding, footer_y), fill=(0,0,0), width=2)
+        footer_y = h - 20
+        draw.line((padding, footer_y, w - padding, footer_y), fill=(0,0,0), width=2)
         # 
         # Observe: Both PetCard AND ItemCard will get the footer automatically!
         # That's the power of inheritance - change ONE place, affect ALL subclasses.
