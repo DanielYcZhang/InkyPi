@@ -168,13 +168,13 @@ class ItemCard(BaseCard):
         # Store rarity in self.rarity
         self.rarity = rarity
     
-    def draw(self, draw, w, h):
+    def draw(self, draw, x, y, w, h):
         # Call super().draw(draw, w, h) to get border/title
-        super().draw(draw, w, h)
+        super().draw(draw, x, y, w, h)
         
         # Add rarity stars in top-right
-        star_x = w - 70
-        star_y = 20
+        star_x = x + w - 70
+        star_y = y + 20
         draw.text((star_x, star_y), f"★ {self.rarity}", fill=(255, 165, 0))
 
 
