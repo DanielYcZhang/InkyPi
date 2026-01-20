@@ -20,7 +20,7 @@ class BaseCard:
         """
         self.title = title
     
-    def draw(self, draw, w, h):
+    def draw(self, draw, x, y, w, h):
         """
         Draw the base card (border + title).
         All subclasses will call this via super().draw()
@@ -35,7 +35,7 @@ class BaseCard:
         # Draw border rectangle
         # draw.rectangle expects (x1, y1, x2, y2)
         draw.rectangle(
-            (padding, padding, w - padding, h - padding),
+            (x + padding, y + padding, x + w - padding, y + h - padding),
             outline=(0, 0, 0),
             width=2
         )
@@ -43,7 +43,7 @@ class BaseCard:
         # Draw title text
         # draw.text expects (x, y) position
         draw.text(
-            (padding + 8, padding + 8),
+            (x + padding + 8, y + padding + 8),
             self.title,
             fill=(0, 0, 0)
         )
@@ -87,7 +87,7 @@ class PetCard(BaseCard):
         # Store our pet-specific data
         self.badge_text = badge_text
     
-    def draw(self, draw, w, h):
+    def draw(self, draw, x, y, w, h):
         """
         Draw pet card = base card + pet badge
         
@@ -103,7 +103,7 @@ class PetCard(BaseCard):
         # Uncomment it and generate again. What comes back?
         # This proves super() calls the parent's method to reuse its code!
         
-        super().draw(draw, w, h)  # Reuse base card drawing
+        super().draw(draw, x, y, w, h)  # Reuse base card drawing
         #super(), get parent class method
         #.draw, find the function name draw and call it
         #(draw, w, h), pass in the parameters draw is pen, w is width, h is height
@@ -111,8 +111,8 @@ class PetCard(BaseCard):
         # Now add ONLY pet-specific badge
         badge_w = 60
         badge_h = 22
-        badge_x = w - badge_w - 16
-        badge_y = 16
+        badge_x = x + w - badge_w - 16
+        badge_y = y + 16
         
         # Draw badge rectangle
         draw.rectangle(
@@ -215,10 +215,10 @@ class InheritancePractice(BasePlugin):
         # CHECKPOINT 2-3: Single PetCard
         # ============================================================
         pet_card = PetCard("Fluffy", "LV 5")
-        pet_card.draw(draw, 10, 10)
+        pet_card.draw(draw, 10, 10, 220, 100) 
 
         item_card = ItemCard("Magic Sword", "Rare")
-        item_card.draw(draw, 10, h // 2)
+        item_card.draw(draw, 10, h // 2, 220, 100)
         
         # ============================================================
         # CHECKPOINT 4: Multiple Cards (Uncomment after creating ItemCard)
