@@ -189,13 +189,21 @@ class ItemCard(BaseCard):
 # - draw() calls super().draw() then shows difficulty at bottom
 # 
 # Template:
-# class QuestCard(BaseCard):
-#     def __init__(self, title, difficulty):
-#         # Your code here
-#         
-#     
-#     def draw(self, draw, w, h):
-#         # Your code here
+class QuestCard(BaseCard):
+    def __init__(self, title, difficulty):
+        super().__init__(title)
+        self.difficulty = difficulty
+        
+    
+    def draw(self, draw, x, y, w, h):
+        super().draw(draw, x, y, w, h)
+        
+        # Draw difficulty at bottom center
+        # Assuming padding = 12 from BaseCard, so inner width is w - 24
+        # But we'll just put it at some reasonable offset
+        text_x = x + 20
+        text_y = y + h - 50 # Just above footer
+        draw.text((text_x, text_y), f"Difficulty: {self.difficulty}", fill=(0, 0, 0))
 
 
 # ============================================================
@@ -214,6 +222,14 @@ class InheritancePractice(BasePlugin):
         # ============================================================
         # CHECKPOINT 2-3: Single PetCard
         # ============================================================
+        # card = PetCard("Pet Profile", "LV 5")
+        # card.draw(draw, w, h)
+        
+        # ============================================================
+        # CHECKPOINT 4: Multiple Cards (Uncomment after creating ItemCard)
+        # ============================================================
+        # Display both PetCard and ItemCard to prove inheritance works!
+        # 
         pet_card = PetCard("Fluffy", "LV 5")
         pet_card.draw(draw, 10, 10, 220, 100) 
 
@@ -221,21 +237,10 @@ class InheritancePractice(BasePlugin):
         item_card.draw(draw, 10, h // 2, 220, 100)
         
         # ============================================================
-        # CHECKPOINT 4: Multiple Cards (Uncomment after creating ItemCard)
-        # ============================================================
-        # Display both PetCard and ItemCard to prove inheritance works!
-        # 
-        # pet_card = PetCard("Fluffy", "LV 5")
-        # pet_card.draw(draw, 10, 10)
-        # 
-        # item_card = ItemCard("Magic Sword", "Rare")
-        # item_card.draw(draw, 10, h // 2)
-        
-        # ============================================================
         # CHALLENGE 3: All Three Cards (After creating QuestCard)
         # ============================================================
-        # quest_card = QuestCard("Dragon Slayer", "Hard")
-        # quest_card.draw(draw, 10, h - 80)
+        quest_card = QuestCard("Dragon Slayer", "Hard")
+        quest_card.draw(draw, 10, h - 120, 220, 100)
         
         return img
 
