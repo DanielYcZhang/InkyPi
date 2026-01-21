@@ -53,7 +53,7 @@ class BaseCard:
         # ============================================================
         # After you complete CHECKPOINT 4, come back here and add:
         footer_y = h - 20
-        draw.line((padding, footer_y, w - padding, footer_y), fill=(0,0,0), width=2)
+        draw.line((x + padding, y + footer_y, x + w - padding, y + footer_y), fill=(0,0,0), width=2)
         # 
         # Observe: Both PetCard AND ItemCard will get the footer automatically!
         # That's the power of inheritance - change ONE place, affect ALL subclasses.
@@ -175,7 +175,7 @@ class ItemCard(BaseCard):
         # Add rarity stars in top-right
         star_x = x + w - 70
         star_y = y + 20
-        draw.text((star_x, star_y), f"★ {self.rarity}", fill=(255, 165, 0))
+        draw.text((star_x, star_y), f"★ {self.rarity}", fill=(0, 0, 0))
 
 
 # ============================================================
