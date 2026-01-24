@@ -20,7 +20,7 @@ class BaseCard:
         """
         self.title = title
     
-    def draw(self, draw, x, y, w, h):
+    def draw(self, draw, w, h):
         """
         Draw the base card (border + title).
         All subclasses will call this via super().draw()
@@ -35,7 +35,7 @@ class BaseCard:
         # Draw border rectangle
         # draw.rectangle expects (x1, y1, x2, y2)
         draw.rectangle(
-            (x + padding, y + padding, x + w - padding, y + h - padding),
+            (padding, padding, w - padding, h - padding),
             outline=(0, 0, 0),
             width=2
         )
@@ -43,7 +43,7 @@ class BaseCard:
         # Draw title text
         # draw.text expects (x, y) position
         draw.text(
-            (x + padding + 8, y + padding + 8),
+            (padding + 8, padding + 8),
             self.title,
             fill=(0, 0, 0)
         )
@@ -52,8 +52,8 @@ class BaseCard:
         # CHALLENGE 1 TODO: Add a footer bar here
         # ============================================================
         # After you complete CHECKPOINT 4, come back here and add:
-        footer_y = h - 20
-        draw.line((x + padding, y + footer_y, x + w - padding, y + footer_y), fill=(0,0,0), width=2)
+        # footer_y = h - 20
+        # draw.line((padding, footer_y, w - padding, footer_y), fill=(0,0,0), width=2)
         # 
         # Observe: Both PetCard AND ItemCard will get the footer automatically!
         # That's the power of inheritance - change ONE place, affect ALL subclasses.
@@ -69,8 +69,6 @@ class BaseCard:
 class PetCard(BaseCard):
     """Pet card with a level badge - inherits border/title from BaseCard"""
     
-
-
     def __init__(self, title, badge_text):
         """
         Constructor for pet card.
@@ -87,7 +85,7 @@ class PetCard(BaseCard):
         # Store our pet-specific data
         self.badge_text = badge_text
     
-    def draw(self, draw, x, y, w, h):
+    def draw(self, draw, w, h):
         """
         Draw pet card = base card + pet badge
         
@@ -103,16 +101,13 @@ class PetCard(BaseCard):
         # Uncomment it and generate again. What comes back?
         # This proves super() calls the parent's method to reuse its code!
         
-        super().draw(draw, x, y, w, h)  # Reuse base card drawing
-        #super(), get parent class method
-        #.draw, find the function name draw and call it
-        #(draw, w, h), pass in the parameters draw is pen, w is width, h is height
+        super().draw(draw, w, h)  # Reuse base card drawing
         
         # Now add ONLY pet-specific badge
         badge_w = 60
         badge_h = 22
-        badge_x = x + w - badge_w - 16
-        badge_y = y + 16
+        badge_x = w - badge_w - 16
+        badge_y = 16
         
         # Draw badge rectangle
         draw.rectangle(
@@ -158,24 +153,23 @@ class PetCard(BaseCard):
 # 4. Add ONLY item-specific rarity stars
 
 # Uncomment and complete this:
-class ItemCard(BaseCard):
-    """Item card with rarity stars - inherits border/title from BaseCard"""
-    
-    def __init__(self, title, rarity):
-        # Call super().__init__(title) to let BaseCard handle title
-        super().__init__(title)
-        
-        # Store rarity in self.rarity
-        self.rarity = rarity
-    
-    def draw(self, draw, x, y, w, h):
-        # Call super().draw(draw, w, h) to get border/title
-        super().draw(draw, x, y, w, h)
-        
-        # Add rarity stars in top-right
-        star_x = x + w - 70
-        star_y = y + 20
-        draw.text((star_x, star_y), f"★ {self.rarity}", fill=(0, 0, 0))
+# class ItemCard(BaseCard):
+#     """Item card with rarity stars - inherits border/title from BaseCard"""
+#     
+#     def __init__(self, title, rarity):
+#         # TODO: Call super().__init__(title) to let BaseCard handle title
+#         
+#         # TODO: Store rarity in self.rarity
+#         pass
+#     
+#     def draw(self, draw, w, h):
+#         # TODO: Call super().draw(draw, w, h) to get border/title
+#         
+#         # TODO: Add rarity stars in top-right
+#         # star_x = w - 70
+#         # star_y = 20
+#         # draw.text((star_x, star_y), f"★ {self.rarity}", fill=(255, 165, 0))
+#         pass
 
 
 # ============================================================
@@ -189,21 +183,13 @@ class ItemCard(BaseCard):
 # - draw() calls super().draw() then shows difficulty at bottom
 # 
 # Template:
-class QuestCard(BaseCard):
-    def __init__(self, title, difficulty):
-        super().__init__(title)
-        self.difficulty = difficulty
-        
-    
-    def draw(self, draw, x, y, w, h):
-        super().draw(draw, x, y, w, h)
-        
-        # Draw difficulty at bottom center
-        # Assuming padding = 12 from BaseCard, so inner width is w - 24
-        # But we'll just put it at some reasonable offset
-        text_x = x + 20
-        text_y = y + h - 50 # Just above footer
-        draw.text((text_x, text_y), f"Difficulty: {self.difficulty}", fill=(0, 0, 0))
+# class QuestCard(BaseCard):
+#     def __init__(self, title, difficulty):
+#         # Your code here
+#         
+#     
+#     def draw(self, draw, w, h):
+#         # Your code here
 
 
 # ============================================================
@@ -222,25 +208,25 @@ class InheritancePractice(BasePlugin):
         # ============================================================
         # CHECKPOINT 2-3: Single PetCard
         # ============================================================
-        # card = PetCard("Pet Profile", "LV 5")
-        # card.draw(draw, w, h)
+        card = PetCard("Pet Profile", "LV 5")
+        card.draw(draw, w, h)
         
         # ============================================================
         # CHECKPOINT 4: Multiple Cards (Uncomment after creating ItemCard)
         # ============================================================
         # Display both PetCard and ItemCard to prove inheritance works!
         # 
-        pet_card = PetCard("Fluffy", "LV 5")
-        pet_card.draw(draw, 10, 10, 220, 100) 
-
-        item_card = ItemCard("Magic Sword", "Rare")
-        item_card.draw(draw, 10, h // 2, 220, 100)
+        # pet_card = PetCard("Fluffy", "LV 5")
+        # pet_card.draw(draw, 10, 10)
+        # 
+        # item_card = ItemCard("Magic Sword", "Rare")
+        # item_card.draw(draw, 10, h // 2)
         
         # ============================================================
         # CHALLENGE 3: All Three Cards (After creating QuestCard)
         # ============================================================
-        quest_card = QuestCard("Dragon Slayer", "Hard")
-        quest_card.draw(draw, 10, h - 120, 220, 100)
+        # quest_card = QuestCard("Dragon Slayer", "Hard")
+        # quest_card.draw(draw, 10, h - 80)
         
         return img
 

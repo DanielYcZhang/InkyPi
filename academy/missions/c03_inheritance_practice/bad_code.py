@@ -76,25 +76,71 @@ TODO:
 4. Copy-paste the base drawing code into QuestCard_Bad
 
 Count your metrics:
-- New/modified lines in PetCard_Bad: ___
-- New/modified lines in ItemCard_Bad: ___
-- New/modified lines in QuestCard_Bad: ___
-- Total lines changed: ___
-- Number of places where subtitle drawing is duplicated: ___
-- Pain level (1-10): ___
+- New/modified lines in PetCard_Bad: 3
+- New/modified lines in ItemCard_Bad: 3
+- New/modified lines in QuestCard_Bad: 16
+- Total lines changed: 22
+- Number of places where subtitle drawing is duplicated: 3
+- Pain level (1-10): 3, it took like 10 seconds but ok
 """
 
 class PetCard_Bad_WithSubtitle:
-    # TODO: Add subtitle parameter and draw it
-    pass
+    """Stage 2: Adding subtitle by copy-pasting (BAD)"""
+    def __init__(self, title, subtitle, level):
+        self.title = title
+        self.subtitle = subtitle
+        self.level = level
+    
+    def draw(self, draw, w, h):
+        # Draw border (Copy-pasted)
+        padding = 12
+        draw.rectangle((padding, padding, w - padding, h - padding), 
+                      outline=(0,0,0), width=2)
+        # Draw title (Copy-pasted)
+        draw.text((padding + 8, padding + 8), self.title, fill=(0,0,0))
+        # Draw subtitle (NEW)
+        draw.text((padding + 8, padding + 28), self.subtitle, fill=(0,0,0))
+         # Draw level badge
+        draw.rectangle((w - 76, 16, w - 16, 38), outline=(0,0,0), width=2)
+        draw.text((w - 70, 20), f"LV {self.level}", fill=(0,0,0))
 
 class ItemCard_Bad_WithSubtitle:
-    # TODO: Add subtitle parameter and draw it (copy-paste!)
-    pass
+    """Stage 2: Adding subtitle by copy-pasting (BAD)"""
+    def __init__(self, title, subtitle, rarity):
+        self.title = title
+        self.subtitle = subtitle
+        self.rarity = rarity
+    
+    def draw(self, draw, w, h):
+        # Draw border (Copy-pasted again!)
+        padding = 12
+        draw.rectangle((padding, padding, w - padding, h - padding), 
+                      outline=(0,0,0), width=2)
+        # Draw title (Copy-pasted again!)
+        draw.text((padding + 8, padding + 8), self.title, fill=(0,0,0))
+        # Draw subtitle (NEW - Duplicated logic!)
+        draw.text((padding + 8, padding + 28), self.subtitle, fill=(0,0,0))
+        # Draw rarity stars
+        draw.text((w - 70, 20), f"★ {self.rarity}", fill=(0,0,0))
 
 class QuestCard_Bad:
-    # TODO: Create new card, copy-paste ALL the base drawing code
-    pass
+    """Stage 2: New card type by copy-pasting everything (BAD)"""
+    def __init__(self, title, subtitle, difficulty):
+        self.title = title
+        self.subtitle = subtitle
+        self.difficulty = difficulty
+    
+    def draw(self, draw, w, h):
+        # Draw border (Copy-pasted a 3rd time!)
+        padding = 12
+        draw.rectangle((padding, padding, w - padding, h - padding), 
+                      outline=(0,0,0), width=2)
+        # Draw title (Copy-pasted a 3rd time!)
+        draw.text((padding + 8, padding + 8), self.title, fill=(0,0,0))
+        # Draw subtitle (Copy-pasted a 3rd time!)
+        draw.text((padding + 8, padding + 28), self.subtitle, fill=(0,0,0))
+        # Draw difficulty
+        draw.text((w - 70, 20), f"Diff: {self.difficulty}", fill=(0,0,0))
 
 def stage2_demo():
     """Stage 2: Feature request on bad code"""
@@ -127,19 +173,53 @@ Hint:
 
 class BaseCard:
     # TODO: Implement base class with shared code
-    pass
+    def __init__(self, title, subtitle):
+        self.title = title
+        self.subtitle = subtitle
+    
+    def draw(self, draw, w, h):
+        # Draw border
+        padding = 12
+        draw.rectangle((padding, padding, w - padding, h - padding), 
+                      outline=(0,0,0), width=2)
+        # Draw title
+        draw.text((padding + 8, padding + 8), self.title, fill=(0,0,0))
+        # Draw subtitle
+        draw.text((padding + 8, padding + 28), self.subtitle, fill=(0,0,0))
 
 class PetCard_Good(BaseCard):
     # TODO: Inherit from BaseCard, use super()
-    pass
+    def __init__(self, title, subtitle, level):
+        super().__init__(title, subtitle)
+        self.level = level
+    
+    def draw(self, draw, w, h):
+        super().draw(draw, w, h)
+        # Draw level badge
+        draw.rectangle((w - 76, 16, w - 16, 38), outline=(0,0,0), width=2)
+        draw.text((w - 70, 20), f"LV {self.level}", fill=(0,0,0))
 
 class ItemCard_Good(BaseCard):
     # TODO: Inherit from BaseCard, use super()
-    pass
+    def __init__(self, title, subtitle, rarity):
+        super().__init__(title, subtitle)
+        self.rarity = rarity
+    
+    def draw(self, draw, w, h):
+        super().draw(draw, w, h)
+        # Draw rarity stars
+        draw.text((w - 70, 20), f"★ {self.rarity}", fill=(0,0,0))
 
 class QuestCard_Good(BaseCard):
     # TODO: Inherit from BaseCard, use super()
-    pass
+    def __init__(self, title, subtitle, difficulty):
+        super().__init__(title, subtitle)
+        self.difficulty = difficulty
+
+    def draw(self, draw, w, h):
+        super().draw(draw, w, h)
+        # Draw difficulty
+        draw.text((w - 70, 20), f"Diff: {self.difficulty}", fill=(0,0,0))
 
 def stage3_demo():
     """Stage 3: Refactored with inheritance"""
@@ -165,16 +245,16 @@ def stage3_demo():
 SAME REQUEST: Add subtitle to all cards, plus new QuestCard type.
 
 But now you have inheritance! Count the changes:
-- Lines changed in BaseCard: ___
-- Lines changed in PetCard_Good: ___
-- Lines changed in ItemCard_Good: ___
-- Lines needed for QuestCard_Good: ___
-- Total lines: ___
-- Pain level (1-10): ___
+- Lines changed in BaseCard: 3
+- Lines changed in PetCard_Good: 1
+- Lines changed in ItemCard_Good: 1
+- Lines needed for QuestCard_Good: 7
+- Total lines: 12
+- Pain level (1-10): 1
 
 Compare Stage 2 vs Stage 4:
-- Improvement ratio: ___ (Stage 2 total ÷ Stage 4 total)
-- Duplicated code: Stage 2 = ___ places, Stage 4 = ___ places
+- Improvement ratio: 1.8x (22 lines ÷ 12 lines)
+- Duplicated code: Stage 2 = 3 places, Stage 4 = 0 places (Defined once in BaseCard)
 """
 
 # The good news: You already did this in Stage 3!

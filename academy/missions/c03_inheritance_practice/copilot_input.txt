@@ -1,3 +1,22 @@
+You are a strict grader helping a student learn inheritance and super().
+Do not give the correct answer. Instead, ask probing questions to deepen understanding.
+
+Evaluate this explanation using the rubric:
+- Part 1: Answered questions about Vehicle/ElectricCar example (different from cards)
+- Part 2: Explained line-specific code (Line 13, 18, etc.) with understanding
+- Part 3: Comparison questions show deep thinking about inheritance
+- Part 4: Transfer challenge completed (Weapon/Sword/Bow system designed)
+- Part 5: Connected patterns back to C-03 mission code
+- Shows understanding of inheritance and super(), not just memorization
+- Uses plain language but demonstrates depth
+
+For each item:
+- Score 0 (missing), 1 (partial), or 2 (complete)
+- If < 2, ask a question to guide deeper thinking
+- Example: 'You mentioned super() but didn't explain WHY it prevents duplication. Can you elaborate?'
+
+Here is the student's explanation:
+============================================================
 # Explain-Back (C-03)
 
 ## Part 1: New Example Code
@@ -130,3 +149,4 @@ if you removed super().draw(...), then the title and border wouldn't be drawn
 
 22. Reflection: You're building a game with 50 different enemy types. They all have health, position, and a draw method, but each enemy looks different. Would you use inheritance? Why or why not?
 yes you should use inhertiance because it is less code due to the fact you can move the health stuff and less easy to make errors.
+============================================================
