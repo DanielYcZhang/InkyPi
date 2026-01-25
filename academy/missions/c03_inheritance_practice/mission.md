@@ -135,7 +135,7 @@ super().draw(draw, w, h)
 *What does this line do? Why don't we re-write the border/title code in PetCard?*
 
 **Answer space**:
-
+super().draw() calls the parents code to draw the shared stuff, (border and title). We do this because it makes our code look more clean because we don't need to copy and paste it.
 
 ---
 
@@ -154,10 +154,12 @@ super().draw(draw, w, h)
 2. Generate the image
 
 3. **Observe**: What's missing?
+the title and border
 
-4. Uncomment line 24, generate again
+4. Uncomment line 24, generate again (it was on line 104 btw lmao)
 
 5. **Compare**: What came back?
+title and border
 
 **✅ Success Looks Like**:
 - [ ] Without `super()`: Only badge visible (no border, no title)
@@ -167,13 +169,14 @@ super().draw(draw, w, h)
 *Answer these:*
 
 **Q1: When you commented out `super().draw()`, what disappeared?**  
+the title and border
 
-
-**Q2: What does this prove about what `super()` does?**  
+**Q2: What does this prove about what `super()` does?**
+get the draw function from the parent class and run it
 
 
 **Q3: If BaseCard.draw() is 6 lines of code, how many lines did `super()` save you from duplicating?**  
-
+5 lines, without super() we would have to copy and paste the 6 lines of code into PetCard.draw(), i only wrote 1 line of code using super() to get the border and title
 
 **Key Insight**: `super()` = "run the parent's method first, then I'll add my extras"
 
