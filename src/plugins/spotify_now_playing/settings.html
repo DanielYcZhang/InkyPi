@@ -1,0 +1,38 @@
+<div class="form-group">
+    <label for="emptyStateMode" class="form-label">When nothing is playing:</label>
+    <select id="emptyStateMode" name="emptyStateMode" class="form-input">
+        <option value="show_last_track">Show Last Track</option>
+        <option value="show_nothing_playing">Show Nothing Playing</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="artworkStyle" class="form-label">Artwork Layout:</label>
+    <select id="artworkStyle" name="artworkStyle" class="form-input">
+        <option value="square_left">Square Left</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label class="form-label">Display:</label>
+    <div class="form-group">
+        <input type="checkbox" id="showAlbumName" name="showAlbumName" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
+        <span>Show album name</span>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (loadPluginSettings) {
+            document.getElementById('emptyStateMode').value = pluginSettings.emptyStateMode || 'show_last_track';
+            document.getElementById('artworkStyle').value = pluginSettings.artworkStyle || 'square_left';
+            document.getElementById('showAlbumName').checked = pluginSettings.showAlbumName === 'true';
+            document.getElementById('showAlbumName').value = pluginSettings.showAlbumName || 'false';
+        } else {
+            document.getElementById('emptyStateMode').value = 'show_last_track';
+            document.getElementById('artworkStyle').value = 'square_left';
+            document.getElementById('showAlbumName').checked = false;
+            document.getElementById('showAlbumName').value = 'false';
+        }
+    });
+</script>

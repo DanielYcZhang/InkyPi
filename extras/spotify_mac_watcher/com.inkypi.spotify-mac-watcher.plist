@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.inkypi.spotify-mac-watcher</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/env</string>
+        <string>python3</string>
+        <string>/ABSOLUTE/PATH/TO/spotify_mac_watcher.py</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>WorkingDirectory</key>
+    <string>/ABSOLUTE/PATH/TO</string>
+    <key>StandardOutPath</key>
+    <string>/tmp/spotify-mac-watcher.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/spotify-mac-watcher.log</string>
+</dict>
+</plist>

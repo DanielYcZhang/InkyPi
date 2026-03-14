@@ -1,0 +1,88 @@
+.spotify-card {
+    display: grid;
+    grid-template-columns: minmax(180px, 42%) 1fr;
+    gap: 28px;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.spotify-card.empty {
+    grid-template-columns: 1fr;
+}
+
+.artwork-panel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.album-art {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 18px;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.meta-panel {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+}
+
+.status-pill {
+    align-self: flex-start;
+    padding: 6px 14px;
+    border: 2px solid currentColor;
+    border-radius: 999px;
+    font-family: "Jost", sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.track-title,
+.track-artist,
+.track-album,
+.device-label {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.track-title {
+    font-family: "Napoli", serif;
+    font-size: 68px;
+    line-height: 0.92;
+    -webkit-line-clamp: 3;
+}
+
+.track-artist {
+    font-family: "Jost", sans-serif;
+    font-size: 34px;
+    line-height: 1.08;
+    font-weight: 600;
+    -webkit-line-clamp: 2;
+}
+
+.track-album {
+    font-family: "Jost", sans-serif;
+    font-size: 24px;
+    line-height: 1.2;
+    opacity: 0.8;
+    -webkit-line-clamp: 2;
+}
+
+.device-label {
+    margin-top: 8px;
+    font-family: "Dogica", monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0.75;
+    -webkit-line-clamp: 2;
+}
