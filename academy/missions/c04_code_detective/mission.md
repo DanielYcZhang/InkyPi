@@ -41,9 +41,11 @@ Before you start reading code, write down your current understanding:
 ```
 Write your guess here (it's OK to be wrong! this is your starting point):
 
-Step 1: _____________
-Step 2: _____________
-Step 3: _____________
+Step 1: _____________http request
+Step 2: _____________the server recieves the request
+Step 3: _____________runs the generate_image() method
+Step 4: _____________returns the image
+Step 5: _____________updates the display
 ...
 ```
 
@@ -51,14 +53,14 @@ Step 3: _____________
 
 ```
 Your theory:
-_____________
+_____________because it is the base anad baseplugin has all the methods that the plugins need to have
 ```
 
 **Question 3**: How do you think InkyPi "discovers" that your plugin exists?
 
 ```
 Your guess:
-_____________
+_____________it looks for plugin-info.json
 ```
 
 Save these answers! You'll compare them to what you actually find.
