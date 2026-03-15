@@ -173,3 +173,4 @@ mock_display_output/
 /src/static/scripts/
 /src/static/styles/
 **/workbook.md
+extras/spotify_mac_watcher/spotify_mac_watcher_state.json
