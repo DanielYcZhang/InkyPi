@@ -67,14 +67,15 @@
 .track-title {
     display: block;
     font-family: "Arial Unicode", "Jost", sans-serif;
-    font-size: 54px;
-    line-height: 1;
+    font-size: 60px;
+    line-height: 1.12;
     white-space: nowrap;
     text-overflow: ellipsis;
     font-weight: 700;
     letter-spacing: -0.02em;
     overflow: hidden;
     padding-right: 0.18em;
+    padding-bottom: 0.12em;
 }
 
 .track-artist {
