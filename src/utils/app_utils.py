@@ -30,6 +30,10 @@ FONT_FAMILIES = {
     "DS-Digital": [{
         "font-weight": "normal",
         "file": os.path.join("DS-DIGI", "DS-DIGI.TTF")
+    }],
+    "Arial Unicode": [{
+        "font-weight": "normal",
+        "file": "ArialUnicode.ttf"
     }]
 }
 
