@@ -28,10 +28,13 @@
 
 .meta-panel {
     min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 18px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 14px;
+    gap: 12px;
 }
 
 .status-pill {
@@ -39,7 +42,7 @@
     padding: 6px 14px;
     border: 2px solid currentColor;
     border-radius: 999px;
-    font-family: "Jost", sans-serif;
+    font-family: "Jost", "DejaVu Sans", "Noto Sans", sans-serif;
     font-size: 28px;
     line-height: 1;
     letter-spacing: 0.04em;
@@ -53,34 +56,42 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+    box-sizing: border-box;
+    padding-right: 0.08em;
 }
 
 .track-title {
-    font-family: "Napoli", serif;
-    font-size: 68px;
-    line-height: 0.92;
+    font-family: "DejaVu Sans", "Noto Sans", "Jost", sans-serif;
+    font-size: 60px;
+    line-height: 0.98;
     -webkit-line-clamp: 3;
+    font-weight: 700;
+    letter-spacing: -0.02em;
 }
 
 .track-artist {
-    font-family: "Jost", sans-serif;
-    font-size: 34px;
-    line-height: 1.08;
+    font-family: "DejaVu Sans", "Noto Sans", "Jost", sans-serif;
+    font-size: 32px;
+    line-height: 1.12;
     font-weight: 600;
     -webkit-line-clamp: 2;
 }
 
 .track-album {
-    font-family: "Jost", sans-serif;
+    font-family: "DejaVu Sans", "Noto Sans", "Jost", sans-serif;
     font-size: 24px;
-    line-height: 1.2;
+    line-height: 1.24;
     opacity: 0.8;
     -webkit-line-clamp: 2;
 }
 
 .device-label {
     margin-top: 8px;
-    font-family: "Dogica", monospace;
+    font-family: "DejaVu Sans Mono", "Noto Sans Mono", "Dogica", monospace;
     font-size: 14px;
     line-height: 1.5;
     opacity: 0.75;

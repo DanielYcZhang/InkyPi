@@ -106,3 +106,15 @@ def test_update_state_keeps_existing_artwork_on_download_failure(spotify_cache_p
 
     assert changed is True
     assert state["artwork_path"] == original_state["artwork_path"]
+
+
+def test_update_state_preserves_multi_artist_string(spotify_cache_paths):
+    state, changed = service.update_state(
+        service.normalize_payload(
+            valid_payload(artist="Travis Scott, Kendrick Lamar", artwork_url=None)
+        )
+    )
+
+    assert changed is True
+    assert state["artist"] == "Travis Scott, Kendrick Lamar"
+    assert service.read_state()["artist"] == "Travis Scott, Kendrick Lamar"
