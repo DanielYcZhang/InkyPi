@@ -65,17 +65,18 @@
 }
 
 .track-title {
-    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
     font-family: "Arial Unicode", "Jost", sans-serif;
     font-size: 60px;
     line-height: 1.12;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
     font-weight: 700;
     letter-spacing: -0.02em;
     overflow: hidden;
     padding-right: 0.18em;
     padding-bottom: 0.12em;
+    max-height: calc(2 * 1.12em);
 }
 
 .track-artist {
