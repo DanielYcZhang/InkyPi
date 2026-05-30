@@ -1,14 +1,17 @@
 {% extends "plugin.html" %}
 
 {% block content %}
-<div class="spotify-card {% if not reserve_artwork_space %}empty{% endif %}">
+<div
+    class="spotify-card {% if not reserve_artwork_space %}empty{% endif %} {% if text_alignment == 'center' %}align-center{% endif %}"
+    style="--title-lines: {{ title_lines }}; --artist-lines: {{ artist_lines }};"
+>
     {% if show_artwork %}
     <div class="artwork-panel">
-        <img class="album-art" src="{{ artwork_data_uri }}" alt="Album art">
+        <img class="album-art {% if artwork_corner_style == 'square' %}square-corners{% endif %}" src="{{ artwork_data_uri }}" alt="Album art">
     </div>
     {% elif show_artwork_placeholder %}
     <div class="artwork-panel">
-        <div class="album-art placeholder-art">No Art</div>
+        <div class="album-art placeholder-art {% if artwork_corner_style == 'square' %}square-corners{% endif %}">No Art</div>
     </div>
     {% endif %}
 
@@ -26,6 +29,10 @@
 
         {% if show_device_name and device_name %}
         <div class="device-label">{{ device_name }}</div>
+        {% endif %}
+
+        {% if show_last_updated_time and last_updated_text %}
+        <div class="last-updated">{{ last_updated_text }}</div>
         {% endif %}
     </div>
 </div>

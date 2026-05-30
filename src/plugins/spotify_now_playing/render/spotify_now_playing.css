@@ -1,4 +1,6 @@
 .spotify-card {
+    --title-lines: 2;
+    --artist-lines: 2;
     display: grid;
     grid-template-columns: minmax(180px, 42%) 1fr;
     gap: 28px;
@@ -24,6 +26,10 @@
     object-fit: cover;
     border-radius: 18px;
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.album-art.square-corners {
+    border-radius: 0;
 }
 
 .placeholder-art {
@@ -52,6 +58,15 @@
 
 .meta-panel.expanded {
     padding-right: 0;
+}
+
+.spotify-card.align-center .meta-panel {
+    align-items: center;
+    text-align: center;
+}
+
+.spotify-card.align-center .status-pill {
+    align-self: center;
 }
 
 .status-pill {
@@ -87,13 +102,13 @@
     font-family: "Arial Unicode", "Jost", sans-serif;
     font-size: 60px;
     line-height: 1.12;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: var(--title-lines);
     font-weight: 700;
     letter-spacing: -0.02em;
     overflow: hidden;
     padding-right: 0.18em;
     padding-bottom: 0.12em;
-    max-height: calc(2 * 1.12em);
+    max-height: calc(var(--title-lines) * 1.12em);
 }
 
 .track-artist {
@@ -101,7 +116,8 @@
     font-size: 32px;
     line-height: 1.12;
     font-weight: 600;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: var(--artist-lines);
+    max-height: calc(var(--artist-lines) * 1.12em);
 }
 
 .track-album {
@@ -119,4 +135,12 @@
     line-height: 1.5;
     opacity: 0.75;
     -webkit-line-clamp: 2;
+}
+
+.last-updated {
+    margin-top: 6px;
+    font-family: "Jost", sans-serif;
+    font-size: 16px;
+    line-height: 1.2;
+    opacity: 0.68;
 }

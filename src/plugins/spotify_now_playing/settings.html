@@ -4,6 +4,7 @@
         <option value="show_last_track">Show Last Track</option>
         <option value="show_nothing_playing">Show Nothing Playing</option>
     </select>
+    <small class="form-help">Choose whether idle playback keeps the last song visible or switches to a dedicated empty state.</small>
 </div>
 
 <div class="form-group">
@@ -13,6 +14,7 @@
         <option value="show_as_normal">Show as Normal</option>
         <option value="treat_as_nothing_playing">Treat as Nothing Playing</option>
     </select>
+    <small class="form-help">Control whether pausing shows a badge, looks unchanged, or falls back to the empty-state view.</small>
 </div>
 
 <div class="form-group">
@@ -20,6 +22,7 @@
     <select id="artworkStyle" name="artworkStyle" class="form-input">
         <option value="square_left">Square Left</option>
     </select>
+    <small class="form-help">Current layout keeps the album art on the left and text on the right.</small>
 </div>
 
 <div class="form-group">
@@ -29,11 +32,51 @@
         <option value="placeholder_block">Placeholder Block</option>
         <option value="hide_artwork">Hide Artwork Area</option>
     </select>
+    <small class="form-help">Pick whether missing cover art collapses the card to text or shows a simple placeholder block.</small>
 </div>
 
 <div class="form-group">
     <label for="emptyStateMessage" class="form-label">Empty state message:</label>
     <input type="text" id="emptyStateMessage" name="emptyStateMessage" class="form-input" placeholder="Nothing Playing">
+    <small class="form-help">This text is shown when nothing is playing, and when paused is configured to behave like an empty state.</small>
+</div>
+
+<div class="form-group">
+    <label for="textAlignment" class="form-label">Text alignment:</label>
+    <select id="textAlignment" name="textAlignment" class="form-input">
+        <option value="left">Left</option>
+        <option value="center">Center</option>
+    </select>
+    <small class="form-help">Left alignment feels more like a music player; centered alignment feels more poster-like.</small>
+</div>
+
+<div class="form-group">
+    <label for="titleLines" class="form-label">Title lines:</label>
+    <select id="titleLines" name="titleLines" class="form-input">
+        <option value="1">1 line</option>
+        <option value="2">2 lines</option>
+        <option value="3">3 lines</option>
+    </select>
+    <small class="form-help">Controls how many lines the song title can use before it truncates with an ellipsis.</small>
+</div>
+
+<div class="form-group">
+    <label for="artistLines" class="form-label">Artist lines:</label>
+    <select id="artistLines" name="artistLines" class="form-input">
+        <option value="1">1 line</option>
+        <option value="2">2 lines</option>
+        <option value="3">3 lines</option>
+    </select>
+    <small class="form-help">Useful for long artist names or featured artists that would otherwise get cut off too aggressively.</small>
+</div>
+
+<div class="form-group">
+    <label for="artworkCornerStyle" class="form-label">Artwork corners:</label>
+    <select id="artworkCornerStyle" name="artworkCornerStyle" class="form-input">
+        <option value="rounded">Rounded</option>
+        <option value="square">Square</option>
+    </select>
+    <small class="form-help">Choose between softer rounded artwork corners or a sharper square album cover look.</small>
 </div>
 
 <div class="form-group">
@@ -50,6 +93,11 @@
         <input type="checkbox" id="showDeviceName" name="showDeviceName" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
         <span>Show device name</span>
     </div>
+    <div class="form-group">
+        <input type="checkbox" id="showLastUpdatedTime" name="showLastUpdatedTime" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
+        <span>Show last updated time</span>
+    </div>
+    <small class="form-help">These toggles control whether extra metadata appears on the card alongside the track details.</small>
 </div>
 
 <script>
@@ -60,6 +108,10 @@
             document.getElementById('artworkStyle').value = pluginSettings.artworkStyle || 'square_left';
             document.getElementById('fallbackArtworkStyle').value = pluginSettings.fallbackArtworkStyle || 'text_only';
             document.getElementById('emptyStateMessage').value = pluginSettings.emptyStateMessage || 'Nothing Playing';
+            document.getElementById('textAlignment').value = pluginSettings.textAlignment || 'left';
+            document.getElementById('titleLines').value = pluginSettings.titleLines || '2';
+            document.getElementById('artistLines').value = pluginSettings.artistLines || '2';
+            document.getElementById('artworkCornerStyle').value = pluginSettings.artworkCornerStyle || 'rounded';
 
             document.getElementById('showAlbumName').checked = pluginSettings.showAlbumName === 'true';
             document.getElementById('showAlbumName').value = pluginSettings.showAlbumName || 'false';
@@ -69,12 +121,19 @@
 
             document.getElementById('showDeviceName').checked = pluginSettings.showDeviceName === 'true';
             document.getElementById('showDeviceName').value = pluginSettings.showDeviceName || 'false';
+
+            document.getElementById('showLastUpdatedTime').checked = pluginSettings.showLastUpdatedTime === 'true';
+            document.getElementById('showLastUpdatedTime').value = pluginSettings.showLastUpdatedTime || 'false';
         } else {
             document.getElementById('emptyStateMode').value = 'show_last_track';
             document.getElementById('pausedBehavior').value = 'show_paused_badge';
             document.getElementById('artworkStyle').value = 'square_left';
             document.getElementById('fallbackArtworkStyle').value = 'text_only';
             document.getElementById('emptyStateMessage').value = 'Nothing Playing';
+            document.getElementById('textAlignment').value = 'left';
+            document.getElementById('titleLines').value = '2';
+            document.getElementById('artistLines').value = '2';
+            document.getElementById('artworkCornerStyle').value = 'rounded';
 
             document.getElementById('showAlbumName').checked = false;
             document.getElementById('showAlbumName').value = 'false';
@@ -84,6 +143,9 @@
 
             document.getElementById('showDeviceName').checked = false;
             document.getElementById('showDeviceName').value = 'false';
+
+            document.getElementById('showLastUpdatedTime').checked = false;
+            document.getElementById('showLastUpdatedTime').value = 'false';
         }
     });
 </script>
