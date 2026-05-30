@@ -2,7 +2,7 @@
 
 {% block content %}
 <div
-    class="spotify-card {% if not reserve_artwork_space %}empty{% endif %} {% if text_alignment == 'center' %}align-center{% endif %}"
+    class="spotify-card {% if not reserve_artwork_space %}empty{% endif %} {% if text_alignment == 'center' %}align-center{% endif %} {% if artwork_style == 'square_right' %}artwork-right{% endif %} {% if show_empty_state %}state-screen{% endif %}"
     style="--title-lines: {{ title_lines }}; --artist-lines: {{ artist_lines }};"
 >
     {% if show_artwork %}

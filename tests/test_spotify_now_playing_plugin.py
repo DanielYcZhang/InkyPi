@@ -42,8 +42,8 @@ def test_plugin_builds_playing_params(monkeypatch):
             "showStatusLabel": "true",
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
-            "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_paused_screen",
+            "inactiveScreenMode": "show_state_screens",
+            "artworkStyle": "square_left",
             "fallbackArtworkStyle": "text_only",
             "textAlignment": "left",
             "titleLines": "2",
@@ -56,6 +56,7 @@ def test_plugin_builds_playing_params(monkeypatch):
     assert params["title"] == "A Very Long Song Title"
     assert params["artist"] == "Artist Name, Collaborator"
     assert params["show_device_name"] is False
+    assert params["artwork_style"] == "square_left"
 
 
 def test_plugin_builds_empty_state(monkeypatch):
@@ -76,8 +77,8 @@ def test_plugin_builds_empty_state(monkeypatch):
             "showStatusLabel": "true",
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
-            "emptyStateMode": "show_nothing_playing",
-            "pausedBehavior": "show_paused_screen",
+            "inactiveScreenMode": "show_state_screens",
+            "artworkStyle": "square_left",
             "fallbackArtworkStyle": "text_only",
             "textAlignment": "left",
             "titleLines": "2",
@@ -114,8 +115,8 @@ def test_plugin_preserves_non_english_metadata(monkeypatch):
             "showStatusLabel": "true",
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
-            "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_paused_screen",
+            "inactiveScreenMode": "show_state_screens",
+            "artworkStyle": "square_left",
             "fallbackArtworkStyle": "text_only",
             "textAlignment": "left",
             "titleLines": "2",
@@ -152,8 +153,8 @@ def test_plugin_preserves_long_single_word_title(monkeypatch):
             "showStatusLabel": "true",
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
-            "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_paused_screen",
+            "inactiveScreenMode": "show_state_screens",
+            "artworkStyle": "square_left",
             "fallbackArtworkStyle": "text_only",
             "textAlignment": "left",
             "titleLines": "2",
@@ -189,8 +190,8 @@ def test_plugin_hides_status_label_when_disabled(monkeypatch):
             "showStatusLabel": "false",
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
-            "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_last_track",
+            "inactiveScreenMode": "keep_last_track",
+            "artworkStyle": "square_left",
             "fallbackArtworkStyle": "text_only",
             "textAlignment": "left",
             "titleLines": "2",
@@ -226,8 +227,8 @@ def test_plugin_can_show_paused_screen(monkeypatch):
             "showStatusLabel": "true",
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
-            "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_paused_screen",
+            "inactiveScreenMode": "show_state_screens",
+            "artworkStyle": "square_left",
             "fallbackArtworkStyle": "text_only",
             "textAlignment": "left",
             "titleLines": "2",
@@ -237,7 +238,7 @@ def test_plugin_can_show_paused_screen(monkeypatch):
     )
     assert params["show_empty_state"] is True
     assert params["title"] == "Paused"
-    assert params["artist"] == "Playback is paused"
+    assert params["artist"] == "Spotify playback is paused"
     assert params["status_label"] == ""
     assert params["state_message"] is not None
 
@@ -267,8 +268,8 @@ def test_plugin_can_treat_paused_as_nothing_playing(monkeypatch):
             "showStatusLabel": "true",
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
-            "emptyStateMode": "show_nothing_playing",
-            "pausedBehavior": "show_nothing_playing_screen",
+            "inactiveScreenMode": "show_nothing_playing_for_all",
+            "artworkStyle": "square_left",
             "fallbackArtworkStyle": "text_only",
             "textAlignment": "left",
             "titleLines": "2",
@@ -306,8 +307,8 @@ def test_plugin_can_show_artwork_placeholder(monkeypatch):
             "showStatusLabel": "true",
             "showDeviceName": "true",
             "showLastUpdatedTime": "false",
-            "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_paused_screen",
+            "inactiveScreenMode": "show_state_screens",
+            "artworkStyle": "square_left",
             "fallbackArtworkStyle": "placeholder_block",
             "textAlignment": "left",
             "titleLines": "2",
@@ -346,8 +347,8 @@ def test_plugin_can_show_last_updated_time(monkeypatch):
             "showStatusLabel": "true",
             "showDeviceName": "false",
             "showLastUpdatedTime": "true",
-            "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_paused_screen",
+            "inactiveScreenMode": "show_state_screens",
+            "artworkStyle": "square_right",
             "fallbackArtworkStyle": "text_only",
             "textAlignment": "center",
             "titleLines": "3",
@@ -362,6 +363,37 @@ def test_plugin_can_show_last_updated_time(monkeypatch):
     assert params["title_lines"] == 3
     assert params["artist_lines"] == 1
     assert params["artwork_corner_style"] == "square"
+    assert params["artwork_style"] == "square_right"
+
+
+def test_plugin_maps_legacy_settings_to_combined_idle_mode(monkeypatch):
+    plugin = SpotifyNowPlaying(plugin_config())
+
+    monkeypatch.setattr(
+        "src.plugins.spotify_now_playing.spotify_now_playing.read_state",
+        lambda: {
+            "title": "Track",
+            "artist": "Artist",
+            "album": "Album",
+            "player_state": "paused",
+            "device_name": "MacBook Pro",
+            "artwork_path": None,
+        },
+    )
+    monkeypatch.setattr(
+        "src.plugins.spotify_now_playing.spotify_now_playing.get_artwork_data_uri",
+        lambda path: None,
+    )
+
+    params = plugin._build_template_params(
+        {
+            "emptyStateMode": "show_last_track",
+            "pausedBehavior": "show_as_normal",
+            "artworkStyle": "square_left",
+        }
+    )
+    assert params["status_label"] == "Paused"
+    assert params["show_empty_state"] is False
 
 
 def test_plugin_generate_image_uses_render_image(monkeypatch):

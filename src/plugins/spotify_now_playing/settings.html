@@ -1,20 +1,20 @@
 <div class="form-group">
-    <label for="emptyStateMode" class="form-label">When nothing is playing:</label>
-    <select id="emptyStateMode" name="emptyStateMode" class="form-input">
-        <option value="show_last_track">Keep the last track on screen</option>
-        <option value="show_nothing_playing">Show a "Nothing Playing" screen</option>
+    <label for="inactiveScreenMode" class="form-label">When Spotify is paused or idle:</label>
+    <select id="inactiveScreenMode" name="inactiveScreenMode" class="form-input">
+        <option value="show_state_screens">Show paused / nothing playing screens</option>
+        <option value="keep_last_track">Keep the last track on screen</option>
+        <option value="show_nothing_playing_for_all">Always use the "Nothing Playing" screen</option>
     </select>
-    <small class="form-help">Choose what the display does when Spotify is open but no song is currently playing.</small>
+    <small class="form-help">This controls what happens when Spotify is not actively playing music. The first option gives paused and idle their own clean screens.</small>
 </div>
 
 <div class="form-group">
-    <label for="pausedBehavior" class="form-label">When playback is paused:</label>
-    <select id="pausedBehavior" name="pausedBehavior" class="form-input">
-        <option value="show_paused_screen">Show a paused screen</option>
-        <option value="show_last_track">Keep the last track on screen</option>
-        <option value="show_nothing_playing_screen">Use the "Nothing Playing" screen</option>
+    <label for="artworkStyle" class="form-label">Cover art position:</label>
+    <select id="artworkStyle" name="artworkStyle" class="form-input">
+        <option value="square_left">Left</option>
+        <option value="square_right">Right</option>
     </select>
-    <small class="form-help">The paused screen shows a dedicated paused message. Keeping the last track leaves the song details visible and can add a small "Paused" pill above the title.</small>
+    <small class="form-help">Pick which side the album cover sits on. The text moves to the other side automatically.</small>
 </div>
 
 <div class="form-group">
@@ -99,8 +99,8 @@
 
 <script>
     const spotifyDefaults = {
-        emptyStateMode: 'show_last_track',
-        pausedBehavior: 'show_paused_screen',
+        inactiveScreenMode: 'show_state_screens',
+        artworkStyle: 'square_left',
         fallbackArtworkStyle: 'text_only',
         textAlignment: 'left',
         titleLines: '2',
@@ -112,22 +112,29 @@
         showLastUpdatedTime: 'false'
     };
 
-    function normalizePausedBehavior(value) {
-        if (value === 'show_paused_badge') {
-            return 'show_paused_screen';
+    function normalizeInactiveMode(settings) {
+        if (settings.inactiveScreenMode) {
+            return settings.inactiveScreenMode;
         }
-        if (value === 'show_as_normal') {
-            return 'show_last_track';
+
+        const pausedBehavior = settings.pausedBehavior;
+        const emptyStateMode = settings.emptyStateMode;
+
+        if (pausedBehavior === 'show_as_normal' || pausedBehavior === 'show_last_track') {
+            return 'keep_last_track';
         }
-        if (value === 'treat_as_nothing_playing') {
-            return 'show_nothing_playing_screen';
+        if (pausedBehavior === 'treat_as_nothing_playing' || pausedBehavior === 'show_nothing_playing_screen') {
+            return 'show_nothing_playing_for_all';
         }
-        return value || spotifyDefaults.pausedBehavior;
+        if (emptyStateMode === 'show_last_track') {
+            return 'show_state_screens';
+        }
+        return spotifyDefaults.inactiveScreenMode;
     }
 
     function applySpotifyDefaults(settings) {
-        document.getElementById('emptyStateMode').value = settings.emptyStateMode || spotifyDefaults.emptyStateMode;
-        document.getElementById('pausedBehavior').value = normalizePausedBehavior(settings.pausedBehavior);
+        document.getElementById('inactiveScreenMode').value = normalizeInactiveMode(settings);
+        document.getElementById('artworkStyle').value = settings.artworkStyle || spotifyDefaults.artworkStyle;
         document.getElementById('fallbackArtworkStyle').value = settings.fallbackArtworkStyle || spotifyDefaults.fallbackArtworkStyle;
         document.getElementById('textAlignment').value = settings.textAlignment || spotifyDefaults.textAlignment;
         document.getElementById('titleLines').value = settings.titleLines || spotifyDefaults.titleLines;
@@ -149,6 +156,9 @@
     }
 
     function resetSpotifyDefaults() {
+        if (!window.confirm('Reset Spotify settings back to the defaults?')) {
+            return;
+        }
         applySpotifyDefaults(spotifyDefaults);
     }
 
