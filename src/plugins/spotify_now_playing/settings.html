@@ -1,44 +1,30 @@
 <div class="form-group">
     <label for="emptyStateMode" class="form-label">When nothing is playing:</label>
     <select id="emptyStateMode" name="emptyStateMode" class="form-input">
-        <option value="show_last_track">Show Last Track</option>
-        <option value="show_nothing_playing">Show Nothing Playing</option>
+        <option value="show_last_track">Keep the last track on screen</option>
+        <option value="show_nothing_playing">Show a "Nothing Playing" screen</option>
     </select>
-    <small class="form-help">Choose whether idle playback keeps the last song visible or switches to a dedicated empty state.</small>
+    <small class="form-help">Choose what the display does when Spotify is open but no song is currently playing.</small>
 </div>
 
 <div class="form-group">
-    <label for="pausedBehavior" class="form-label">Paused behavior:</label>
+    <label for="pausedBehavior" class="form-label">When playback is paused:</label>
     <select id="pausedBehavior" name="pausedBehavior" class="form-input">
-        <option value="show_paused_badge">Show Paused Badge</option>
-        <option value="show_as_normal">Show as Normal</option>
-        <option value="treat_as_nothing_playing">Treat as Nothing Playing</option>
+        <option value="show_paused_screen">Show a paused screen</option>
+        <option value="show_last_track">Keep the last track on screen</option>
+        <option value="show_nothing_playing_screen">Use the "Nothing Playing" screen</option>
     </select>
-    <small class="form-help">Control whether pausing shows a badge, looks unchanged, or falls back to the empty-state view.</small>
+    <small class="form-help">The paused screen shows a dedicated paused message. Keeping the last track leaves the song details visible and can add a small "Paused" pill above the title.</small>
 </div>
 
 <div class="form-group">
-    <label for="artworkStyle" class="form-label">Artwork Layout:</label>
-    <select id="artworkStyle" name="artworkStyle" class="form-input">
-        <option value="square_left">Square Left</option>
-    </select>
-    <small class="form-help">Current layout keeps the album art on the left and text on the right.</small>
-</div>
-
-<div class="form-group">
-    <label for="fallbackArtworkStyle" class="form-label">When artwork is missing:</label>
+    <label for="fallbackArtworkStyle" class="form-label">If cover art is missing:</label>
     <select id="fallbackArtworkStyle" name="fallbackArtworkStyle" class="form-input">
-        <option value="text_only">Text Only</option>
-        <option value="placeholder_block">Placeholder Block</option>
-        <option value="hide_artwork">Hide Artwork Area</option>
+        <option value="text_only">Show text only</option>
+        <option value="placeholder_block">Show a placeholder box</option>
+        <option value="hide_artwork">Remove the artwork area</option>
     </select>
-    <small class="form-help">Pick whether missing cover art collapses the card to text or shows a simple placeholder block.</small>
-</div>
-
-<div class="form-group">
-    <label for="emptyStateMessage" class="form-label">Empty state message:</label>
-    <input type="text" id="emptyStateMessage" name="emptyStateMessage" class="form-input" placeholder="Nothing Playing">
-    <small class="form-help">This text is shown when nothing is playing, and when paused is configured to behave like an empty state.</small>
+    <small class="form-help">This only matters for tracks that do not have album art. Text only is the cleanest default.</small>
 </div>
 
 <div class="form-group">
@@ -47,17 +33,17 @@
         <option value="left">Left</option>
         <option value="center">Center</option>
     </select>
-    <small class="form-help">Left alignment feels more like a music player; centered alignment feels more poster-like.</small>
+    <small class="form-help">Left feels more like a music player. Center feels more like a poster.</small>
 </div>
 
 <div class="form-group">
-    <label for="titleLines" class="form-label">Title lines:</label>
+    <label for="titleLines" class="form-label">Song title lines:</label>
     <select id="titleLines" name="titleLines" class="form-input">
         <option value="1">1 line</option>
         <option value="2">2 lines</option>
         <option value="3">3 lines</option>
     </select>
-    <small class="form-help">Controls how many lines the song title can use before it truncates with an ellipsis.</small>
+    <small class="form-help">If the title is longer than this, it gets cut off with dots at the end.</small>
 </div>
 
 <div class="form-group">
@@ -67,85 +53,106 @@
         <option value="2">2 lines</option>
         <option value="3">3 lines</option>
     </select>
-    <small class="form-help">Useful for long artist names or featured artists that would otherwise get cut off too aggressively.</small>
+    <small class="form-help">Useful if you want a little more room for featured artists or long names.</small>
 </div>
 
 <div class="form-group">
-    <label for="artworkCornerStyle" class="form-label">Artwork corners:</label>
+    <label for="artworkCornerStyle" class="form-label">Cover art corners:</label>
     <select id="artworkCornerStyle" name="artworkCornerStyle" class="form-input">
         <option value="rounded">Rounded</option>
         <option value="square">Square</option>
     </select>
-    <small class="form-help">Choose between softer rounded artwork corners or a sharper square album cover look.</small>
+    <small class="form-help">Rounded feels softer. Square looks more like the actual album cover.</small>
 </div>
 
 <div class="form-group">
-    <label class="form-label">Display:</label>
+    <label class="form-label">Extra details:</label>
     <div class="form-group">
         <input type="checkbox" id="showAlbumName" name="showAlbumName" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
         <span>Show album name</span>
     </div>
+    <small class="form-help">Adds the album title under the artist name.</small>
+
     <div class="form-group">
         <input type="checkbox" id="showStatusLabel" name="showStatusLabel" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
-        <span>Show status label</span>
+        <span>Show small status pill</span>
     </div>
+    <small class="form-help">Shows a small label above the title when you keep the last track on screen, like "Paused" or "Nothing Playing".</small>
+
     <div class="form-group">
         <input type="checkbox" id="showDeviceName" name="showDeviceName" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
         <span>Show device name</span>
     </div>
+    <small class="form-help">Shows which device sent the track, for example your MacBook.</small>
+
     <div class="form-group">
         <input type="checkbox" id="showLastUpdatedTime" name="showLastUpdatedTime" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
         <span>Show last updated time</span>
     </div>
-    <small class="form-help">These toggles control whether extra metadata appears on the card alongside the track details.</small>
+    <small class="form-help">Adds a small timestamp so you can tell when the card last refreshed.</small>
+</div>
+
+<div class="form-group">
+    <button type="button" class="secondary-button" onclick="resetSpotifyDefaults()">Reset Spotify settings to default</button>
+    <small class="form-help">This resets only the Spotify-specific options on this page. Frame, margins, and other style settings stay as they are.</small>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (loadPluginSettings) {
-            document.getElementById('emptyStateMode').value = pluginSettings.emptyStateMode || 'show_last_track';
-            document.getElementById('pausedBehavior').value = pluginSettings.pausedBehavior || 'show_paused_badge';
-            document.getElementById('artworkStyle').value = pluginSettings.artworkStyle || 'square_left';
-            document.getElementById('fallbackArtworkStyle').value = pluginSettings.fallbackArtworkStyle || 'text_only';
-            document.getElementById('emptyStateMessage').value = pluginSettings.emptyStateMessage || 'Nothing Playing';
-            document.getElementById('textAlignment').value = pluginSettings.textAlignment || 'left';
-            document.getElementById('titleLines').value = pluginSettings.titleLines || '2';
-            document.getElementById('artistLines').value = pluginSettings.artistLines || '2';
-            document.getElementById('artworkCornerStyle').value = pluginSettings.artworkCornerStyle || 'rounded';
+    const spotifyDefaults = {
+        emptyStateMode: 'show_last_track',
+        pausedBehavior: 'show_paused_screen',
+        fallbackArtworkStyle: 'text_only',
+        textAlignment: 'left',
+        titleLines: '2',
+        artistLines: '2',
+        artworkCornerStyle: 'rounded',
+        showAlbumName: 'false',
+        showStatusLabel: 'true',
+        showDeviceName: 'false',
+        showLastUpdatedTime: 'false'
+    };
 
-            document.getElementById('showAlbumName').checked = pluginSettings.showAlbumName === 'true';
-            document.getElementById('showAlbumName').value = pluginSettings.showAlbumName || 'false';
-
-            document.getElementById('showStatusLabel').checked = pluginSettings.showStatusLabel !== 'false';
-            document.getElementById('showStatusLabel').value = pluginSettings.showStatusLabel || 'true';
-
-            document.getElementById('showDeviceName').checked = pluginSettings.showDeviceName === 'true';
-            document.getElementById('showDeviceName').value = pluginSettings.showDeviceName || 'false';
-
-            document.getElementById('showLastUpdatedTime').checked = pluginSettings.showLastUpdatedTime === 'true';
-            document.getElementById('showLastUpdatedTime').value = pluginSettings.showLastUpdatedTime || 'false';
-        } else {
-            document.getElementById('emptyStateMode').value = 'show_last_track';
-            document.getElementById('pausedBehavior').value = 'show_paused_badge';
-            document.getElementById('artworkStyle').value = 'square_left';
-            document.getElementById('fallbackArtworkStyle').value = 'text_only';
-            document.getElementById('emptyStateMessage').value = 'Nothing Playing';
-            document.getElementById('textAlignment').value = 'left';
-            document.getElementById('titleLines').value = '2';
-            document.getElementById('artistLines').value = '2';
-            document.getElementById('artworkCornerStyle').value = 'rounded';
-
-            document.getElementById('showAlbumName').checked = false;
-            document.getElementById('showAlbumName').value = 'false';
-
-            document.getElementById('showStatusLabel').checked = true;
-            document.getElementById('showStatusLabel').value = 'true';
-
-            document.getElementById('showDeviceName').checked = false;
-            document.getElementById('showDeviceName').value = 'false';
-
-            document.getElementById('showLastUpdatedTime').checked = false;
-            document.getElementById('showLastUpdatedTime').value = 'false';
+    function normalizePausedBehavior(value) {
+        if (value === 'show_paused_badge') {
+            return 'show_paused_screen';
         }
+        if (value === 'show_as_normal') {
+            return 'show_last_track';
+        }
+        if (value === 'treat_as_nothing_playing') {
+            return 'show_nothing_playing_screen';
+        }
+        return value || spotifyDefaults.pausedBehavior;
+    }
+
+    function applySpotifyDefaults(settings) {
+        document.getElementById('emptyStateMode').value = settings.emptyStateMode || spotifyDefaults.emptyStateMode;
+        document.getElementById('pausedBehavior').value = normalizePausedBehavior(settings.pausedBehavior);
+        document.getElementById('fallbackArtworkStyle').value = settings.fallbackArtworkStyle || spotifyDefaults.fallbackArtworkStyle;
+        document.getElementById('textAlignment').value = settings.textAlignment || spotifyDefaults.textAlignment;
+        document.getElementById('titleLines').value = settings.titleLines || spotifyDefaults.titleLines;
+        document.getElementById('artistLines').value = settings.artistLines || spotifyDefaults.artistLines;
+        document.getElementById('artworkCornerStyle').value = settings.artworkCornerStyle || spotifyDefaults.artworkCornerStyle;
+
+        document.getElementById('showAlbumName').checked = (settings.showAlbumName || spotifyDefaults.showAlbumName) === 'true';
+        document.getElementById('showAlbumName').value = document.getElementById('showAlbumName').checked ? 'true' : 'false';
+
+        const showStatusValue = settings.showStatusLabel || spotifyDefaults.showStatusLabel;
+        document.getElementById('showStatusLabel').checked = showStatusValue === 'true';
+        document.getElementById('showStatusLabel').value = document.getElementById('showStatusLabel').checked ? 'true' : 'false';
+
+        document.getElementById('showDeviceName').checked = (settings.showDeviceName || spotifyDefaults.showDeviceName) === 'true';
+        document.getElementById('showDeviceName').value = document.getElementById('showDeviceName').checked ? 'true' : 'false';
+
+        document.getElementById('showLastUpdatedTime').checked = (settings.showLastUpdatedTime || spotifyDefaults.showLastUpdatedTime) === 'true';
+        document.getElementById('showLastUpdatedTime').value = document.getElementById('showLastUpdatedTime').checked ? 'true' : 'false';
+    }
+
+    function resetSpotifyDefaults() {
+        applySpotifyDefaults(spotifyDefaults);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        applySpotifyDefaults(loadPluginSettings ? pluginSettings : spotifyDefaults);
     });
 </script>

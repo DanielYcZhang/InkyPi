@@ -43,9 +43,8 @@ def test_plugin_builds_playing_params(monkeypatch):
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
             "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_paused_badge",
+            "pausedBehavior": "show_paused_screen",
             "fallbackArtworkStyle": "text_only",
-            "emptyStateMessage": "Nothing Playing",
             "textAlignment": "left",
             "titleLines": "2",
             "artistLines": "2",
@@ -78,9 +77,8 @@ def test_plugin_builds_empty_state(monkeypatch):
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
             "emptyStateMode": "show_nothing_playing",
-            "pausedBehavior": "show_paused_badge",
+            "pausedBehavior": "show_paused_screen",
             "fallbackArtworkStyle": "text_only",
-            "emptyStateMessage": "Nothing Playing",
             "textAlignment": "left",
             "titleLines": "2",
             "artistLines": "2",
@@ -117,9 +115,8 @@ def test_plugin_preserves_non_english_metadata(monkeypatch):
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
             "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_paused_badge",
+            "pausedBehavior": "show_paused_screen",
             "fallbackArtworkStyle": "text_only",
-            "emptyStateMessage": "Nothing Playing",
             "textAlignment": "left",
             "titleLines": "2",
             "artistLines": "2",
@@ -156,9 +153,8 @@ def test_plugin_preserves_long_single_word_title(monkeypatch):
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
             "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_paused_badge",
+            "pausedBehavior": "show_paused_screen",
             "fallbackArtworkStyle": "text_only",
-            "emptyStateMessage": "Nothing Playing",
             "textAlignment": "left",
             "titleLines": "2",
             "artistLines": "2",
@@ -194,9 +190,8 @@ def test_plugin_hides_status_label_when_disabled(monkeypatch):
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
             "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_paused_badge",
+            "pausedBehavior": "show_last_track",
             "fallbackArtworkStyle": "text_only",
-            "emptyStateMessage": "Nothing Playing",
             "textAlignment": "left",
             "titleLines": "2",
             "artistLines": "2",
@@ -204,6 +199,47 @@ def test_plugin_hides_status_label_when_disabled(monkeypatch):
         }
     )
     assert params["status_label"] == ""
+
+
+def test_plugin_can_show_paused_screen(monkeypatch):
+    plugin = SpotifyNowPlaying(plugin_config())
+
+    monkeypatch.setattr(
+        "src.plugins.spotify_now_playing.spotify_now_playing.read_state",
+        lambda: {
+            "title": "Track",
+            "artist": "Artist",
+            "album": "Album",
+            "player_state": "paused",
+            "device_name": "MacBook Pro",
+            "artwork_path": None,
+        },
+    )
+    monkeypatch.setattr(
+        "src.plugins.spotify_now_playing.spotify_now_playing.get_artwork_data_uri",
+        lambda path: None,
+    )
+
+    params = plugin._build_template_params(
+        {
+            "showAlbumName": "false",
+            "showStatusLabel": "true",
+            "showDeviceName": "false",
+            "showLastUpdatedTime": "false",
+            "emptyStateMode": "show_last_track",
+            "pausedBehavior": "show_paused_screen",
+            "fallbackArtworkStyle": "text_only",
+            "textAlignment": "left",
+            "titleLines": "2",
+            "artistLines": "2",
+            "artworkCornerStyle": "rounded",
+        }
+    )
+    assert params["show_empty_state"] is True
+    assert params["title"] == "Paused"
+    assert params["artist"] == "Playback is paused"
+    assert params["status_label"] == ""
+    assert params["state_message"] is not None
 
 
 def test_plugin_can_treat_paused_as_nothing_playing(monkeypatch):
@@ -232,9 +268,8 @@ def test_plugin_can_treat_paused_as_nothing_playing(monkeypatch):
             "showDeviceName": "false",
             "showLastUpdatedTime": "false",
             "emptyStateMode": "show_nothing_playing",
-            "pausedBehavior": "treat_as_nothing_playing",
+            "pausedBehavior": "show_nothing_playing_screen",
             "fallbackArtworkStyle": "text_only",
-            "emptyStateMessage": "Idle",
             "textAlignment": "left",
             "titleLines": "2",
             "artistLines": "2",
@@ -242,7 +277,7 @@ def test_plugin_can_treat_paused_as_nothing_playing(monkeypatch):
         }
     )
     assert params["show_empty_state"] is True
-    assert params["title"] == "Idle"
+    assert params["title"] == "Nothing Playing"
     assert params["artist"] == "Spotify"
 
 
@@ -272,9 +307,8 @@ def test_plugin_can_show_artwork_placeholder(monkeypatch):
             "showDeviceName": "true",
             "showLastUpdatedTime": "false",
             "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_paused_badge",
+            "pausedBehavior": "show_paused_screen",
             "fallbackArtworkStyle": "placeholder_block",
-            "emptyStateMessage": "Nothing Playing",
             "textAlignment": "left",
             "titleLines": "2",
             "artistLines": "2",
@@ -313,9 +347,8 @@ def test_plugin_can_show_last_updated_time(monkeypatch):
             "showDeviceName": "false",
             "showLastUpdatedTime": "true",
             "emptyStateMode": "show_last_track",
-            "pausedBehavior": "show_paused_badge",
+            "pausedBehavior": "show_paused_screen",
             "fallbackArtworkStyle": "text_only",
-            "emptyStateMessage": "Nothing Playing",
             "textAlignment": "center",
             "titleLines": "3",
             "artistLines": "1",
@@ -334,7 +367,7 @@ def test_plugin_can_show_last_updated_time(monkeypatch):
 def test_plugin_generate_image_uses_render_image(monkeypatch):
     plugin = SpotifyNowPlaying(plugin_config())
 
-    monkeypatch.setattr(plugin, "_build_template_params", lambda settings: {"plugin_settings": settings})
+    monkeypatch.setattr(plugin, "_build_template_params", lambda settings, timezone_str=None: {"plugin_settings": settings})
     monkeypatch.setattr(
         plugin,
         "render_image",

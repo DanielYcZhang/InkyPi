@@ -23,6 +23,10 @@
         <div class="track-title">{{ title }}</div>
         <div class="track-artist">{{ artist }}</div>
 
+        {% if state_message %}
+        <div class="state-message">{{ state_message }}</div>
+        {% endif %}
+
         {% if show_album_name and album %}
         <div class="track-album">{{ album }}</div>
         {% endif %}
