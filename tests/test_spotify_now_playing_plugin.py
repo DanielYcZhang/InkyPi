@@ -350,7 +350,7 @@ def test_plugin_can_show_last_updated_time(monkeypatch):
             "inactiveScreenMode": "show_state_screens",
             "artworkStyle": "square_right",
             "fallbackArtworkStyle": "text_only",
-            "textAlignment": "center",
+            "textAlignment": "right",
             "titleLines": "3",
             "artistLines": "1",
             "artworkCornerStyle": "square",
@@ -359,11 +359,38 @@ def test_plugin_can_show_last_updated_time(monkeypatch):
     )
     assert params["show_last_updated_time"] is True
     assert params["last_updated_text"] is not None
-    assert params["text_alignment"] == "center"
+    assert params["text_alignment"] == "right"
     assert params["title_lines"] == 3
     assert params["artist_lines"] == 1
     assert params["artwork_corner_style"] == "square"
     assert params["artwork_style"] == "square_right"
+
+
+def test_plugin_accepts_checkbox_on_values(monkeypatch):
+    plugin = SpotifyNowPlaying(plugin_config())
+
+    monkeypatch.setattr(
+        "src.plugins.spotify_now_playing.spotify_now_playing.read_state",
+        lambda: {
+            "title": "Track",
+            "artist": "Artist",
+            "player_state": "playing",
+            "artwork_path": None,
+            "received_at": "2026-05-30T00:15:00+00:00",
+        },
+    )
+    monkeypatch.setattr(
+        "src.plugins.spotify_now_playing.spotify_now_playing.get_artwork_data_uri",
+        lambda path: None,
+    )
+
+    params = plugin._build_template_params(
+        {
+            "showLastUpdatedTime": "on",
+            "inactiveScreenMode": "show_state_screens",
+        }
+    )
+    assert params["show_last_updated_time"] is True
 
 
 def test_plugin_maps_legacy_settings_to_combined_idle_mode(monkeypatch):

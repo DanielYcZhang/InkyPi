@@ -93,8 +93,17 @@
     text-align: center;
 }
 
+.spotify-card.align-right .meta-panel {
+    align-items: flex-end;
+    text-align: right;
+}
+
 .spotify-card.align-center .status-pill {
     align-self: center;
+}
+
+.spotify-card.align-right .status-pill {
+    align-self: flex-end;
 }
 
 .status-pill {
@@ -164,6 +173,22 @@
     opacity: 0.72;
     -webkit-line-clamp: 3;
     max-width: 34ch;
+}
+
+.state-title {
+    font-family: "Arial Unicode", "Jost", sans-serif;
+    font-size: 72px;
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.state-subtitle {
+    font-family: "Arial Unicode", "Jost", sans-serif;
+    font-size: 34px;
+    line-height: 1.14;
+    font-weight: 600;
+    opacity: 0.9;
 }
 
 .device-label {

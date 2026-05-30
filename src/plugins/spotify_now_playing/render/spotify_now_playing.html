@@ -2,9 +2,21 @@
 
 {% block content %}
 <div
-    class="spotify-card {% if not reserve_artwork_space %}empty{% endif %} {% if text_alignment == 'center' %}align-center{% endif %} {% if artwork_style == 'square_right' %}artwork-right{% endif %} {% if show_empty_state %}state-screen{% endif %}"
+    class="spotify-card {% if not reserve_artwork_space %}empty{% endif %} {% if text_alignment == 'center' %}align-center{% endif %} {% if text_alignment == 'right' %}align-right{% endif %} {% if artwork_style == 'square_right' %}artwork-right{% endif %} {% if show_empty_state %}state-screen{% endif %}"
     style="--title-lines: {{ title_lines }}; --artist-lines: {{ artist_lines }};"
 >
+    {% if show_empty_state %}
+    <div class="meta-panel expanded">
+        <div class="state-title">{{ title }}</div>
+        <div class="state-subtitle">{{ artist }}</div>
+        {% if state_message %}
+        <div class="state-message">{{ state_message }}</div>
+        {% endif %}
+        {% if show_last_updated_time and last_updated_text %}
+        <div class="last-updated">{{ last_updated_text }}</div>
+        {% endif %}
+    </div>
+    {% else %}
     {% if show_artwork %}
     <div class="artwork-panel">
         <img class="album-art {% if artwork_corner_style == 'square' %}square-corners{% endif %}" src="{{ artwork_data_uri }}" alt="Album art">
@@ -39,5 +51,6 @@
         <div class="last-updated">{{ last_updated_text }}</div>
         {% endif %}
     </div>
+    {% endif %}
 </div>
 {% endblock %}

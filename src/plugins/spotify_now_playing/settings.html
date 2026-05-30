@@ -32,8 +32,9 @@
     <select id="textAlignment" name="textAlignment" class="form-input">
         <option value="left">Left</option>
         <option value="center">Center</option>
+        <option value="right">Right</option>
     </select>
-    <small class="form-help">Left feels more like a music player. Center feels more like a poster.</small>
+    <small class="form-help">Left feels like a music player. Center feels like a poster. Right is great when cover art is on the left.</small>
 </div>
 
 <div class="form-group">
@@ -141,17 +142,21 @@
         document.getElementById('artistLines').value = settings.artistLines || spotifyDefaults.artistLines;
         document.getElementById('artworkCornerStyle').value = settings.artworkCornerStyle || spotifyDefaults.artworkCornerStyle;
 
-        document.getElementById('showAlbumName').checked = (settings.showAlbumName || spotifyDefaults.showAlbumName) === 'true';
+        const isTruthy = (value, defaultValue = 'false') => {
+            const raw = value === undefined || value === null || value === '' ? defaultValue : value;
+            return String(raw).toLowerCase() === 'true' || String(raw).toLowerCase() === '1' || String(raw).toLowerCase() === 'yes' || String(raw).toLowerCase() === 'on';
+        };
+
+        document.getElementById('showAlbumName').checked = isTruthy(settings.showAlbumName, spotifyDefaults.showAlbumName);
         document.getElementById('showAlbumName').value = document.getElementById('showAlbumName').checked ? 'true' : 'false';
 
-        const showStatusValue = settings.showStatusLabel || spotifyDefaults.showStatusLabel;
-        document.getElementById('showStatusLabel').checked = showStatusValue === 'true';
+        document.getElementById('showStatusLabel').checked = isTruthy(settings.showStatusLabel, spotifyDefaults.showStatusLabel);
         document.getElementById('showStatusLabel').value = document.getElementById('showStatusLabel').checked ? 'true' : 'false';
 
-        document.getElementById('showDeviceName').checked = (settings.showDeviceName || spotifyDefaults.showDeviceName) === 'true';
+        document.getElementById('showDeviceName').checked = isTruthy(settings.showDeviceName, spotifyDefaults.showDeviceName);
         document.getElementById('showDeviceName').value = document.getElementById('showDeviceName').checked ? 'true' : 'false';
 
-        document.getElementById('showLastUpdatedTime').checked = (settings.showLastUpdatedTime || spotifyDefaults.showLastUpdatedTime) === 'true';
+        document.getElementById('showLastUpdatedTime').checked = isTruthy(settings.showLastUpdatedTime, spotifyDefaults.showLastUpdatedTime);
         document.getElementById('showLastUpdatedTime').value = document.getElementById('showLastUpdatedTime').checked ? 'true' : 'false';
     }
 

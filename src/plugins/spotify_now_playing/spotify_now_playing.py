@@ -24,7 +24,7 @@ DEFAULT_SETTINGS = {
 
 
 def _to_bool(value):
-    return str(value).lower() == "true"
+    return str(value).lower() in {"true", "1", "yes", "on"}
 
 
 def _to_positive_int(value, default):
@@ -100,6 +100,8 @@ class SpotifyNowPlaying(BasePlugin):
         artwork_style = settings.get("artworkStyle", DEFAULT_SETTINGS["artworkStyle"])
         fallback_artwork_style = settings.get("fallbackArtworkStyle", DEFAULT_SETTINGS["fallbackArtworkStyle"])
         text_alignment = settings.get("textAlignment", DEFAULT_SETTINGS["textAlignment"])
+        if text_alignment not in {"left", "center", "right"}:
+            text_alignment = DEFAULT_SETTINGS["textAlignment"]
         title_lines = _to_positive_int(settings.get("titleLines", DEFAULT_SETTINGS["titleLines"]), 2)
         artist_lines = _to_positive_int(settings.get("artistLines", DEFAULT_SETTINGS["artistLines"]), 2)
         artwork_corner_style = settings.get("artworkCornerStyle", DEFAULT_SETTINGS["artworkCornerStyle"])
