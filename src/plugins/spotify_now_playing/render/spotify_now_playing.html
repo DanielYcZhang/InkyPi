@@ -1,14 +1,18 @@
 {% extends "plugin.html" %}
 
 {% block content %}
-<div class="spotify-card {% if show_empty_state %}empty{% endif %}">
-    {% if artwork_data_uri and not show_empty_state %}
+<div class="spotify-card {% if not reserve_artwork_space %}empty{% endif %}">
+    {% if show_artwork %}
     <div class="artwork-panel">
         <img class="album-art" src="{{ artwork_data_uri }}" alt="Album art">
     </div>
+    {% elif show_artwork_placeholder %}
+    <div class="artwork-panel">
+        <div class="album-art placeholder-art">No Art</div>
+    </div>
     {% endif %}
 
-    <div class="meta-panel">
+    <div class="meta-panel {% if not reserve_artwork_space %}expanded{% endif %}">
         {% if status_label %}
         <div class="status-pill">{{ status_label }}</div>
         {% endif %}
@@ -20,7 +24,7 @@
         <div class="track-album">{{ album }}</div>
         {% endif %}
 
-        {% if device_name %}
+        {% if show_device_name and device_name %}
         <div class="device-label">{{ device_name }}</div>
         {% endif %}
     </div>

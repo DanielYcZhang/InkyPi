@@ -26,6 +26,19 @@
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
+.placeholder-art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.06);
+    color: rgba(0, 0, 0, 0.55);
+    font-family: "Jost", sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
 .meta-panel {
     min-width: 0;
     width: 100%;
@@ -35,6 +48,10 @@
     flex-direction: column;
     justify-content: center;
     gap: 12px;
+}
+
+.meta-panel.expanded {
+    padding-right: 0;
 }
 
 .status-pill {

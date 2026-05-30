@@ -7,10 +7,33 @@
 </div>
 
 <div class="form-group">
+    <label for="pausedBehavior" class="form-label">Paused behavior:</label>
+    <select id="pausedBehavior" name="pausedBehavior" class="form-input">
+        <option value="show_paused_badge">Show Paused Badge</option>
+        <option value="show_as_normal">Show as Normal</option>
+        <option value="treat_as_nothing_playing">Treat as Nothing Playing</option>
+    </select>
+</div>
+
+<div class="form-group">
     <label for="artworkStyle" class="form-label">Artwork Layout:</label>
     <select id="artworkStyle" name="artworkStyle" class="form-input">
         <option value="square_left">Square Left</option>
     </select>
+</div>
+
+<div class="form-group">
+    <label for="fallbackArtworkStyle" class="form-label">When artwork is missing:</label>
+    <select id="fallbackArtworkStyle" name="fallbackArtworkStyle" class="form-input">
+        <option value="text_only">Text Only</option>
+        <option value="placeholder_block">Placeholder Block</option>
+        <option value="hide_artwork">Hide Artwork Area</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="emptyStateMessage" class="form-label">Empty state message:</label>
+    <input type="text" id="emptyStateMessage" name="emptyStateMessage" class="form-input" placeholder="Nothing Playing">
 </div>
 
 <div class="form-group">
@@ -19,20 +42,48 @@
         <input type="checkbox" id="showAlbumName" name="showAlbumName" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
         <span>Show album name</span>
     </div>
+    <div class="form-group">
+        <input type="checkbox" id="showStatusLabel" name="showStatusLabel" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
+        <span>Show status label</span>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" id="showDeviceName" name="showDeviceName" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
+        <span>Show device name</span>
+    </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         if (loadPluginSettings) {
             document.getElementById('emptyStateMode').value = pluginSettings.emptyStateMode || 'show_last_track';
+            document.getElementById('pausedBehavior').value = pluginSettings.pausedBehavior || 'show_paused_badge';
             document.getElementById('artworkStyle').value = pluginSettings.artworkStyle || 'square_left';
+            document.getElementById('fallbackArtworkStyle').value = pluginSettings.fallbackArtworkStyle || 'text_only';
+            document.getElementById('emptyStateMessage').value = pluginSettings.emptyStateMessage || 'Nothing Playing';
+
             document.getElementById('showAlbumName').checked = pluginSettings.showAlbumName === 'true';
             document.getElementById('showAlbumName').value = pluginSettings.showAlbumName || 'false';
+
+            document.getElementById('showStatusLabel').checked = pluginSettings.showStatusLabel !== 'false';
+            document.getElementById('showStatusLabel').value = pluginSettings.showStatusLabel || 'true';
+
+            document.getElementById('showDeviceName').checked = pluginSettings.showDeviceName === 'true';
+            document.getElementById('showDeviceName').value = pluginSettings.showDeviceName || 'false';
         } else {
             document.getElementById('emptyStateMode').value = 'show_last_track';
+            document.getElementById('pausedBehavior').value = 'show_paused_badge';
             document.getElementById('artworkStyle').value = 'square_left';
+            document.getElementById('fallbackArtworkStyle').value = 'text_only';
+            document.getElementById('emptyStateMessage').value = 'Nothing Playing';
+
             document.getElementById('showAlbumName').checked = false;
             document.getElementById('showAlbumName').value = 'false';
+
+            document.getElementById('showStatusLabel').checked = true;
+            document.getElementById('showStatusLabel').value = 'true';
+
+            document.getElementById('showDeviceName').checked = false;
+            document.getElementById('showDeviceName').value = 'false';
         }
     });
 </script>
