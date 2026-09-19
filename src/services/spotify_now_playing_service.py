@@ -3,6 +3,8 @@ import hashlib
 import json
 import logging
 import os
+import random
+import threading
 from datetime import datetime, timezone
 from io import BytesIO
 
@@ -19,6 +21,7 @@ SPOTIFY_PUSH_TOKEN_HEADER = "X-InkyPi-Spotify-Token"
 SPOTIFY_CACHE_PATH = resolve_path(os.path.join("static", "images", "saved", "spotify_now_playing.json"))
 SPOTIFY_ARTWORK_DIR = resolve_path(os.path.join("static", "images", "saved", "spotify_now_playing"))
 VALID_PLAYER_STATES = {"playing", "paused", "stopped", "not_running"}
+STATE_LOCK = threading.RLock()
 
 
 def get_cache_path():
@@ -53,19 +56,21 @@ def is_authorized(request, device_config):
 
 
 def read_state():
-    cache_path = get_cache_path()
-    if not os.path.exists(cache_path):
-        return {}
+    with STATE_LOCK:
+        cache_path = get_cache_path()
+        if not os.path.exists(cache_path):
+            return {}
 
-    with open(cache_path, encoding="utf-8") as cache_file:
-        return json.load(cache_file)
+        with open(cache_path, encoding="utf-8") as cache_file:
+            return json.load(cache_file)
 
 
 def write_state(state):
-    cache_path = get_cache_path()
-    _ensure_parent_dir(cache_path)
-    with open(cache_path, "w", encoding="utf-8") as cache_file:
-        json.dump(state, cache_file, indent=2)
+    with STATE_LOCK:
+        cache_path = get_cache_path()
+        _ensure_parent_dir(cache_path)
+        with open(cache_path, "w", encoding="utf-8") as cache_file:
+            json.dump(state, cache_file, indent=2)
 
 
 def _normalize_text(value):
@@ -112,7 +117,7 @@ def normalize_payload(payload, received_at=None):
     return normalized
 
 
-def _state_signature(state):
+def _display_signature(state):
     keys = [
         "identity",
         "title",
@@ -120,9 +125,11 @@ def _state_signature(state):
         "album",
         "artwork_url",
         "player_state",
-        "source_updated_at",
         "device_name",
         "artwork_path",
+        "quote_active",
+        "quote_index",
+        "inferred_idle",
     ]
     return {key: state.get(key) for key in keys}
 
@@ -144,41 +151,94 @@ def _download_artwork(artwork_url, identity, timeout=10):
 
 
 def update_state(normalized_state):
-    existing_state = read_state()
-    merged_state = dict(existing_state)
-    merged_state.update(normalized_state)
+    with STATE_LOCK:
+        existing_state = read_state()
+        merged_state = dict(existing_state)
+        merged_state.update(normalized_state)
 
-    preserve_existing_metadata = normalized_state["player_state"] in {"stopped", "not_running"}
-    for field in ["title", "artist", "album", "artwork_url"]:
-        if preserve_existing_metadata and not normalized_state.get(field):
-            merged_state[field] = existing_state.get(field)
+        preserve_existing_metadata = normalized_state["player_state"] in {"stopped", "not_running"}
+        for field in ["title", "artist", "album", "artwork_url"]:
+            if preserve_existing_metadata and not normalized_state.get(field):
+                merged_state[field] = existing_state.get(field)
 
-    artwork_path = existing_state.get("artwork_path")
-    incoming_artwork_url = normalized_state.get("artwork_url")
-    artwork_url = merged_state.get("artwork_url")
-    identity = merged_state.get("identity")
-    should_redownload = bool(incoming_artwork_url) and (
-        artwork_url != existing_state.get("artwork_url") or identity != existing_state.get("identity")
-    )
+        artwork_path = existing_state.get("artwork_path")
+        incoming_artwork_url = normalized_state.get("artwork_url")
+        artwork_url = merged_state.get("artwork_url")
+        identity = merged_state.get("identity")
+        should_redownload = bool(incoming_artwork_url) and (
+            artwork_url != existing_state.get("artwork_url") or identity != existing_state.get("identity")
+        )
 
-    if should_redownload:
-        try:
-            artwork_path = _download_artwork(artwork_url, identity)
-        except Exception as exc:
-            logger.warning("Failed to download Spotify artwork: %s", exc)
-            if identity != existing_state.get("identity"):
-                artwork_path = None
-    elif not artwork_url:
-        artwork_path = None
+        if should_redownload:
+            try:
+                artwork_path = _download_artwork(artwork_url, identity)
+            except Exception as exc:
+                logger.warning("Failed to download Spotify artwork: %s", exc)
+                if identity != existing_state.get("identity"):
+                    artwork_path = None
+        elif not artwork_url:
+            artwork_path = None
 
-    merged_state["artwork_path"] = artwork_path
-    merged_state["version"] = 1
+        merged_state["artwork_path"] = artwork_path
+        merged_state["version"] = 2
 
-    changed = _state_signature(merged_state) != _state_signature(existing_state)
-    if changed:
-        write_state(merged_state)
+        previous_player_state = existing_state.get("player_state")
+        player_state = normalized_state["player_state"]
+        merged_state["inferred_idle"] = False
+        if player_state == "playing":
+            merged_state["idle_started_at"] = None
+            merged_state["quote_active"] = False
+        elif previous_player_state == "playing" or not existing_state.get("idle_started_at"):
+            merged_state["idle_started_at"] = normalized_state["received_at"]
+            merged_state["quote_active"] = False
 
-    return merged_state, changed
+        display_changed = _display_signature(merged_state) != _display_signature(existing_state)
+        if merged_state != existing_state:
+            write_state(merged_state)
+
+        return merged_state, display_changed
+
+
+def mark_stale_playback_inactive(expected_received_at):
+    """Mark a vanished watcher as inactive without overwriting a newer heartbeat."""
+    with STATE_LOCK:
+        state = read_state()
+        if state.get("player_state") != "playing" or state.get("received_at") != expected_received_at:
+            return state, False
+
+        state["player_state"] = "not_running"
+        state["inferred_idle"] = True
+        state["idle_started_at"] = expected_received_at
+        state["quote_active"] = False
+        state["version"] = 2
+        write_state(state)
+        return state, True
+
+
+def activate_idle_quote(quote_count):
+    if quote_count <= 0:
+        raise ValueError("quote_count must be greater than zero")
+
+    with STATE_LOCK:
+        state = read_state()
+        if state.get("quote_active"):
+            return state, False
+
+        deck = [index for index in state.get("quote_deck", []) if isinstance(index, int) and 0 <= index < quote_count]
+        last_quote_index = state.get("last_quote_index")
+        if not deck:
+            deck = list(range(quote_count))
+            random.shuffle(deck)
+            if len(deck) > 1 and deck[-1] == last_quote_index:
+                deck[0], deck[-1] = deck[-1], deck[0]
+
+        quote_index = deck.pop()
+        state["quote_active"] = True
+        state["quote_index"] = quote_index
+        state["last_quote_index"] = quote_index
+        state["quote_deck"] = deck
+        write_state(state)
+        return state, True
 
 
 def get_artwork_data_uri(artwork_path):

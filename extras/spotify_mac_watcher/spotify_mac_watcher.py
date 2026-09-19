@@ -50,6 +50,10 @@ def compute_identity(track):
     return f"state:{track['player_state']}"
 
 
+def heartbeat_is_due(now_ts, last_posted_at, heartbeat_seconds):
+    return heartbeat_seconds > 0 and now_ts - last_posted_at >= heartbeat_seconds
+
+
 def fetch_spotify_state():
     script = f"""
     tell application "System Events"
@@ -155,6 +159,7 @@ def main():
     poll_interval = float(os.getenv("POLL_INTERVAL_SECONDS", "1"))
     debounce_seconds = float(os.getenv("DEBOUNCE_SECONDS", "3"))
     http_timeout = float(os.getenv("HTTP_TIMEOUT_SECONDS", "5"))
+    heartbeat_seconds = float(os.getenv("HEARTBEAT_SECONDS", "60"))
 
     persisted_state = load_state()
     publisher = DebouncedPublisher(
@@ -164,14 +169,19 @@ def main():
         last_sent_identity=persisted_state.get("last_sent_identity"),
         last_sent_state=persisted_state.get("last_sent_state"),
     )
+    last_posted_at = float(persisted_state.get("last_posted_at") or 0)
+    last_post_attempt_at = last_posted_at
 
     while True:
         try:
             now_ts = time.time()
             current_track = fetch_spotify_state()
             track_to_send = publisher.observe(current_track, now_ts)
-            if track_to_send:
-                post_update(track_to_send, base_url, token, http_timeout)
+            heartbeat_due = heartbeat_is_due(now_ts, last_post_attempt_at, heartbeat_seconds)
+            if track_to_send or heartbeat_due:
+                last_post_attempt_at = now_ts
+                post_update(track_to_send or current_track, base_url, token, http_timeout)
+                last_posted_at = now_ts
 
             save_state(
                 {
@@ -180,6 +190,7 @@ def main():
                     "last_sent_identity": publisher.last_sent_identity,
                     "last_sent_state": publisher.last_sent_state,
                     "last_sent_at": now_iso() if track_to_send else persisted_state.get("last_sent_at"),
+                    "last_posted_at": last_posted_at,
                 }
             )
             persisted_state = load_state()

@@ -30,6 +30,7 @@ from blueprints.settings import settings_bp
 from blueprints.plugin import plugin_bp
 from blueprints.playlist import playlist_bp
 from blueprints.spotify_now_playing import spotify_now_playing_bp
+from services.spotify_idle_monitor import SpotifyIdleMonitor
 from jinja2 import ChoiceLoader, FileSystemLoader
 from plugins.plugin_registry import load_plugins
 from waitress import serve
@@ -63,6 +64,7 @@ app.jinja_loader = ChoiceLoader([FileSystemLoader(directory) for directory in te
 device_config = Config()
 display_manager = DisplayManager(device_config)
 refresh_task = RefreshTask(device_config, display_manager)
+spotify_idle_monitor = SpotifyIdleMonitor(device_config, refresh_task)
 
 load_plugins(device_config.get_plugins())
 
@@ -88,6 +90,7 @@ if __name__ == '__main__':
 
     # start the background refresh task
     refresh_task.start()
+    spotify_idle_monitor.start()
 
     # display default inkypi image on startup
     if device_config.get_config("startup") is True:
@@ -114,4 +117,5 @@ if __name__ == '__main__':
             
         serve(app, host="0.0.0.0", port=PORT, threads=1)
     finally:
+        spotify_idle_monitor.stop()
         refresh_task.stop()

@@ -1,106 +1,159 @@
 <div class="form-group">
-    <label for="inactiveScreenMode" class="form-label">When Spotify is paused or idle:</label>
+    <div class="setting-label-row">
+        <label for="inactiveScreenMode" class="form-label">When Spotify is paused or idle:</label>
+        <button type="button" class="setting-help" aria-label="Choose what appears when Spotify is not playing.">i
+            <span class="setting-tooltip" role="tooltip">Keep the last song visible, show the normal paused/nothing-playing screen, or show a motivational quote after a delay.</span>
+        </button>
+    </div>
     <select id="inactiveScreenMode" name="inactiveScreenMode" class="form-input">
-        <option value="show_state_screens">Show paused / nothing playing screens</option>
+        <option value="show_state_screens">Show paused / nothing playing screen</option>
         <option value="keep_last_track">Keep the last track on screen</option>
-        <option value="show_nothing_playing_for_all">Always use the "Nothing Playing" screen</option>
+        <option value="show_quote_after_idle">Show a motivational quote after a delay</option>
     </select>
-    <small class="form-help">This controls what happens when Spotify is not actively playing music. The first option gives paused and idle their own clean screens.</small>
+</div>
+
+<div class="form-group" id="quoteIdleMinutesGroup">
+    <div class="setting-label-row">
+        <label for="quoteIdleMinutes" class="form-label">Show quote after:</label>
+        <button type="button" class="setting-help" aria-label="Set how long Spotify must be idle before showing a quote.">i
+            <span class="setting-tooltip" role="tooltip">The paused screen stays visible during this wait. Choose any value from 1 minute to 7 days.</span>
+        </button>
+    </div>
+    <div class="form-inline compact-setting">
+        <input type="number" id="quoteIdleMinutes" name="quoteIdleMinutes" class="form-input" min="1" max="10080" step="1">
+        <span>minutes</span>
+    </div>
 </div>
 
 <div class="form-group">
-    <label for="artworkStyle" class="form-label">Cover art position:</label>
+    <div class="setting-label-row">
+        <label for="artworkStyle" class="form-label">Cover art position:</label>
+        <button type="button" class="setting-help" aria-label="Choose which side displays the album cover.">i
+            <span class="setting-tooltip" role="tooltip">The song details automatically move to the opposite side of the cover.</span>
+        </button>
+    </div>
     <select id="artworkStyle" name="artworkStyle" class="form-input">
         <option value="square_left">Left</option>
         <option value="square_right">Right</option>
     </select>
-    <small class="form-help">Pick which side the album cover sits on. The text moves to the other side automatically.</small>
 </div>
 
 <div class="form-group">
-    <label for="fallbackArtworkStyle" class="form-label">If cover art is missing:</label>
+    <div class="setting-label-row">
+        <label for="fallbackArtworkStyle" class="form-label">If cover art is missing:</label>
+        <button type="button" class="setting-help" aria-label="Choose what replaces missing cover art.">i
+            <span class="setting-tooltip" role="tooltip">Text only removes the empty cover area. The placeholder option keeps the normal two-column layout.</span>
+        </button>
+    </div>
     <select id="fallbackArtworkStyle" name="fallbackArtworkStyle" class="form-input">
         <option value="text_only">Show text only</option>
         <option value="placeholder_block">Show a placeholder box</option>
         <option value="hide_artwork">Remove the artwork area</option>
     </select>
-    <small class="form-help">This only matters for tracks that do not have album art. Text only is the cleanest default.</small>
 </div>
 
 <div class="form-group">
-    <label for="textAlignment" class="form-label">Text alignment:</label>
+    <div class="setting-label-row">
+        <label for="textAlignment" class="form-label">Text alignment:</label>
+        <button type="button" class="setting-help" aria-label="Choose how track text is aligned.">i
+            <span class="setting-tooltip" role="tooltip">Controls the title, artist, album, status pill, device name, and update time on the song card.</span>
+        </button>
+    </div>
     <select id="textAlignment" name="textAlignment" class="form-input">
         <option value="left">Left</option>
         <option value="center">Center</option>
         <option value="right">Right</option>
     </select>
-    <small class="form-help">Left feels like a music player. Center feels like a poster. Right is great when cover art is on the left.</small>
 </div>
 
 <div class="form-group">
-    <label for="titleLines" class="form-label">Song title lines:</label>
+    <div class="setting-label-row">
+        <label for="titleLines" class="form-label">Song title lines:</label>
+        <button type="button" class="setting-help" aria-label="Set the maximum number of title lines.">i
+            <span class="setting-tooltip" role="tooltip">Longer song titles are shortened with dots after this many lines.</span>
+        </button>
+    </div>
     <select id="titleLines" name="titleLines" class="form-input">
         <option value="1">1 line</option>
         <option value="2">2 lines</option>
         <option value="3">3 lines</option>
     </select>
-    <small class="form-help">If the title is longer than this, it gets cut off with dots at the end.</small>
 </div>
 
 <div class="form-group">
-    <label for="artistLines" class="form-label">Artist lines:</label>
+    <div class="setting-label-row">
+        <label for="artistLines" class="form-label">Artist lines:</label>
+        <button type="button" class="setting-help" aria-label="Set the maximum number of artist lines.">i
+            <span class="setting-tooltip" role="tooltip">Use more lines when artist names or featured-artist credits are being shortened.</span>
+        </button>
+    </div>
     <select id="artistLines" name="artistLines" class="form-input">
         <option value="1">1 line</option>
         <option value="2">2 lines</option>
         <option value="3">3 lines</option>
     </select>
-    <small class="form-help">Useful if you want a little more room for featured artists or long names.</small>
 </div>
 
 <div class="form-group">
-    <label for="artworkCornerStyle" class="form-label">Cover art corners:</label>
+    <div class="setting-label-row">
+        <label for="artworkCornerStyle" class="form-label">Cover art corners:</label>
+        <button type="button" class="setting-help" aria-label="Choose rounded or square cover corners.">i
+            <span class="setting-tooltip" role="tooltip">Rounded gives the card a softer look. Square keeps the original album-cover shape.</span>
+        </button>
+    </div>
     <select id="artworkCornerStyle" name="artworkCornerStyle" class="form-input">
         <option value="rounded">Rounded</option>
         <option value="square">Square</option>
     </select>
-    <small class="form-help">Rounded feels softer. Square looks more like the actual album cover.</small>
 </div>
 
 <div class="form-group">
     <label class="form-label">Extra details:</label>
-    <div class="form-group">
+
+    <div class="setting-check-row">
         <input type="checkbox" id="showAlbumName" name="showAlbumName" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
-        <span>Show album name</span>
+        <label for="showAlbumName">Show album name</label>
+        <button type="button" class="setting-help" aria-label="Adds the album title under the artist name.">i
+            <span class="setting-tooltip" role="tooltip">Adds the album title under the artist name.</span>
+        </button>
     </div>
-    <small class="form-help">Adds the album title under the artist name.</small>
 
-    <div class="form-group">
+    <div class="setting-check-row">
         <input type="checkbox" id="showStatusLabel" name="showStatusLabel" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
-        <span>Show small status pill</span>
+        <label for="showStatusLabel">Show small status pill</label>
+        <button type="button" class="setting-help" aria-label="Shows playback status above the title.">i
+            <span class="setting-tooltip" role="tooltip">When the last track stays on screen, this adds a small Paused or Nothing Playing label above the title.</span>
+        </button>
     </div>
-    <small class="form-help">Shows a small label above the title when you keep the last track on screen, like "Paused" or "Nothing Playing".</small>
 
-    <div class="form-group">
+    <div class="setting-check-row">
         <input type="checkbox" id="showDeviceName" name="showDeviceName" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
-        <span>Show device name</span>
+        <label for="showDeviceName">Show device name</label>
+        <button type="button" class="setting-help" aria-label="Shows which Mac sent the track.">i
+            <span class="setting-tooltip" role="tooltip">Shows the name of the Mac that sent the current track to InkyPi.</span>
+        </button>
     </div>
-    <small class="form-help">Shows which device sent the track, for example your MacBook.</small>
 
-    <div class="form-group">
+    <div class="setting-check-row">
         <input type="checkbox" id="showLastUpdatedTime" name="showLastUpdatedTime" value="false" onclick="this.value=this.checked ? 'true' : 'false';">
-        <span>Show last updated time</span>
+        <label for="showLastUpdatedTime">Show last updated time</label>
+        <button type="button" class="setting-help" aria-label="Shows when the card last changed.">i
+            <span class="setting-tooltip" role="tooltip">Adds a small timestamp showing when InkyPi last received and displayed a playback change.</span>
+        </button>
     </div>
-    <small class="form-help">Adds a small timestamp so you can tell when the card last refreshed.</small>
 </div>
 
-<div class="form-group">
+<div class="form-group reset-setting-row">
     <button type="button" class="secondary-button" onclick="resetSpotifyDefaults()">Reset Spotify settings to default</button>
-    <small class="form-help">This resets only the Spotify-specific options on this page. Frame, margins, and other style settings stay as they are.</small>
+    <button type="button" class="setting-help" aria-label="Explains which settings are reset.">i
+        <span class="setting-tooltip" role="tooltip">Resets the Spotify options above. Frame, margins, background, and other shared style settings stay unchanged.</span>
+    </button>
 </div>
 
 <script>
     const spotifyDefaults = {
         inactiveScreenMode: 'show_state_screens',
+        quoteIdleMinutes: '30',
         artworkStyle: 'square_left',
         fallbackArtworkStyle: 'text_only',
         textAlignment: 'left',
@@ -114,27 +167,32 @@
     };
 
     function normalizeInactiveMode(settings) {
+        if (settings.inactiveScreenMode === 'show_nothing_playing_for_all') {
+            return 'show_state_screens';
+        }
         if (settings.inactiveScreenMode) {
             return settings.inactiveScreenMode;
         }
-
         const pausedBehavior = settings.pausedBehavior;
-        const emptyStateMode = settings.emptyStateMode;
-
         if (pausedBehavior === 'show_as_normal' || pausedBehavior === 'show_last_track') {
             return 'keep_last_track';
-        }
-        if (pausedBehavior === 'treat_as_nothing_playing' || pausedBehavior === 'show_nothing_playing_screen') {
-            return 'show_nothing_playing_for_all';
-        }
-        if (emptyStateMode === 'show_last_track') {
-            return 'show_state_screens';
         }
         return spotifyDefaults.inactiveScreenMode;
     }
 
+    function isTruthy(value, defaultValue = 'false') {
+        const raw = value === undefined || value === null || value === '' ? defaultValue : value;
+        return ['true', '1', 'yes', 'on'].includes(String(raw).toLowerCase());
+    }
+
+    function updateQuoteSettingsVisibility() {
+        document.getElementById('quoteIdleMinutesGroup').hidden =
+            document.getElementById('inactiveScreenMode').value !== 'show_quote_after_idle';
+    }
+
     function applySpotifyDefaults(settings) {
         document.getElementById('inactiveScreenMode').value = normalizeInactiveMode(settings);
+        document.getElementById('quoteIdleMinutes').value = settings.quoteIdleMinutes || spotifyDefaults.quoteIdleMinutes;
         document.getElementById('artworkStyle').value = settings.artworkStyle || spotifyDefaults.artworkStyle;
         document.getElementById('fallbackArtworkStyle').value = settings.fallbackArtworkStyle || spotifyDefaults.fallbackArtworkStyle;
         document.getElementById('textAlignment').value = settings.textAlignment || spotifyDefaults.textAlignment;
@@ -142,32 +200,25 @@
         document.getElementById('artistLines').value = settings.artistLines || spotifyDefaults.artistLines;
         document.getElementById('artworkCornerStyle').value = settings.artworkCornerStyle || spotifyDefaults.artworkCornerStyle;
 
-        const isTruthy = (value, defaultValue = 'false') => {
-            const raw = value === undefined || value === null || value === '' ? defaultValue : value;
-            return String(raw).toLowerCase() === 'true' || String(raw).toLowerCase() === '1' || String(raw).toLowerCase() === 'yes' || String(raw).toLowerCase() === 'on';
-        };
-
         document.getElementById('showAlbumName').checked = isTruthy(settings.showAlbumName, spotifyDefaults.showAlbumName);
         document.getElementById('showAlbumName').value = document.getElementById('showAlbumName').checked ? 'true' : 'false';
-
         document.getElementById('showStatusLabel').checked = isTruthy(settings.showStatusLabel, spotifyDefaults.showStatusLabel);
         document.getElementById('showStatusLabel').value = document.getElementById('showStatusLabel').checked ? 'true' : 'false';
-
         document.getElementById('showDeviceName').checked = isTruthy(settings.showDeviceName, spotifyDefaults.showDeviceName);
         document.getElementById('showDeviceName').value = document.getElementById('showDeviceName').checked ? 'true' : 'false';
-
         document.getElementById('showLastUpdatedTime').checked = isTruthy(settings.showLastUpdatedTime, spotifyDefaults.showLastUpdatedTime);
         document.getElementById('showLastUpdatedTime').value = document.getElementById('showLastUpdatedTime').checked ? 'true' : 'false';
+        updateQuoteSettingsVisibility();
     }
 
     function resetSpotifyDefaults() {
-        if (!window.confirm('Reset Spotify settings back to the defaults?')) {
-            return;
+        if (window.confirm('Reset Spotify settings back to the defaults?')) {
+            applySpotifyDefaults(spotifyDefaults);
         }
-        applySpotifyDefaults(spotifyDefaults);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
         applySpotifyDefaults(loadPluginSettings ? pluginSettings : spotifyDefaults);
+        document.getElementById('inactiveScreenMode').addEventListener('change', updateQuoteSettingsVisibility);
     });
 </script>

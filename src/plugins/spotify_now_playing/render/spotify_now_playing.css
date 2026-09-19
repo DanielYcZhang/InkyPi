@@ -88,6 +88,42 @@
     align-self: center;
 }
 
+.quote-panel {
+    position: relative;
+    width: min(680px, 88%);
+    margin: 0 auto;
+    padding: 34px 48px 30px;
+    text-align: center;
+    border-top: 3px solid currentColor;
+    border-bottom: 3px solid currentColor;
+}
+
+.quote-mark {
+    margin-top: -8px;
+    font-family: "Arial Unicode", "Jost", sans-serif;
+    font-size: 62px;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.quote-text {
+    font-family: "Arial Unicode", "Jost", sans-serif;
+    font-size: 46px;
+    line-height: 1.18;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+}
+
+.quote-kicker {
+    margin-top: 22px;
+    font-family: "Arial Unicode", "Dogica", monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.68;
+}
+
 .spotify-card.align-center .meta-panel {
     align-items: center;
     text-align: center;

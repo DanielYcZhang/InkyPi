@@ -243,7 +243,7 @@ def test_plugin_can_show_paused_screen(monkeypatch):
     assert params["state_message"] is not None
 
 
-def test_plugin_can_treat_paused_as_nothing_playing(monkeypatch):
+def test_plugin_maps_removed_nothing_playing_option_to_paused_screen(monkeypatch):
     plugin = SpotifyNowPlaying(plugin_config())
 
     monkeypatch.setattr(
@@ -278,8 +278,8 @@ def test_plugin_can_treat_paused_as_nothing_playing(monkeypatch):
         }
     )
     assert params["show_empty_state"] is True
-    assert params["title"] == "Nothing Playing"
-    assert params["artist"] == "Spotify"
+    assert params["title"] == "Paused"
+    assert params["artist"] == "Spotify playback is paused"
 
 
 def test_plugin_can_show_artwork_placeholder(monkeypatch):
@@ -421,6 +421,37 @@ def test_plugin_maps_legacy_settings_to_combined_idle_mode(monkeypatch):
     )
     assert params["status_label"] == "Paused"
     assert params["show_empty_state"] is False
+
+
+def test_plugin_builds_quote_screen(monkeypatch):
+    plugin = SpotifyNowPlaying(plugin_config())
+
+    monkeypatch.setattr(
+        "src.plugins.spotify_now_playing.spotify_now_playing.read_state",
+        lambda: {
+            "title": "Track",
+            "artist": "Artist",
+            "player_state": "paused",
+            "quote_active": True,
+            "quote_index": 3,
+            "artwork_path": None,
+        },
+    )
+    monkeypatch.setattr(
+        "src.plugins.spotify_now_playing.spotify_now_playing.get_artwork_data_uri",
+        lambda path: None,
+    )
+
+    params = plugin._build_template_params(
+        {
+            "inactiveScreenMode": "show_quote_after_idle",
+            "quoteIdleMinutes": "30",
+        }
+    )
+
+    assert params["show_quote"] is True
+    assert params["show_empty_state"] is True
+    assert params["quote_text"]
 
 
 def test_plugin_generate_image_uses_render_image(monkeypatch):

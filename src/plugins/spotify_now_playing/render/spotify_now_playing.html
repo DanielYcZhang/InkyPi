@@ -5,7 +5,13 @@
     class="spotify-card {% if not reserve_artwork_space %}empty{% endif %} {% if text_alignment == 'center' %}align-center{% endif %} {% if text_alignment == 'right' %}align-right{% endif %} {% if artwork_style == 'square_right' %}artwork-right{% endif %} {% if show_empty_state %}state-screen{% endif %}"
     style="--title-lines: {{ title_lines }}; --artist-lines: {{ artist_lines }};"
 >
-    {% if show_empty_state %}
+    {% if show_quote %}
+    <div class="quote-panel">
+        <div class="quote-mark">“</div>
+        <div class="quote-text">{{ quote_text }}</div>
+        <div class="quote-kicker">A note for the road ahead</div>
+    </div>
+    {% elif show_empty_state %}
     <div class="meta-panel expanded">
         <div class="state-title">{{ title }}</div>
         <div class="state-subtitle">{{ artist }}</div>

@@ -74,9 +74,11 @@ def payload(**overrides):
 
 def create_app(tmp_path, monkeypatch, playlist_plugins=None):
     from src.services import spotify_now_playing_service as service
+    from services import spotify_now_playing_service as runtime_service
 
-    monkeypatch.setattr(service, "SPOTIFY_CACHE_PATH", str(tmp_path / "state.json"))
-    monkeypatch.setattr(service, "SPOTIFY_ARTWORK_DIR", str(tmp_path / "art"))
+    for service_module in (service, runtime_service):
+        monkeypatch.setattr(service_module, "SPOTIFY_CACHE_PATH", str(tmp_path / "state.json"))
+        monkeypatch.setattr(service_module, "SPOTIFY_ARTWORK_DIR", str(tmp_path / "art"))
 
     app = Flask(__name__)
     app.register_blueprint(spotify_now_playing_bp)

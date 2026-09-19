@@ -118,3 +118,96 @@ def test_update_state_preserves_multi_artist_string(spotify_cache_paths):
     assert changed is True
     assert state["artist"] == "Travis Scott, Kendrick Lamar"
     assert service.read_state()["artist"] == "Travis Scott, Kendrick Lamar"
+
+
+def test_heartbeat_updates_freshness_without_triggering_display_change(spotify_cache_paths, monkeypatch):
+    monkeypatch.setattr(service.requests, "get", lambda *args, **kwargs: MockResponse(image_bytes()))
+    first = service.normalize_payload(
+        valid_payload(source_updated_at="2026-03-15T12:00:00+00:00"),
+        received_at="2026-03-15T12:00:01+00:00",
+    )
+    service.update_state(first)
+
+    heartbeat = service.normalize_payload(
+        valid_payload(source_updated_at="2026-03-15T12:01:00+00:00"),
+        received_at="2026-03-15T12:01:01+00:00",
+    )
+    state, changed = service.update_state(heartbeat)
+
+    assert changed is False
+    assert state["received_at"] == "2026-03-15T12:01:01+00:00"
+    assert service.read_state()["received_at"] == "2026-03-15T12:01:01+00:00"
+
+
+def test_paused_state_starts_idle_session_and_playing_clears_it(spotify_cache_paths, monkeypatch):
+    monkeypatch.setattr(service.requests, "get", lambda *args, **kwargs: MockResponse(image_bytes()))
+    service.update_state(
+        service.normalize_payload(
+            valid_payload(player_state="playing"),
+            received_at="2026-03-15T12:00:00+00:00",
+        )
+    )
+
+    paused, _ = service.update_state(
+        service.normalize_payload(
+            valid_payload(player_state="paused", source_updated_at="2026-03-15T12:05:00+00:00"),
+            received_at="2026-03-15T12:05:01+00:00",
+        )
+    )
+    assert paused["idle_started_at"] == "2026-03-15T12:05:01+00:00"
+    assert paused["quote_active"] is False
+
+    playing, _ = service.update_state(
+        service.normalize_payload(
+            valid_payload(player_state="playing", source_updated_at="2026-03-15T12:06:00+00:00"),
+            received_at="2026-03-15T12:06:01+00:00",
+        )
+    )
+    assert playing["idle_started_at"] is None
+    assert playing["quote_active"] is False
+
+
+def test_stale_heartbeat_marks_playback_inactive_until_mac_returns(spotify_cache_paths, monkeypatch):
+    monkeypatch.setattr(service.requests, "get", lambda *args, **kwargs: MockResponse(image_bytes()))
+    service.update_state(
+        service.normalize_payload(
+            valid_payload(player_state="playing"),
+            received_at="2026-03-15T12:00:00+00:00",
+        )
+    )
+
+    inactive, changed = service.mark_stale_playback_inactive("2026-03-15T12:00:00+00:00")
+
+    assert changed is True
+    assert inactive["player_state"] == "not_running"
+    assert inactive["inferred_idle"] is True
+    assert inactive["idle_started_at"] == "2026-03-15T12:00:00+00:00"
+    assert inactive["title"] == "Song"
+
+    _, duplicate_changed = service.mark_stale_playback_inactive("2026-03-15T12:00:00+00:00")
+    assert duplicate_changed is False
+
+    playing, resumed_changed = service.update_state(
+        service.normalize_payload(
+            valid_payload(player_state="playing", source_updated_at="2026-03-15T12:04:00+00:00"),
+            received_at="2026-03-15T12:04:01+00:00",
+        )
+    )
+    assert resumed_changed is True
+    assert playing["player_state"] == "playing"
+    assert playing["inferred_idle"] is False
+
+
+def test_quote_deck_uses_every_quote_before_repeating(spotify_cache_paths, monkeypatch):
+    service.write_state({"quote_deck": [], "last_quote_index": None})
+    monkeypatch.setattr(service.random, "shuffle", lambda values: None)
+
+    selected = []
+    for _ in range(4):
+        state, activated = service.activate_idle_quote(4)
+        assert activated is True
+        selected.append(state["quote_index"])
+        state["quote_active"] = False
+        service.write_state(state)
+
+    assert len(set(selected)) == 4

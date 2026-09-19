@@ -21,7 +21,7 @@ Send the shared secret in:
 
 ## Mac setup
 
-1. Copy [`extras/spotify_mac_watcher/.env.example`](/Users/danielzhang/dev/raspberrypi-dev/Daniel-InkyPi/InkyPi/extras/spotify_mac_watcher/.env.example) to `.env`.
+1. Copy `extras/spotify_mac_watcher/.env.example` to `.env`.
 2. Set `PI_BASE_URL` to your Pi's base URL.
 3. Set `SPOTIFY_PUSH_TOKEN` to the same value as the Pi.
 4. Run `python3 spotify_mac_watcher.py`.
@@ -31,5 +31,8 @@ Send the shared secret in:
 
 - The Mac watcher polls Spotify every second.
 - It waits 3 seconds for the selected track to settle before pushing.
-- The Pi only refreshes when the incoming state actually changes.
-- If Spotify stops or is not running, the plugin can either keep showing the last song or render a “Nothing Playing” state.
+- The watcher sends a lightweight heartbeat every 60 seconds. Heartbeats update connection freshness without refreshing the e-ink panel.
+- If the Mac sleeps or disappears while Spotify still says it is playing, the Pi treats the last heartbeat time as the start of the idle period.
+- The Pi only refreshes when visible playback state changes or an idle quote becomes due.
+- When Spotify is paused or idle, the plugin can keep the last track, show its paused/nothing-playing screen, or show a motivational quote after a configurable delay.
+- Quotes come from a local shuffled collection. Every quote is used before the collection is shuffled again, and the same quote is not shown twice in a row.

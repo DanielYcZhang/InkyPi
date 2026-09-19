@@ -1,4 +1,8 @@
-from extras.spotify_mac_watcher.spotify_mac_watcher import DebouncedPublisher, compute_identity
+from extras.spotify_mac_watcher.spotify_mac_watcher import (
+    DebouncedPublisher,
+    compute_identity,
+    heartbeat_is_due,
+)
 
 
 def track(identity, state="playing"):
@@ -58,3 +62,8 @@ def test_debounced_publisher_ignores_duplicate_stable_state():
     publisher.observe(track("A"), 0)
     assert publisher.observe(track("A"), 1.1)["identity"] == "A"
     assert publisher.observe(track("A"), 2.5) is None
+
+
+def test_heartbeat_is_due_after_interval():
+    assert heartbeat_is_due(now_ts=160, last_posted_at=100, heartbeat_seconds=60) is True
+    assert heartbeat_is_due(now_ts=159, last_posted_at=100, heartbeat_seconds=60) is False

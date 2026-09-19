@@ -4,12 +4,14 @@ from datetime import datetime
 from PIL import Image
 
 from plugins.base_plugin.base_plugin import BasePlugin
+from plugins.spotify_now_playing.quotes import MOTIVATIONAL_QUOTES
 from services.spotify_now_playing_service import get_artwork_data_uri, read_state
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_SETTINGS = {
     "inactiveScreenMode": "show_state_screens",
+    "quoteIdleMinutes": "30",
     "artworkStyle": "square_left",
     "fallbackArtworkStyle": "text_only",
     "textAlignment": "left",
@@ -70,8 +72,10 @@ def _normalize_paused_behavior(value):
 
 def _normalize_inactive_screen_mode(settings):
     inactive_mode = settings.get("inactiveScreenMode")
-    if inactive_mode in {"keep_last_track", "show_state_screens", "show_nothing_playing_for_all"}:
+    if inactive_mode in {"keep_last_track", "show_state_screens", "show_quote_after_idle"}:
         return inactive_mode
+    if inactive_mode == "show_nothing_playing_for_all":
+        return "show_state_screens"
 
     paused_behavior = _normalize_paused_behavior(settings.get("pausedBehavior", "show_paused_screen"))
     empty_state_mode = settings.get("emptyStateMode", "show_last_track")
@@ -107,11 +111,12 @@ class SpotifyNowPlaying(BasePlugin):
         artwork_corner_style = settings.get("artworkCornerStyle", DEFAULT_SETTINGS["artworkCornerStyle"])
 
         has_track_data = bool(state.get("title") or state.get("artist") or state.get("album"))
-        show_paused_screen = player_state == "paused" and inactive_screen_mode == "show_state_screens"
+        show_quote = inactive_screen_mode == "show_quote_after_idle" and state.get("quote_active") is True
+        state_screen_enabled = inactive_screen_mode in {"show_state_screens", "show_quote_after_idle"}
+        show_paused_screen = player_state == "paused" and state_screen_enabled
         show_nothing_playing_screen = player_state in {"stopped", "not_running"} and inactive_screen_mode != "keep_last_track"
-        show_paused_as_nothing = player_state == "paused" and inactive_screen_mode == "show_nothing_playing_for_all"
         no_track_data_screen = not has_track_data and inactive_screen_mode != "keep_last_track"
-        show_empty_state = show_paused_screen or show_paused_as_nothing or no_track_data_screen or show_nothing_playing_screen
+        show_empty_state = show_quote or show_paused_screen or no_track_data_screen or show_nothing_playing_screen
 
         status_label = ""
         if player_state == "paused" and inactive_screen_mode == "keep_last_track":
@@ -129,12 +134,17 @@ class SpotifyNowPlaying(BasePlugin):
             artist = "Spotify playback is paused"
             state_message = "Spotify will update again when music starts."
             status_label = ""
-        elif show_paused_as_nothing or show_nothing_playing_screen or no_track_data_screen:
+        elif show_nothing_playing_screen or no_track_data_screen:
             title = "Nothing Playing"
             artist = "Spotify"
             state_message = "Start a song on your Mac to show it here."
-            if show_paused_as_nothing:
-                status_label = ""
+
+        quote_index = state.get("quote_index")
+        quote_text = None
+        if show_quote and isinstance(quote_index, int) and 0 <= quote_index < len(MOTIVATIONAL_QUOTES):
+            quote_text = MOTIVATIONAL_QUOTES[quote_index]
+        elif show_quote:
+            quote_text = MOTIVATIONAL_QUOTES[0]
 
         artwork_data_uri = get_artwork_data_uri(state.get("artwork_path"))
         show_artwork = bool(artwork_data_uri) and not show_empty_state
@@ -150,6 +160,8 @@ class SpotifyNowPlaying(BasePlugin):
             "album": state.get("album"),
             "device_name": state.get("device_name"),
             "state_message": state_message,
+            "show_quote": show_quote,
+            "quote_text": quote_text,
             "status_label": status_label,
             "show_album_name": show_album_name,
             "show_empty_state": show_empty_state,
