@@ -445,7 +445,6 @@ def test_plugin_builds_quote_screen(monkeypatch):
     params = plugin._build_template_params(
         {
             "inactiveScreenMode": "show_quote_after_idle",
-            "quoteIdleMinutes": "30",
         }
     )
 

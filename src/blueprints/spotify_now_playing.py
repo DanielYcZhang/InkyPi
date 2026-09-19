@@ -3,9 +3,11 @@ import logging
 from flask import Blueprint, current_app, jsonify, request
 
 from plugins.plugin_registry import get_plugin_instance
+from plugins.spotify_now_playing.quotes import MOTIVATIONAL_QUOTES
 from refresh_task import PlaylistRefresh
 from services.spotify_now_playing_service import (
     SPOTIFY_PLUGIN_ID,
+    activate_idle_quote,
     is_authorized,
     normalize_payload,
     update_state,
@@ -49,6 +51,18 @@ def _trigger_display_refresh(device_config):
     return True
 
 
+def _activate_quote_if_configured(state, device_config):
+    _, plugin_instance = _find_active_spotify_instance(device_config)
+    if not plugin_instance:
+        return state, False
+
+    quote_mode = plugin_instance.settings.get("inactiveScreenMode") == "show_quote_after_idle"
+    playback_inactive = state.get("player_state") in {"paused", "stopped", "not_running"}
+    if quote_mode and playback_inactive and not state.get("quote_active"):
+        return activate_idle_quote(len(MOTIVATIONAL_QUOTES))
+    return state, False
+
+
 @spotify_now_playing_bp.route("/spotify_now_playing/update", methods=["POST"])
 def update_spotify_now_playing():
     device_config = current_app.config["DEVICE_CONFIG"]
@@ -59,6 +73,8 @@ def update_spotify_now_playing():
 
         normalized_state = normalize_payload(request.get_json(silent=True))
         state, changed = update_state(normalized_state)
+        state, quote_activated = _activate_quote_if_configured(state, device_config)
+        changed = changed or quote_activated
         display_triggered = _trigger_display_refresh(device_config) if changed else False
         return jsonify(
             {

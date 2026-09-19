@@ -41,23 +41,22 @@ def test_fresh_playing_heartbeat_is_not_idle():
     assert get_idle_since(state, utc("2026-03-15T12:01:00+00:00"), stale_after_seconds=120) is None
 
 
-def test_quote_becomes_due_after_configured_delay():
+def test_quote_becomes_due_immediately_when_playback_is_inactive():
     state = {
         "player_state": "paused",
         "idle_started_at": "2026-03-15T12:00:00+00:00",
         "received_at": "2026-03-15T12:00:00+00:00",
         "quote_active": False,
     }
-    settings = {"inactiveScreenMode": "show_quote_after_idle", "quoteIdleMinutes": "30"}
+    settings = {"inactiveScreenMode": "show_quote_after_idle"}
 
-    assert quote_is_due(state, settings, utc("2026-03-15T12:29:59+00:00")) is False
-    assert quote_is_due(state, settings, utc("2026-03-15T12:30:00+00:00")) is True
+    assert quote_is_due(state, settings, utc("2026-03-15T12:00:00+00:00")) is True
 
 
 def test_monitor_refreshes_once_when_playing_heartbeat_goes_stale(monkeypatch):
     playlist = object()
     plugin_instance = SimpleNamespace(
-        settings={"inactiveScreenMode": "show_state_screens", "quoteIdleMinutes": "30"}
+        settings={"inactiveScreenMode": "show_state_screens"}
     )
     state = {
         "player_state": "playing",

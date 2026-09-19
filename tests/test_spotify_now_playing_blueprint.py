@@ -123,3 +123,25 @@ def test_identical_second_push_does_not_trigger_refresh(tmp_path, monkeypatch):
     assert response.status_code == 200
     assert response.get_json()["changed"] is False
     assert len(app.config["REFRESH_TASK"].calls) == 1
+
+
+def test_paused_webhook_activates_quote_before_single_refresh(tmp_path, monkeypatch):
+    from src.services import spotify_now_playing_service as service
+
+    quote_settings = {"inactiveScreenMode": "show_quote_after_idle"}
+    app = create_app(
+        tmp_path,
+        monkeypatch,
+        playlist_plugins=[StubPluginInstance("spotify_now_playing", quote_settings)],
+    )
+    client = app.test_client()
+
+    response = client.post(
+        "/spotify_now_playing/update",
+        json=payload(player_state="paused"),
+        headers={"X-InkyPi-Spotify-Token": "secret"},
+    )
+
+    assert response.status_code == 200
+    assert service.read_state()["quote_active"] is True
+    assert len(app.config["REFRESH_TASK"].calls) == 1

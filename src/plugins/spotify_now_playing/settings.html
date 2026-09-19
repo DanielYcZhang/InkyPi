@@ -2,27 +2,14 @@
     <div class="setting-label-row">
         <label for="inactiveScreenMode" class="form-label">When Spotify is paused or idle:</label>
         <button type="button" class="setting-help" aria-label="Choose what appears when Spotify is not playing.">i
-            <span class="setting-tooltip" role="tooltip">Keep the last song visible, show the normal paused/nothing-playing screen, or show a motivational quote after a delay.</span>
+            <span class="setting-tooltip" role="tooltip">Keep the last song visible, show the normal paused/nothing-playing screen, or show a motivational quote.</span>
         </button>
     </div>
     <select id="inactiveScreenMode" name="inactiveScreenMode" class="form-input">
         <option value="show_state_screens">Show paused / nothing playing screen</option>
         <option value="keep_last_track">Keep the last track on screen</option>
-        <option value="show_quote_after_idle">Show a motivational quote after a delay</option>
+        <option value="show_quote_after_idle">Show a motivational quote</option>
     </select>
-</div>
-
-<div class="form-group" id="quoteIdleMinutesGroup">
-    <div class="setting-label-row">
-        <label for="quoteIdleMinutes" class="form-label">Show quote after:</label>
-        <button type="button" class="setting-help" aria-label="Set how long Spotify must be idle before showing a quote.">i
-            <span class="setting-tooltip" role="tooltip">The paused screen stays visible during this wait. Choose any value from 1 minute to 7 days.</span>
-        </button>
-    </div>
-    <div class="form-inline compact-setting">
-        <input type="number" id="quoteIdleMinutes" name="quoteIdleMinutes" class="form-input" min="1" max="10080" step="1">
-        <span>minutes</span>
-    </div>
 </div>
 
 <div class="form-group">
@@ -153,7 +140,6 @@
 <script>
     const spotifyDefaults = {
         inactiveScreenMode: 'show_state_screens',
-        quoteIdleMinutes: '30',
         artworkStyle: 'square_left',
         fallbackArtworkStyle: 'text_only',
         textAlignment: 'left',
@@ -185,14 +171,8 @@
         return ['true', '1', 'yes', 'on'].includes(String(raw).toLowerCase());
     }
 
-    function updateQuoteSettingsVisibility() {
-        document.getElementById('quoteIdleMinutesGroup').hidden =
-            document.getElementById('inactiveScreenMode').value !== 'show_quote_after_idle';
-    }
-
     function applySpotifyDefaults(settings) {
         document.getElementById('inactiveScreenMode').value = normalizeInactiveMode(settings);
-        document.getElementById('quoteIdleMinutes').value = settings.quoteIdleMinutes || spotifyDefaults.quoteIdleMinutes;
         document.getElementById('artworkStyle').value = settings.artworkStyle || spotifyDefaults.artworkStyle;
         document.getElementById('fallbackArtworkStyle').value = settings.fallbackArtworkStyle || spotifyDefaults.fallbackArtworkStyle;
         document.getElementById('textAlignment').value = settings.textAlignment || spotifyDefaults.textAlignment;
@@ -208,7 +188,6 @@
         document.getElementById('showDeviceName').value = document.getElementById('showDeviceName').checked ? 'true' : 'false';
         document.getElementById('showLastUpdatedTime').checked = isTruthy(settings.showLastUpdatedTime, spotifyDefaults.showLastUpdatedTime);
         document.getElementById('showLastUpdatedTime').value = document.getElementById('showLastUpdatedTime').checked ? 'true' : 'false';
-        updateQuoteSettingsVisibility();
     }
 
     function resetSpotifyDefaults() {
@@ -219,6 +198,5 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         applySpotifyDefaults(loadPluginSettings ? pluginSettings : spotifyDefaults);
-        document.getElementById('inactiveScreenMode').addEventListener('change', updateQuoteSettingsVisibility);
     });
 </script>

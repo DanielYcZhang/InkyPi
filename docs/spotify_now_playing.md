@@ -34,5 +34,5 @@ Send the shared secret in:
 - The watcher sends a lightweight heartbeat every 60 seconds. Heartbeats update connection freshness without refreshing the e-ink panel.
 - If the Mac sleeps or disappears while Spotify still says it is playing, the Pi treats the last heartbeat time as the start of the idle period.
 - The Pi only refreshes when visible playback state changes or an idle quote becomes due.
-- When Spotify is paused or idle, the plugin can keep the last track, show its paused/nothing-playing screen, or show a motivational quote after a configurable delay.
+- When Spotify is paused or idle, the plugin can keep the last track, show its paused/nothing-playing screen, or immediately show a motivational quote.
 - Quotes come from a local shuffled collection. Every quote is used before the collection is shuffled again, and the same quote is not shown twice in a row.

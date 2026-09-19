@@ -446,15 +446,6 @@ small {
     transform: translate(-50%, 0);
 }
 
-.compact-setting {
-    width: auto;
-}
-
-.compact-setting .form-input {
-    width: 110px;
-    flex: 0 0 110px;
-}
-
 /* Buttons container */
 .buttons-container {
     display: flex;

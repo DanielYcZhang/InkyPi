@@ -34,22 +34,13 @@ def get_idle_since(state, now, stale_after_seconds=120):
     return None
 
 
-def _quote_delay_minutes(settings):
-    try:
-        return min(max(int(settings.get("quoteIdleMinutes", 30)), 1), 10080)
-    except (TypeError, ValueError):
-        return 30
-
-
 def quote_is_due(state, settings, now=None, stale_after_seconds=120):
     if settings.get("inactiveScreenMode") != "show_quote_after_idle" or state.get("quote_active"):
         return False
 
     now = now or datetime.now(timezone.utc)
     idle_since = get_idle_since(state, now, stale_after_seconds)
-    if not idle_since:
-        return False
-    return (now - idle_since).total_seconds() >= _quote_delay_minutes(settings) * 60
+    return idle_since is not None
 
 
 class SpotifyIdleMonitor:

@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_SETTINGS = {
     "inactiveScreenMode": "show_state_screens",
-    "quoteIdleMinutes": "30",
     "artworkStyle": "square_left",
     "fallbackArtworkStyle": "text_only",
     "textAlignment": "left",

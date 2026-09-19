@@ -90,38 +90,60 @@
 
 .quote-panel {
     position: relative;
-    width: min(680px, 88%);
+    width: min(650px, 84%);
     margin: 0 auto;
-    padding: 34px 48px 30px;
+    padding: 54px 62px 38px;
     text-align: center;
-    border-top: 3px solid currentColor;
-    border-bottom: 3px solid currentColor;
+    border: 2px solid currentColor;
+    box-shadow: 10px 10px 0 currentColor;
+    box-sizing: border-box;
 }
 
 .quote-mark {
-    margin-top: -8px;
+    position: absolute;
     font-family: "Arial Unicode", "Jost", sans-serif;
-    font-size: 62px;
+    font-size: 82px;
     line-height: 1;
     font-weight: 700;
+    opacity: 0.22;
+}
+
+.quote-mark-open {
+    top: 14px;
+    left: 22px;
+}
+
+.quote-mark-close {
+    right: 22px;
+    bottom: 24px;
 }
 
 .quote-text {
     font-family: "Arial Unicode", "Jost", sans-serif;
-    font-size: 46px;
-    line-height: 1.18;
+    font-size: 44px;
+    line-height: 1.2;
     font-weight: 700;
     letter-spacing: -0.015em;
 }
 
-.quote-kicker {
-    margin-top: 22px;
+.quote-source {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 28px;
     font-family: "Arial Unicode", "Dogica", monospace;
     font-size: 14px;
     line-height: 1.4;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    opacity: 0.68;
+    opacity: 0.72;
+}
+
+.quote-source::before {
+    content: "";
+    width: 32px;
+    height: 2px;
+    background: currentColor;
 }
 
 .spotify-card.align-center .meta-panel {

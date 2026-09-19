@@ -7,9 +7,10 @@
 >
     {% if show_quote %}
     <div class="quote-panel">
-        <div class="quote-mark">“</div>
+        <div class="quote-mark quote-mark-open">“</div>
         <div class="quote-text">{{ quote_text }}</div>
-        <div class="quote-kicker">A note for the road ahead</div>
+        <div class="quote-mark quote-mark-close">”</div>
+        <div class="quote-source">InkyPi Collection</div>
     </div>
     {% elif show_empty_state %}
     <div class="meta-panel expanded">
