@@ -18,6 +18,18 @@ def plugin_config():
     return {"id": "spotify_now_playing"}
 
 
+def test_quote_collection_is_curated_and_complete():
+    original_quotes = [quote for quote in MOTIVATIONAL_QUOTES if quote.author == "InkyPi Collection"]
+    famous_quotes = [quote for quote in MOTIVATIONAL_QUOTES if quote.author != "InkyPi Collection"]
+
+    assert len(MOTIVATIONAL_QUOTES) == 100
+    assert len(original_quotes) == 60
+    assert len(famous_quotes) == 40
+    assert len({quote.text for quote in MOTIVATIONAL_QUOTES}) == 100
+    assert all(quote.text and quote.author and quote.source for quote in MOTIVATIONAL_QUOTES)
+    assert all(len(quote.text.split()) <= 25 for quote in MOTIVATIONAL_QUOTES)
+
+
 def test_plugin_builds_playing_params(monkeypatch):
     plugin = SpotifyNowPlaying(plugin_config())
 
