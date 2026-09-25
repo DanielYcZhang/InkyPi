@@ -54,6 +54,11 @@ def heartbeat_is_due(now_ts, last_posted_at, heartbeat_seconds):
     return heartbeat_seconds > 0 and now_ts - last_posted_at >= heartbeat_seconds
 
 
+def log(message):
+    timestamp = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[spotify_mac_watcher] {timestamp} - {message}", flush=True)
+
+
 def fetch_spotify_state():
     script = f"""
     tell application "System Events"
@@ -135,9 +140,18 @@ class DebouncedPublisher:
         if track["identity"] == self.last_sent_identity and track["player_state"] == self.last_sent_state:
             return None
 
+        return track
+
+    def mark_sent(self, track):
         self.last_sent_identity = track["identity"]
         self.last_sent_state = track["player_state"]
-        return track
+
+    def is_settled(self, track, now_ts):
+        if self.pending_track is None or self.pending_since is None:
+            return False
+        pending_signature = (self.pending_track["identity"], self.pending_track["player_state"])
+        track_signature = (track["identity"], track["player_state"])
+        return track_signature == pending_signature and now_ts - self.pending_since >= self.debounce_seconds
 
 
 def post_update(track, base_url, token, timeout):
@@ -160,6 +174,7 @@ def main():
     debounce_seconds = float(os.getenv("DEBOUNCE_SECONDS", "3"))
     http_timeout = float(os.getenv("HTTP_TIMEOUT_SECONDS", "5"))
     heartbeat_seconds = float(os.getenv("HEARTBEAT_SECONDS", "60"))
+    retry_interval = float(os.getenv("RETRY_INTERVAL_SECONDS", "5"))
 
     persisted_state = load_state()
     publisher = DebouncedPublisher(
@@ -171,6 +186,7 @@ def main():
     )
     last_posted_at = float(persisted_state.get("last_posted_at") or 0)
     last_post_attempt_at = last_posted_at
+    log(f"started; target={base_url}, poll={poll_interval}s, debounce={debounce_seconds}s")
 
     while True:
         try:
@@ -178,10 +194,18 @@ def main():
             current_track = fetch_spotify_state()
             track_to_send = publisher.observe(current_track, now_ts)
             heartbeat_due = heartbeat_is_due(now_ts, last_post_attempt_at, heartbeat_seconds)
-            if track_to_send or heartbeat_due:
+            retry_due = now_ts - last_post_attempt_at >= retry_interval
+            settled_heartbeat_due = heartbeat_due and publisher.is_settled(current_track, now_ts)
+            sent_change = False
+            if (track_to_send and retry_due) or settled_heartbeat_due:
                 last_post_attempt_at = now_ts
-                post_update(track_to_send or current_track, base_url, token, http_timeout)
+                update = track_to_send or current_track
+                post_update(update, base_url, token, http_timeout)
+                publisher.mark_sent(update)
                 last_posted_at = now_ts
+                if track_to_send:
+                    sent_change = True
+                    log(f"sent {update['player_state']}: {update.get('title') or update['identity']}")
 
             save_state(
                 {
@@ -189,7 +213,7 @@ def main():
                     "pending_since": publisher.pending_since,
                     "last_sent_identity": publisher.last_sent_identity,
                     "last_sent_state": publisher.last_sent_state,
-                    "last_sent_at": now_iso() if track_to_send else persisted_state.get("last_sent_at"),
+                    "last_sent_at": now_iso() if sent_change else persisted_state.get("last_sent_at"),
                     "last_posted_at": last_posted_at,
                 }
             )
@@ -197,7 +221,7 @@ def main():
         except KeyboardInterrupt:
             raise
         except Exception as exc:
-            print(f"[spotify_mac_watcher] {exc}", flush=True)
+            log(str(exc))
 
         time.sleep(poll_interval)
 

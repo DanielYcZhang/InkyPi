@@ -70,11 +70,8 @@ class DisplayManager:
         if not hasattr(self, "display"):
             raise ValueError("No valid display instance initialized.")
         
-        # Save the image
-        logger.info(f"Saving image to {self.device_config.current_image_file}")
-        image.save(self.device_config.current_image_file)
-
         # Resize and adjust orientation
+        source_image = image
         image = change_orientation(image, self.device_config.get_config("orientation"))
         image = resize_image(image, self.device_config.get_resolution(), image_settings)
         if self.device_config.get_config("inverted_image"): image = image.rotate(180)
@@ -82,3 +79,7 @@ class DisplayManager:
 
         # Pass to the concrete instance to render to the device.
         self.display.display_image(image, image_settings)
+
+        # Only publish the preview after the hardware accepted the frame.
+        logger.info(f"Saving image to {self.device_config.current_image_file}")
+        source_image.save(self.device_config.current_image_file)

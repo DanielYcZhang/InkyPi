@@ -6,11 +6,16 @@
     style="--title-lines: {{ title_lines }}; --artist-lines: {{ artist_lines }};"
 >
     {% if show_quote %}
-    <div class="quote-panel">
-        <div class="quote-mark quote-mark-open">“</div>
-        <div class="quote-text">{{ quote_text }}</div>
-        <div class="quote-mark quote-mark-close">”</div>
-        <div class="quote-source">InkyPi Collection</div>
+    <div class="quote-layout">
+        <div class="quote-panel">
+            <div class="quote-mark quote-mark-open">“</div>
+            <div class="quote-text">{{ quote_text }}</div>
+            <div class="quote-mark quote-mark-close">”</div>
+            <div class="quote-source">{{ quote_author }}</div>
+        </div>
+        {% if show_last_updated_time and last_updated_text %}
+        <div class="quote-updated">{{ last_updated_text }}</div>
+        {% endif %}
     </div>
     {% elif show_empty_state %}
     <div class="meta-panel expanded">

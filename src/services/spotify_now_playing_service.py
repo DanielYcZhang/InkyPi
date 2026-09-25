@@ -224,7 +224,12 @@ def activate_idle_quote(quote_count):
         if state.get("quote_active"):
             return state, False
 
-        deck = [index for index in state.get("quote_deck", []) if isinstance(index, int) and 0 <= index < quote_count]
+        collection_changed = state.get("quote_deck_size") != quote_count
+        deck = [] if collection_changed else [
+            index
+            for index in state.get("quote_deck", [])
+            if isinstance(index, int) and 0 <= index < quote_count
+        ]
         last_quote_index = state.get("last_quote_index")
         if not deck:
             deck = list(range(quote_count))
@@ -237,6 +242,7 @@ def activate_idle_quote(quote_count):
         state["quote_index"] = quote_index
         state["last_quote_index"] = quote_index
         state["quote_deck"] = deck
+        state["quote_deck_size"] = quote_count
         write_state(state)
         return state, True
 

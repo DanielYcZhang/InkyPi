@@ -1,4 +1,13 @@
-MOTIVATIONAL_QUOTES = (
+from typing import NamedTuple
+
+
+class MotivationalQuote(NamedTuple):
+    text: str
+    author: str
+    source: str
+
+
+_INKYPI_QUOTE_TEXTS = (
     "A small step today is still a step away from yesterday.",
     "Start before you feel ready; readiness often follows action.",
     "Consistency turns ordinary effort into uncommon results.",
@@ -60,3 +69,58 @@ MOTIVATIONAL_QUOTES = (
     "Keep going; clarity often arrives while moving.",
     "You never lose the lesson when you choose to learn.",
 )
+
+
+_FAMOUS_QUOTES = (
+    MotivationalQuote(
+        "The only thing we have to fear is fear itself.",
+        "Franklin D. Roosevelt",
+        "First Inaugural Address",
+    ),
+    MotivationalQuote(
+        "Nothing great was ever achieved without enthusiasm.",
+        "Ralph Waldo Emerson",
+        "Essays: Circles",
+    ),
+    MotivationalQuote(
+        "I am the master of my fate: I am the captain of my soul.",
+        "William Ernest Henley",
+        "Invictus",
+    ),
+    MotivationalQuote(
+        "To strive, to seek, to find, and not to yield.",
+        "Alfred, Lord Tennyson",
+        "Ulysses",
+    ),
+    MotivationalQuote(
+        "Hope is the thing with feathers that perches in the soul.",
+        "Emily Dickinson",
+        "Hope",
+    ),
+    MotivationalQuote(
+        "I took the one less traveled by, and that has made all the difference.",
+        "Robert Frost",
+        "The Road Not Taken",
+    ),
+    MotivationalQuote(
+        "Well done is better than well said.",
+        "Benjamin Franklin",
+        "Poor Richard's Almanack",
+    ),
+    MotivationalQuote(
+        "The doer is better than the critic.",
+        "Theodore Roosevelt",
+        "American Ideals",
+    ),
+    MotivationalQuote(
+        "Character is built up on little things - little things well and honourably transacted.",
+        "Samuel Smiles",
+        "Thrift",
+    ),
+)
+
+
+MOTIVATIONAL_QUOTES = tuple(
+    MotivationalQuote(text, "InkyPi Collection", "Original quote")
+    for text in _INKYPI_QUOTE_TEXTS
+) + _FAMOUS_QUOTES

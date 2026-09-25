@@ -105,19 +105,18 @@ class WaveshareDisplay(AbstractDisplay):
         # Assume device was in sleep mode.
         self.epd_display_init()
 
-        # Clear residual pixels before updating the image.
-        self.epd_display.Clear()
-
-        # Display the image on the WS display.
-        if not self.bi_color_display:
-            self.epd_display.display(self.epd_display.getbuffer(image))
-        else:
-            color_image = Image.new('1', image.size, 255)
-            self.epd_display.display(
-                self.epd_display.getbuffer(image),
-                self.epd_display.getbuffer(color_image)
-            )
-
-        # Put device into low power mode (EPD displays maintain image when powered off)
-        logger.info("Putting Waveshare display into sleep mode for power saving.")
-        self.epd_display.sleep()
+        try:
+            # A full frame replaces the panel contents. Avoid clearing first so a
+            # failed transfer leaves the last successful frame visible.
+            if not self.bi_color_display:
+                self.epd_display.display(self.epd_display.getbuffer(image))
+            else:
+                color_image = Image.new('1', image.size, 255)
+                self.epd_display.display(
+                    self.epd_display.getbuffer(image),
+                    self.epd_display.getbuffer(color_image)
+                )
+        finally:
+            # Put device into low power mode (EPD displays maintain image when powered off)
+            logger.info("Putting Waveshare display into sleep mode for power saving.")
+            self.epd_display.sleep()

@@ -60,8 +60,28 @@ def test_debounced_publisher_ignores_duplicate_stable_state():
     publisher = DebouncedPublisher(debounce_seconds=1)
 
     publisher.observe(track("A"), 0)
-    assert publisher.observe(track("A"), 1.1)["identity"] == "A"
+    emitted = publisher.observe(track("A"), 1.1)
+    assert emitted["identity"] == "A"
+    publisher.mark_sent(emitted)
     assert publisher.observe(track("A"), 2.5) is None
+
+
+def test_debounced_publisher_retries_track_until_delivery_is_acknowledged():
+    publisher = DebouncedPublisher(debounce_seconds=1)
+
+    publisher.observe(track("A"), 0)
+    assert publisher.observe(track("A"), 1.1)["identity"] == "A"
+    assert publisher.observe(track("A"), 2.0)["identity"] == "A"
+
+
+def test_heartbeat_does_not_publish_an_unsettled_skip_candidate():
+    publisher = DebouncedPublisher(debounce_seconds=3)
+
+    publisher.observe(track("A"), 0)
+    publisher.observe(track("B"), 1)
+
+    assert publisher.is_settled(track("B"), 2) is False
+    assert publisher.is_settled(track("B"), 4.1) is True
 
 
 def test_heartbeat_is_due_after_interval():

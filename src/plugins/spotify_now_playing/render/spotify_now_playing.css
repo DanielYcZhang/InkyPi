@@ -88,10 +88,15 @@
     align-self: center;
 }
 
-.quote-panel {
-    position: relative;
+.quote-layout {
     width: min(650px, 84%);
     margin: 0 auto;
+    text-align: center;
+}
+
+.quote-panel {
+    position: relative;
+    width: 100%;
     padding: 54px 62px 38px;
     text-align: center;
     border: 2px solid currentColor;
@@ -144,6 +149,14 @@
     width: 32px;
     height: 2px;
     background: currentColor;
+}
+
+.quote-updated {
+    margin-top: 20px;
+    font-family: "Jost", sans-serif;
+    font-size: 16px;
+    line-height: 1.2;
+    opacity: 0.68;
 }
 
 .spotify-card.align-center .meta-panel {

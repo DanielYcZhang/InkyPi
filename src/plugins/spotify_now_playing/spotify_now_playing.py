@@ -140,10 +140,14 @@ class SpotifyNowPlaying(BasePlugin):
 
         quote_index = state.get("quote_index")
         quote_text = None
+        quote_author = None
         if show_quote and isinstance(quote_index, int) and 0 <= quote_index < len(MOTIVATIONAL_QUOTES):
-            quote_text = MOTIVATIONAL_QUOTES[quote_index]
+            quote = MOTIVATIONAL_QUOTES[quote_index]
+            quote_text = quote.text
+            quote_author = quote.author
         elif show_quote:
-            quote_text = MOTIVATIONAL_QUOTES[0]
+            quote_text = MOTIVATIONAL_QUOTES[0].text
+            quote_author = MOTIVATIONAL_QUOTES[0].author
 
         artwork_data_uri = get_artwork_data_uri(state.get("artwork_path"))
         show_artwork = bool(artwork_data_uri) and not show_empty_state
@@ -161,6 +165,7 @@ class SpotifyNowPlaying(BasePlugin):
             "state_message": state_message,
             "show_quote": show_quote,
             "quote_text": quote_text,
+            "quote_author": quote_author,
             "status_label": status_label,
             "show_album_name": show_album_name,
             "show_empty_state": show_empty_state,

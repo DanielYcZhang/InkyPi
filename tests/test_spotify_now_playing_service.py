@@ -211,3 +211,22 @@ def test_quote_deck_uses_every_quote_before_repeating(spotify_cache_paths, monke
         service.write_state(state)
 
     assert len(set(selected)) == 4
+
+
+def test_quote_deck_rebuilds_when_collection_size_changes(spotify_cache_paths, monkeypatch):
+    service.write_state(
+        {
+            "quote_active": False,
+            "quote_deck": [0, 1],
+            "quote_deck_size": 60,
+            "last_quote_index": 2,
+        }
+    )
+    monkeypatch.setattr(service.random, "shuffle", lambda values: None)
+
+    state, activated = service.activate_idle_quote(69)
+
+    assert activated is True
+    assert state["quote_deck_size"] == 69
+    assert state["quote_index"] == 68
+    assert len(state["quote_deck"]) == 68

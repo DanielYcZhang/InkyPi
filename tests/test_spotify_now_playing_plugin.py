@@ -451,6 +451,38 @@ def test_plugin_builds_quote_screen(monkeypatch):
     assert params["show_quote"] is True
     assert params["show_empty_state"] is True
     assert params["quote_text"]
+    assert params["quote_author"]
+
+
+def test_quote_template_shows_last_updated_time_below_card(monkeypatch):
+    plugin = SpotifyNowPlaying(plugin_config())
+    monkeypatch.setattr(
+        "src.plugins.spotify_now_playing.spotify_now_playing.read_state",
+        lambda: {
+            "player_state": "paused",
+            "quote_active": True,
+            "quote_index": 0,
+            "received_at": "2026-09-25T03:55:00+00:00",
+            "artwork_path": None,
+        },
+    )
+    monkeypatch.setattr(
+        "src.plugins.spotify_now_playing.spotify_now_playing.get_artwork_data_uri",
+        lambda path: None,
+    )
+
+    params = plugin._build_template_params(
+        {
+            "inactiveScreenMode": "show_quote_after_idle",
+            "showLastUpdatedTime": "true",
+        },
+        timezone_str="Pacific/Auckland",
+    )
+    params.update({"width": 800, "height": 480, "style_sheets": [], "font_faces": []})
+    rendered = plugin.env.get_template("spotify_now_playing.html").render(params)
+
+    assert 'class="quote-updated"' in rendered
+    assert "Updated 3:55 PM" in rendered
 
 
 def test_plugin_generate_image_uses_render_image(monkeypatch):
