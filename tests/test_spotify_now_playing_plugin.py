@@ -1,5 +1,6 @@
 from PIL import Image
 
+from src.plugins.spotify_now_playing.quotes import MOTIVATIONAL_QUOTES
 from src.plugins.spotify_now_playing.spotify_now_playing import SpotifyNowPlaying
 
 
@@ -478,11 +479,28 @@ def test_quote_template_shows_last_updated_time_below_card(monkeypatch):
         },
         timezone_str="Pacific/Auckland",
     )
-    params.update({"width": 800, "height": 480, "style_sheets": [], "font_faces": []})
+    params.update(
+        {
+            "width": 800,
+            "height": 480,
+            "style_sheets": [],
+            "font_faces": [
+                {
+                    "font_family": "Arial Unicode",
+                    "font_weight": "normal",
+                    "font_style": "normal",
+                    "url": "/tmp/ArialUnicode.ttf",
+                }
+            ],
+        }
+    )
     rendered = plugin.env.get_template("spotify_now_playing.html").render(params)
 
     assert 'class="quote-updated"' in rendered
     assert "Updated 3:55 PM" in rendered
+    assert MOTIVATIONAL_QUOTES[0].text in rendered
+    assert MOTIVATIONAL_QUOTES[0].author in rendered
+    assert "font-display: swap" in rendered
 
 
 def test_plugin_generate_image_uses_render_image(monkeypatch):
