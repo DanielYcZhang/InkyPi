@@ -14,8 +14,12 @@ class StubRefreshTask:
 
         return datetime.now(pytz.UTC)
 
-    def manual_update(self, action):
+    def request_manual_update(self, action):
         self.calls.append(action)
+        return True
+
+    def manual_update(self, action):
+        raise AssertionError("Spotify webhook must not block on physical display refresh")
 
 
 class StubPlaylist:
@@ -109,6 +113,7 @@ def test_webhook_updates_cache_and_triggers_refresh(tmp_path, monkeypatch):
 
     assert response.status_code == 200
     assert response.get_json()["changed"] is True
+    assert response.get_json()["display_triggered"] is True
     assert len(app.config["REFRESH_TASK"].calls) == 1
 
 

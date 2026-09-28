@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 
 import json
+import ipaddress
 import os
 import socket
 import subprocess
+import sys
 import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
+from urllib.parse import urlsplit, urlunsplit
 
 import requests
 
@@ -50,8 +53,62 @@ def compute_identity(track):
     return f"state:{track['player_state']}"
 
 
+def resolve_hostname(hostname, timeout=3):
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "import socket, sys; print(socket.gethostbyname(sys.argv[1]))",
+            hostname,
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+    )
+    address = result.stdout.strip()
+    if address and ipaddress.ip_address(address).version == 4:
+        return address
+    raise OSError(f"Unable to resolve {hostname}")
+
+
+def resolve_base_url(base_url, resolver=None):
+    parts = urlsplit(base_url)
+    hostname = parts.hostname
+    if not hostname:
+        raise ValueError(f"Invalid PI_BASE_URL: {base_url}")
+
+    try:
+        ipaddress.ip_address(hostname)
+        return base_url
+    except ValueError:
+        resolver = resolver or resolve_hostname
+        resolved_host = resolver(hostname)
+
+    netloc = resolved_host
+    if parts.port:
+        netloc = f"{netloc}:{parts.port}"
+    return urlunsplit((parts.scheme, netloc, parts.path, parts.query, parts.fragment))
+
+
 def heartbeat_is_due(now_ts, last_posted_at, heartbeat_seconds):
     return heartbeat_seconds > 0 and now_ts - last_posted_at >= heartbeat_seconds
+
+
+def should_post_update(
+    has_change,
+    is_settled,
+    now_ts,
+    last_success_at,
+    last_attempt_at,
+    heartbeat_seconds,
+    retry_interval,
+):
+    if not is_settled or now_ts - last_attempt_at < retry_interval:
+        return False
+    if has_change:
+        return True
+    return heartbeat_is_due(now_ts, last_success_at, heartbeat_seconds)
 
 
 def log(message):
@@ -59,7 +116,7 @@ def log(message):
     print(f"[spotify_mac_watcher] {timestamp} - {message}", flush=True)
 
 
-def fetch_spotify_state():
+def fetch_spotify_state(timeout=8):
     script = f"""
     tell application "System Events"
         set spotifyRunning to (name of processes) contains "Spotify"
@@ -81,7 +138,13 @@ def fetch_spotify_state():
         end try
     end tell
     """
-    result = subprocess.run(["osascript", "-e", script], check=True, capture_output=True, text=True)
+    result = subprocess.run(
+        ["osascript", "-e", script],
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+    )
     output = result.stdout.strip().split(FIELD_SEPARATOR)
     while len(output) < 5:
         output.append("")
@@ -103,13 +166,21 @@ def fetch_spotify_state():
 def load_state():
     if not STATE_FILE.exists():
         return {}
-    with STATE_FILE.open(encoding="utf-8") as state_file:
-        return json.load(state_file)
+    try:
+        with STATE_FILE.open(encoding="utf-8") as state_file:
+            return json.load(state_file)
+    except (OSError, json.JSONDecodeError) as exc:
+        log(f"ignoring unreadable state file: {exc}")
+        return {}
 
 
 def save_state(state):
-    with STATE_FILE.open("w", encoding="utf-8") as state_file:
+    temp_path = STATE_FILE.with_suffix(f"{STATE_FILE.suffix}.tmp")
+    with temp_path.open("w", encoding="utf-8") as state_file:
         json.dump(state, state_file, indent=2)
+        state_file.flush()
+        os.fsync(state_file.fileno())
+    os.replace(temp_path, STATE_FILE)
 
 
 @dataclass
@@ -173,6 +244,7 @@ def main():
     poll_interval = float(os.getenv("POLL_INTERVAL_SECONDS", "1"))
     debounce_seconds = float(os.getenv("DEBOUNCE_SECONDS", "3"))
     http_timeout = float(os.getenv("HTTP_TIMEOUT_SECONDS", "5"))
+    applescript_timeout = float(os.getenv("APPLESCRIPT_TIMEOUT_SECONDS", "8"))
     heartbeat_seconds = float(os.getenv("HEARTBEAT_SECONDS", "60"))
     retry_interval = float(os.getenv("RETRY_INTERVAL_SECONDS", "5"))
 
@@ -186,38 +258,50 @@ def main():
     )
     last_posted_at = float(persisted_state.get("last_posted_at") or 0)
     last_post_attempt_at = last_posted_at
+    resolved_base_url = persisted_state.get("resolved_base_url")
     log(f"started; target={base_url}, poll={poll_interval}s, debounce={debounce_seconds}s")
 
     while True:
         try:
             now_ts = time.time()
-            current_track = fetch_spotify_state()
+            current_track = fetch_spotify_state(timeout=applescript_timeout)
             track_to_send = publisher.observe(current_track, now_ts)
-            heartbeat_due = heartbeat_is_due(now_ts, last_post_attempt_at, heartbeat_seconds)
-            retry_due = now_ts - last_post_attempt_at >= retry_interval
-            settled_heartbeat_due = heartbeat_due and publisher.is_settled(current_track, now_ts)
+            is_settled = publisher.is_settled(current_track, now_ts)
             sent_change = False
-            if (track_to_send and retry_due) or settled_heartbeat_due:
+            if should_post_update(
+                has_change=track_to_send is not None,
+                is_settled=is_settled,
+                now_ts=now_ts,
+                last_success_at=last_posted_at,
+                last_attempt_at=last_post_attempt_at,
+                heartbeat_seconds=heartbeat_seconds,
+                retry_interval=retry_interval,
+            ):
                 last_post_attempt_at = now_ts
                 update = track_to_send or current_track
-                post_update(update, base_url, token, http_timeout)
+                try:
+                    resolved_base_url = resolve_base_url(base_url)
+                except (OSError, subprocess.SubprocessError):
+                    pass
+                post_update(update, resolved_base_url or base_url, token, http_timeout)
                 publisher.mark_sent(update)
                 last_posted_at = now_ts
                 if track_to_send:
                     sent_change = True
                     log(f"sent {update['player_state']}: {update.get('title') or update['identity']}")
 
-            save_state(
-                {
-                    "pending_track": publisher.pending_track,
-                    "pending_since": publisher.pending_since,
-                    "last_sent_identity": publisher.last_sent_identity,
-                    "last_sent_state": publisher.last_sent_state,
-                    "last_sent_at": now_iso() if sent_change else persisted_state.get("last_sent_at"),
-                    "last_posted_at": last_posted_at,
-                }
-            )
-            persisted_state = load_state()
+            next_state = {
+                "pending_track": publisher.pending_track,
+                "pending_since": publisher.pending_since,
+                "last_sent_identity": publisher.last_sent_identity,
+                "last_sent_state": publisher.last_sent_state,
+                "last_sent_at": now_iso() if sent_change else persisted_state.get("last_sent_at"),
+                "last_posted_at": last_posted_at,
+                "resolved_base_url": resolved_base_url,
+            }
+            if next_state != persisted_state:
+                save_state(next_state)
+            persisted_state = next_state
         except KeyboardInterrupt:
             raise
         except Exception as exc:

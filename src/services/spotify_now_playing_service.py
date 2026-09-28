@@ -61,16 +61,24 @@ def read_state():
         if not os.path.exists(cache_path):
             return {}
 
-        with open(cache_path, encoding="utf-8") as cache_file:
-            return json.load(cache_file)
+        try:
+            with open(cache_path, encoding="utf-8") as cache_file:
+                return json.load(cache_file)
+        except (OSError, json.JSONDecodeError) as exc:
+            logger.warning("Ignoring unreadable Spotify cache at %s: %s", cache_path, exc)
+            return {}
 
 
 def write_state(state):
     with STATE_LOCK:
         cache_path = get_cache_path()
         _ensure_parent_dir(cache_path)
-        with open(cache_path, "w", encoding="utf-8") as cache_file:
+        temp_path = f"{cache_path}.tmp"
+        with open(temp_path, "w", encoding="utf-8") as cache_file:
             json.dump(state, cache_file, indent=2)
+            cache_file.flush()
+            os.fsync(cache_file.fileno())
+        os.replace(temp_path, cache_path)
 
 
 def _normalize_text(value):

@@ -15,6 +15,6 @@ def test_launch_agent_is_configured_for_login_and_persistent_logs():
     assert config["RunAtLoad"] is True
     assert config["KeepAlive"] is True
     assert config["LimitLoadToSessionType"] == "Aqua"
-    assert config["ProgramArguments"][0] == "/usr/bin/python3"
+    assert config["ProgramArguments"][0].endswith("inkypi-spotify-watcher")
     assert not config["StandardOutPath"].startswith("/tmp/")
     assert config["StandardErrorPath"] == config["StandardOutPath"]

@@ -230,3 +230,20 @@ def test_quote_deck_rebuilds_when_collection_size_changes(spotify_cache_paths, m
     assert state["quote_deck_size"] == 69
     assert state["quote_index"] == 68
     assert len(state["quote_deck"]) == 68
+
+
+def test_corrupt_pi_cache_recovers_as_empty_state(spotify_cache_paths):
+    cache_path, _ = spotify_cache_paths
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    cache_path.write_text("{partial", encoding="utf-8")
+
+    assert service.read_state() == {}
+
+
+def test_pi_cache_write_is_atomic(spotify_cache_paths):
+    cache_path, _ = spotify_cache_paths
+
+    service.write_state({"identity": "track-1", "player_state": "playing"})
+
+    assert service.read_state() == {"identity": "track-1", "player_state": "playing"}
+    assert list(cache_path.parent.glob("*.tmp")) == []

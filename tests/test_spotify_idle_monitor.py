@@ -69,7 +69,11 @@ def test_monitor_refreshes_once_when_playing_heartbeat_goes_stale(monkeypatch):
         "inferred_idle": True,
         "idle_started_at": state["received_at"],
     }
-    refresh_task = SimpleNamespace(running=True, updates=[], manual_update=lambda update: refresh_task.updates.append(update))
+    refresh_task = SimpleNamespace(
+        running=True,
+        updates=[],
+        request_manual_update=lambda update: refresh_task.updates.append(update),
+    )
     monitor = monitor_module.SpotifyIdleMonitor(None, refresh_task, stale_after_seconds=120)
 
     monkeypatch.setattr(monitor, "_find_active_instance", lambda: (playlist, plugin_instance))

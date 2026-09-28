@@ -6,8 +6,7 @@
     <string>com.inkypi.spotify-mac-watcher</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/bin/python3</string>
-        <string>/Users/danielzhang/dev/raspberrypi-dev/Daniel-InkyPi/InkyPi/extras/spotify_mac_watcher/spotify_mac_watcher.py</string>
+        <string>/Users/danielzhang/dev/raspberrypi-dev/Daniel-InkyPi/InkyPi/extras/spotify_mac_watcher/inkypi-spotify-watcher</string>
     </array>
     <key>LimitLoadToSessionType</key>
     <string>Aqua</string>
@@ -19,6 +18,13 @@
     <true/>
     <key>KeepAlive</key>
     <true/>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PYTHONUNBUFFERED</key>
+        <string>1</string>
+        <key>PYTHON_BIN</key>
+        <string>/usr/bin/python3</string>
+    </dict>
     <key>WorkingDirectory</key>
     <string>/Users/danielzhang/dev/raspberrypi-dev/Daniel-InkyPi/InkyPi/extras/spotify_mac_watcher</string>
     <key>StandardOutPath</key>

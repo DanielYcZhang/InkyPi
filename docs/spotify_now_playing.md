@@ -26,6 +26,9 @@ Send the shared secret in:
 3. Set `SPOTIFY_PUSH_TOKEN` to the same value as the Pi.
 4. Run `bash install_launch_agent.sh` to install, start, or repair the login service.
 5. Follow live watcher activity in `~/Library/Logs/InkyPi/spotify-mac-watcher.log`.
+6. In **System Settings > General > Login Items & Extensions**, allow the InkyPi watcher under **Allow in Background**.
+
+Use `bash extras/spotify_mac_watcher/check_status.sh` to verify login permission, watcher health, the last successful push, and Pi connectivity. Re-run `bash extras/spotify_mac_watcher/install_launch_agent.sh` to repair the service.
 
 ## Behavior
 
@@ -33,8 +36,9 @@ Send the shared secret in:
 - It waits 3 seconds for the selected track to settle before pushing.
 - The watcher sends a lightweight heartbeat every 60 seconds. Heartbeats update connection freshness without refreshing the e-ink panel.
 - Failed track deliveries retry every 5 seconds and are not marked as sent until the Pi accepts them.
+- AppleScript probes have a hard timeout so a stuck Spotify automation request cannot freeze the watcher.
 - If the Mac sleeps or disappears while Spotify still says it is playing, the Pi treats the last heartbeat time as the start of the idle period.
-- The Pi only refreshes when visible playback state changes or an idle quote becomes due.
+- The Pi only refreshes when visible playback state changes or an idle quote becomes due. Webhook responses do not wait for the slower e-ink transfer; display work is queued safely in the refresh worker.
 - When Spotify is paused or idle, the plugin can keep the last track, show its paused/nothing-playing screen, or immediately show a motivational quote.
 - Quotes come from a shuffled mix of original InkyPi lines and sourced quotations from well-known writers and public figures. Every quote is used before the collection is shuffled again, and the same quote is not shown twice in a row.
 - Quote cards show their author and honor the existing `Show last updated time` setting.

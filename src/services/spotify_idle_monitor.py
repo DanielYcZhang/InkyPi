@@ -92,7 +92,7 @@ class SpotifyIdleMonitor:
 
         changed = display_changed or quote_activated
         if changed and self.refresh_task.running:
-            self.refresh_task.manual_update(PlaylistRefresh(playlist, plugin_instance, force=True))
+            self.refresh_task.request_manual_update(PlaylistRefresh(playlist, plugin_instance, force=True))
         return changed
 
     def _run(self):

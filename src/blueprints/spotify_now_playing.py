@@ -42,8 +42,7 @@ def _trigger_display_refresh(device_config):
         return False
 
     if refresh_task.running:
-        refresh_task.manual_update(PlaylistRefresh(playlist, plugin_instance, force=True))
-        return True
+        return refresh_task.request_manual_update(PlaylistRefresh(playlist, plugin_instance, force=True))
 
     plugin = get_plugin_instance(plugin_config)
     image = plugin.generate_image(plugin_instance.settings, device_config)
