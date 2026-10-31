@@ -1,15 +1,15 @@
-# Spotify Now Playing
+# Spotify & Quotes
 
 This integration has two parts:
 
-1. InkyPi plugin: `Spotify Now Playing`
+1. InkyPi plugin: `Spotify & Quotes`
 2. macOS watcher: `extras/spotify_mac_watcher/spotify_mac_watcher.py`
 
 ## Pi setup
 
 1. Add `SPOTIFY_PUSH_TOKEN` to your `.env`.
 2. Restart InkyPi so the new plugin and webhook are loaded.
-3. Add the `Spotify Now Playing` plugin to a playlist.
+3. Add the `Spotify & Quotes` plugin to a playlist.
 
 The webhook endpoint is:
 
