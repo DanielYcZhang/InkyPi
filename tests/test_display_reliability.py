@@ -46,6 +46,11 @@ class RecordingEpd:
         self.calls.append("sleep")
 
 
+class RecordingBiColorEpd(RecordingEpd):
+    def display(self, black_buffer, red_buffer):
+        self.calls.append(("display", black_buffer, red_buffer))
+
+
 def test_failed_hardware_transfer_keeps_last_successful_current_image(tmp_path):
     current_image_path = tmp_path / "current.png"
     Image.new("RGB", (8, 6), "black").save(current_image_path)
@@ -70,3 +75,21 @@ def test_waveshare_update_does_not_clear_last_frame_before_transfer():
     display.display_image(Image.new("1", (8, 6), 255))
 
     assert display.epd_display.calls == ["init", "buffer", "display", "sleep"]
+
+
+def test_bicolor_waveshare_update_uses_two_layers_without_clearing():
+    display = WaveshareDisplay.__new__(WaveshareDisplay)
+    display.epd_display = RecordingBiColorEpd()
+    display.epd_display_init = lambda: display.epd_display.calls.append("init")
+    display.bi_color_display = True
+
+    image = Image.new("RGB", (8, 6), "red")
+    display.display_image(image)
+
+    assert display.epd_display.calls == [
+        "init",
+        "buffer",
+        "buffer",
+        ("display", b"frame", b"frame"),
+        "sleep",
+    ]

@@ -26,23 +26,24 @@ InkyPi is an open-source, customizable E-Ink display powered by a Raspberry Pi. 
 
 And additional plugins coming soon! For documentation on building custom plugins, see [Building InkyPi Plugins](./docs/building_plugins.md).
 
-## Hardware
+See [the wiki](https://github.com/fatihak/InkyPi/wiki) for a list of community-maintained third-party plugins.
 
+## Hardware
 - Raspberry Pi (4 | 3 | Zero 2 W)
   - Recommended to get 40 pin Pre Soldered Header
 - MicroSD Card (min 8 GB) like [this one](https://amzn.to/3G3Tq9W)
 - E-Ink Display:
-  - Inky Impression by Pimoroni
-    - **[13.3 Inch Display](https://collabs.shop/q2jmza)**
-    - **[7.3 Inch Display](https://collabs.shop/q2jmza)**
-    - **[5.7 Inch Display](https://collabs.shop/ns6m6m)**
-    - **[4 Inch Display](https://collabs.shop/cpwtbh)**
-  - Inky wHAT by Pimoroni
-    - **[4.2 Inch Display](https://collabs.shop/jrzqmf)**
-  - Waveshare e-Paper Displays
-    - Spectra 6 (E6) Full Color **[4 inch](https://www.waveshare.com/4inch-e-paper-hat-plus-e.htm?&aff_id=111126)** **[7.3 inch](https://www.waveshare.com/7.3inch-e-paper-hat-e.htm?&aff_id=111126)** **[13.3 inch](https://www.waveshare.com/13.3inch-e-paper-hat-plus-e.htm?&aff_id=111126)**
-    - Black and White **[7.5 inch](https://www.waveshare.com/7.5inch-e-paper-hat.htm?&aff_id=111126)** **[13.3 inch](https://www.waveshare.com/13.3inch-e-paper-hat-k.htm?&aff_id=111126)**
-    - See [Waveshare e-paper displays](https://www.waveshare.com/product/raspberry-pi/displays/e-paper.htm?&aff_id=111126) or visit their [Amazon store](https://amzn.to/3HPRTEZ) for additional models. Note that some models like the IT8951 based displays are not supported. See later section on [Waveshare e-Paper](#waveshare-display-support) compatibilty for more information.
+    - Inky Impression by Pimoroni
+        - **[13.3 Inch Display](https://collabs.shop/q2jmza)**
+        - **[7.3 Inch Display](https://collabs.shop/q2jmza)**
+        - **[5.7 Inch Display](https://collabs.shop/ns6m6m)**
+        - **[4 Inch Display](https://collabs.shop/cpwtbh)**
+    - Inky wHAT by Pimoroni
+        - **[4.2 Inch Display](https://collabs.shop/jrzqmf)**
+    - Waveshare e-Paper Displays
+        - Spectra 6 (E6) Full Color **[4 inch](https://www.waveshare.com/4inch-e-paper-hat-plus-e.htm?&aff_id=111126)** **[7.3 inch](https://www.waveshare.com/7.3inch-e-paper-hat-e.htm?&aff_id=111126)** **[13.3 inch](https://www.waveshare.com/13.3inch-e-paper-hat-plus-e.htm?&aff_id=111126)**
+        - Black and White **[7.5 inch](https://www.waveshare.com/7.5inch-e-paper-hat.htm?&aff_id=111126)** **[13.3 inch](https://www.waveshare.com/13.3inch-e-paper-hat-k.htm?&aff_id=111126)**
+        - See [Waveshare e-paper displays](https://www.waveshare.com/product/raspberry-pi/displays/e-paper.htm?&aff_id=111126) or visit their [Amazon store](https://amzn.to/3HPRTEZ) for additional models. Note that some models like the IT8951 based displays are not supported. See later section on [Waveshare e-Paper](#waveshare-display-support) compatibility for more information.
 - Picture Frame or 3D Stand
   - See [community.md](./docs/community.md) for 3D models, custom builds, and other submissions from the community
 
@@ -81,6 +82,12 @@ To install InkyPi, follow these steps:
    ```bash
    sudo bash install/install.sh -W epd7in3f
    ```
+
+    Some models are not published in the [common driver directory](https://github.com/waveshareteam/e-Paper/tree/master/RaspberryPi_JetsonNano/python/lib/waveshare_epd) and only ship under `E-paper_Separate_Program`. For those, pass the path to the driver within the [waveshareteam/e-Paper](https://github.com/waveshareteam/e-Paper) repository instead of the bare model name:
+
+    ```bash
+    sudo bash install/install.sh -W E-paper_Separate_Program/3.6inch_e-Paper_E/RaspberryPi_JetsonNano/python/lib/waveshare_epd/epd3in6e.py
+    ```
 
 After the installation is complete, the script will prompt you to reboot your Raspberry Pi. Once rebooted, the display will update to show the InkyPi splash screen.
 
@@ -166,4 +173,4 @@ Check out these similar projects:
   - shoutout to @txoof for assisting with InkyPi's installation process
 - [InkyCal](https://github.com/aceinnolab/Inkycal) - has modular plugins for building custom dashboards
 - [PiInk](https://github.com/tlstommy/PiInk) - inspiration behind InkyPi's flask web ui
-- [rpi_weather_display](https://github.com/sjnims/rpi_weather_display) - alternative eink weather dashboard with advanced power effiency
+- [rpi_weather_display](https://github.com/sjnims/rpi_weather_display) - alternative eink weather dashboard with advanced power efficiency
