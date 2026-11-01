@@ -6,8 +6,10 @@ import urllib.request
 from datetime import datetime, timezone
 
 
-FILE_LIMIT = 10
 DISCORD_FIELD_LIMIT = 1024
+DESCRIPTION_LIMIT = 1400
+SECTION_VALUE_LIMIT = 800
+MAX_SECTION_FIELDS = 2
 STATUS_LABELS = {
     "added": "A",
     "modified": "M",
@@ -18,6 +20,13 @@ STATUS_LABELS = {
 
 def _short_text(value, limit=180):
     text = (value or "").splitlines()[0].strip()
+    if len(text) <= limit:
+        return text
+    return f"{text[: limit - 3].rstrip()}..."
+
+
+def _truncate(value, limit):
+    text = (value or "").strip()
     if len(text) <= limit:
         return text
     return f"{text[: limit - 3].rstrip()}..."
@@ -34,40 +43,90 @@ def _change_summary(changes):
     return f"{files} files | +{additions} / -{deletions}"
 
 
-def _file_summary(files):
+def _summary_line(repository, author):
+    repository_link = _link(repository.get("full_name", "Unknown"), repository.get("html_url"))
+    author_link = _link(author.get("login", "Unknown"), author.get("html_url"))
+    return f"{repository_link} by {author_link}"
+
+
+def _section_fields(name, lines, source_url, item_name):
+    if not lines:
+        return [{"name": name, "value": f"No {item_name} details available", "inline": False}]
+
+    chunks = []
+    shown_count = 0
+    for line in lines:
+        candidate = f"{chunks[-1]}\n{line}" if chunks else line
+        if chunks and len(candidate) <= SECTION_VALUE_LIMIT:
+            chunks[-1] = candidate
+            shown_count += 1
+            continue
+        if len(chunks) >= MAX_SECTION_FIELDS:
+            break
+        chunks.append(_truncate(line, SECTION_VALUE_LIMIT))
+        shown_count += 1
+
+    omitted = len(lines) - shown_count
+    if omitted:
+        suffix = f"...and {omitted} more {item_name}"
+        if source_url:
+            suffix += f" - [view all]({source_url})"
+        while chunks and len(f"{chunks[-1]}\n{suffix}") > SECTION_VALUE_LIMIT:
+            kept_lines = chunks[-1].splitlines()
+            if len(kept_lines) == 1:
+                break
+            kept_lines.pop()
+            shown_count -= 1
+            omitted += 1
+            suffix = f"...and {omitted} more {item_name}"
+            if source_url:
+                suffix += f" - [view all]({source_url})"
+            chunks[-1] = "\n".join(kept_lines)
+        chunks[-1] = f"{chunks[-1]}\n{suffix}"
+
+    total = len(chunks)
+    return [
+        {
+            "name": name if total == 1 else f"{name} ({index}/{total})",
+            "value": _truncate(chunk, DISCORD_FIELD_LIMIT),
+            "inline": False,
+        }
+        for index, chunk in enumerate(chunks, start=1)
+    ]
+
+
+def _commit_lines(commits):
     lines = []
-    shown = files[:FILE_LIMIT]
-    for file_data in shown:
+    for commit in commits:
+        sha = commit.get("id") or commit.get("sha") or ""
+        details = commit.get("commit", {})
+        message = commit.get("message") or details.get("message") or "No commit message"
+        url = commit.get("url") or commit.get("html_url")
+        label = _link(f"`{sha[:7]}`", url) if sha else "`unknown`"
+        lines.append(f"{label} {_short_text(message, 120)}")
+    return lines
+
+
+def _file_lines(files):
+    lines = []
+    for file_data in files:
         status = STATUS_LABELS.get(file_data.get("status"), "?")
         filename = file_data.get("filename", "unknown file")
         additions = file_data.get("additions", 0)
         deletions = file_data.get("deletions", 0)
         lines.append(f"`{status}` {filename} (+{additions}/-{deletions})")
-
-    remaining = len(files) - len(shown)
-    if remaining:
-        lines.append(f"...and {remaining} more files")
-
-    value = "\n".join(lines) or "No file details available"
-    if len(value) > DISCORD_FIELD_LIMIT:
-        value = f"{value[: DISCORD_FIELD_LIMIT - 3].rstrip()}..."
-    return value
+    return lines
 
 
-def _base_fields(repository, author, event_type):
-    return [
-        {"name": "Type", "value": event_type, "inline": True},
-        {
-            "name": "Repository",
-            "value": _link(repository.get("full_name", "Unknown"), repository.get("html_url")),
-            "inline": True,
-        },
-        {
-            "name": "Author",
-            "value": _link(author.get("login", "Unknown"), author.get("html_url")),
-            "inline": True,
-        },
-    ]
+def _format_pull_request_body(body):
+    lines = []
+    for line in (body or "").strip().splitlines():
+        if line.startswith("### "):
+            line = f"**{line[4:]}**"
+        elif line.startswith("## "):
+            line = f"**{line[3:]}**"
+        lines.append(line)
+    return "\n".join(lines)
 
 
 def _push_embed(payload, changes, now):
@@ -78,27 +137,16 @@ def _push_embed(payload, changes, now):
     head_commit = payload.get("head_commit") or {}
     commit_count = len(commits)
     commit_label = "commit" if commit_count == 1 else "commits"
-    title = f"[{branch}] {commit_count} new {commit_label}"
-    sha = head_commit.get("id", "")
-    commit_value = "No commit details available"
-    if sha:
-        commit_value = f"{_link(f'`{sha[:7]}`', head_commit.get('url'))} {_short_text(head_commit.get('message'))}"
-
-    fields = _base_fields(repository, author, "Push")
-    fields.extend(
-        [
-            {"name": "Branch", "value": f"`{branch}`", "inline": True},
-            {"name": "Result", "value": "Pushed", "inline": True},
-            {"name": "Changes", "value": _change_summary(changes), "inline": True},
-            {"name": "Commit", "value": commit_value, "inline": False},
-            {"name": "Files", "value": _file_summary(changes.get("files", [])), "inline": False},
-        ]
-    )
+    title = f"[{branch}] {commit_count} {commit_label} pushed"
+    compare_url = payload.get("compare") or repository.get("html_url")
+    fields = [{"name": "Changes", "value": _change_summary(changes), "inline": False}]
+    fields.extend(_section_fields("Commits", _commit_lines(commits), compare_url, "commits"))
+    fields.extend(_section_fields("Files", _file_lines(changes.get("files", [])), compare_url, "files"))
     return {
         "title": title,
-        "url": payload.get("compare") or repository.get("html_url"),
+        "description": _summary_line(repository, author),
+        "url": compare_url,
         "color": 0x2F81F7,
-        "author": {"name": author.get("login", "GitHub"), "icon_url": author.get("avatar_url", "")},
         "fields": fields,
         "timestamp": head_commit.get("timestamp") or now.isoformat(),
         "footer": {"text": "GitHub push"},
@@ -121,25 +169,26 @@ def _pull_request_embed(payload, changes, now):
     base_branch = pull_request.get("base", {}).get("ref", "Unknown")
     head_branch = pull_request.get("head", {}).get("ref", "Unknown")
     number = pull_request.get("number", "?")
-    sha = pull_request.get("head", {}).get("sha", "")
-    commit_url = f"{repository.get('html_url')}/commit/{sha}" if repository.get("html_url") and sha else None
+    pull_request_url = pull_request.get("html_url") or repository.get("html_url")
+    body = _format_pull_request_body(pull_request.get("body"))
+    description_parts = [
+        _summary_line(repository, author),
+        f"**{_short_text(pull_request.get('title'), 240)}**",
+    ]
+    if body:
+        description_parts.append(body)
 
-    fields = _base_fields(repository, author, "Pull request")
-    fields.extend(
-        [
-            {"name": "Branches", "value": f"`{head_branch}` -> `{base_branch}`", "inline": True},
-            {"name": "Result", "value": result, "inline": True},
-            {"name": "Changes", "value": _change_summary(changes), "inline": True},
-            {"name": "Head commit", "value": _link(f"`{sha[:7]}`", commit_url) if sha else "Unknown", "inline": False},
-            {"name": "Files", "value": _file_summary(changes.get("files", [])), "inline": False},
-        ]
-    )
+    fields = [
+        {"name": "Changes", "value": _change_summary(changes), "inline": False},
+        {"name": "Branches", "value": f"`{head_branch}` -> `{base_branch}`", "inline": False},
+    ]
+    fields.extend(_section_fields("Commits", _commit_lines(changes.get("commits", [])), pull_request_url, "commits"))
+    fields.extend(_section_fields("Files", _file_lines(changes.get("files", [])), pull_request_url, "files"))
     return {
         "title": f"[{base_branch}] PR #{number} {result.lower()}",
-        "description": f"**{_short_text(pull_request.get('title'), 240)}**",
-        "url": pull_request.get("html_url") or repository.get("html_url"),
+        "description": _truncate("\n\n".join(description_parts), DESCRIPTION_LIMIT),
+        "url": pull_request_url,
         "color": 0x238636 if merged else 0xA371F7,
-        "author": {"name": author.get("login", "GitHub"), "icon_url": author.get("avatar_url", "")},
         "fields": fields,
         "timestamp": pull_request.get("merged_at") or pull_request.get("updated_at") or now.isoformat(),
         "footer": {"text": "GitHub pull request"},
@@ -171,6 +220,18 @@ def _get_json(url, token):
         return json.load(response)
 
 
+def _get_all_pages(url, token):
+    items = []
+    page = 1
+    while True:
+        page_url = url if page == 1 else f"{url}&page={page}"
+        batch = _get_json(page_url, token)
+        items.extend(batch)
+        if len(batch) < 100:
+            return items
+        page += 1
+
+
 def load_changes(event_name, payload, token, api_url):
     repository = payload.get("repository", {}).get("full_name")
     if not repository or not token:
@@ -192,9 +253,11 @@ def load_changes(event_name, payload, token, api_url):
 
     pull_request = payload.get("pull_request", {})
     number = pull_request.get("number")
-    files = _get_json(f"{api_url}/repos/{repository}/pulls/{number}/files?per_page=100", token) if number else []
+    files = _get_all_pages(f"{api_url}/repos/{repository}/pulls/{number}/files?per_page=100", token) if number else []
+    commits = _get_all_pages(f"{api_url}/repos/{repository}/pulls/{number}/commits?per_page=100", token) if number else []
     return {
         "files": files,
+        "commits": commits,
         "changed_files": pull_request.get("changed_files", len(files)),
         "additions": pull_request.get("additions", 0),
         "deletions": pull_request.get("deletions", 0),
